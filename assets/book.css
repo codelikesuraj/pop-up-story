@@ -1,0 +1,128 @@
+/* Pop-up Stories · shared book frame
+   Loaded after each story's own <style>. A story sets --cloth, --foil and --foil-2 for its binding. */
+:root{
+  --cloth:#1f5f8b; --foil:#e7c46f; --foil-2:#d9b25a; --ribbon:#b8392b;
+  --wood:#4a3020; --wood-ink:#e8dcc2; --wood-soft:#cdbb9a;
+  --paper:#f7f1e3; --paper-edge:#d9ccb0; --shade:rgba(42,29,16,.28);
+  --ink:#1d2633; --ink-soft:#5f5a4c;
+  --display:"Fraunces","Iowan Old Style",Georgia,serif;
+  --fell:"Crimson Pro","Iowan Old Style",Georgia,serif;
+  --body:"Crimson Pro",Georgia,"Times New Roman",serif;
+  color-scheme:light;
+}
+body{
+  background-color:var(--wood);
+  background-image:
+    radial-gradient(70% 60% at 50% 35%,rgba(233,196,106,.16),rgba(0,0,0,.5)),
+    repeating-linear-gradient(92deg,rgba(0,0,0,.10) 0 3px,rgba(255,255,255,.025) 3px 9px,rgba(0,0,0,.06) 9px 14px);
+  color:var(--ink); font-family:var(--body); font-size:19px;
+}
+h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.005em}
+.chapter,.folio,.caption,.lbl,.pull label{font-family:var(--body)}
+.back{color:var(--wood-ink);border-bottom-color:rgba(232,220,194,.4);font-family:var(--body)}
+.back:hover{color:var(--foil);border-bottom-color:var(--foil)}
+.hint{color:var(--wood-soft);font-family:var(--body)}
+
+/* ---------- the open book ---------- */
+.book{
+  background-color:var(--cloth);
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0 2px,rgba(0,0,0,.05) 2px 4px);
+  padding:12px 16px 14px; border-radius:9px;
+  box-shadow:0 46px 60px -24px rgba(0,0,0,.85),inset 0 0 0 1px rgba(0,0,0,.15);
+}
+.spread{
+  background:var(--paper);
+  background-image:linear-gradient(90deg,rgba(0,0,0,.035),transparent 6%,transparent 94%,rgba(0,0,0,.035));
+  border-radius:3px;
+  box-shadow:var(--stacks,none);
+}
+.spread::after{
+  width:90px;
+  background:linear-gradient(90deg,rgba(60,40,20,0),rgba(60,40,20,.2) 44%,rgba(60,40,20,.3) 50%,rgba(60,40,20,.2) 56%,rgba(60,40,20,0));
+}
+.text p:first-of-type::first-letter{color:var(--cloth)}
+.chapter{font-style:italic;color:var(--ink-soft);display:flex;align-items:center;gap:12px}
+.chapter::after{content:"";flex:1;height:1px;background:var(--paper-edge)}
+.cover .chapter::after{display:none}
+
+/* ribbon bookmark through the gutter */
+.ribbon{position:absolute;z-index:4;top:12px;width:15px;height:calc(100% + 12px);left:calc(16px + (100% - 32px)/2.2 - 7px);
+  background:linear-gradient(90deg,#8f2a20,var(--ribbon) 40%,#8f2a20);clip-path:polygon(0 0,100% 0,100% 100%,50% 95%,0 100%);
+  box-shadow:0 4px 8px rgba(0,0,0,.3);pointer-events:none}
+
+/* curled page corners to turn */
+.corner{position:absolute;z-index:7;bottom:14px;width:46px;height:46px;border:0;padding:0;background:transparent;cursor:pointer}
+.corner svg{display:block;width:100%;height:100%;transition:transform .2s ease}
+.corner.next{right:16px}
+.corner.prev{left:16px}
+.corner:hover svg{transform:scale(1.15)}
+.corner.next:hover svg{transform-origin:100% 100%}
+.corner.prev:hover svg{transform-origin:0 100%}
+.corner:focus-visible{outline:2px solid var(--foil);outline-offset:2px}
+.corner[disabled]{display:none}
+
+/* paper depth: shadows are set per layer by book.js */
+.layer{filter:var(--depth,drop-shadow(0 5px 3px var(--shade)))}
+
+/* pull tab: a gold paper tab sliding in a slot */
+.pull{gap:10px}
+.pull label{font-style:italic;color:var(--ink-soft);font-size:16px}
+.pull input[type=range]{-webkit-appearance:none;appearance:none;height:34px;background:transparent;cursor:grab;width:100%;margin:0}
+.pull input[type=range]:active{cursor:grabbing}
+.pull input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:4px;background:#3a2c1f;box-shadow:inset 0 2px 3px rgba(0,0,0,.5)}
+.pull input[type=range]::-moz-range-track{height:8px;border-radius:4px;background:#3a2c1f;box-shadow:inset 0 2px 3px rgba(0,0,0,.5)}
+.pull input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:62px;height:30px;margin-top:-11px;border-radius:2px 6px 6px 2px;border:0;
+  background:repeating-linear-gradient(90deg,transparent 0 40px,rgba(0,0,0,.18) 40px 41px,transparent 41px 45px),linear-gradient(var(--foil),#d0a541);
+  box-shadow:0 6px 10px rgba(0,0,0,.35),inset 0 -3px 0 rgba(0,0,0,.18)}
+.pull input[type=range]::-moz-range-thumb{width:62px;height:30px;border-radius:2px 6px 6px 2px;border:0;
+  background:repeating-linear-gradient(90deg,transparent 0 40px,rgba(0,0,0,.18) 40px 41px,transparent 41px 45px),linear-gradient(var(--foil),#d0a541);
+  box-shadow:0 6px 10px rgba(0,0,0,.35),inset 0 -3px 0 rgba(0,0,0,.18)}
+.pull input[type=range]:focus-visible{outline:2px solid var(--cloth);outline-offset:4px}
+
+/* controls on the desk */
+.btn{font-family:var(--display);background:var(--paper);color:var(--ink);border:0;border-radius:3px;box-shadow:0 3px 0 #b9a983,0 8px 16px rgba(0,0,0,.3)}
+.btn:focus-visible,.dots button:focus-visible{outline:2px solid var(--foil);outline-offset:3px}
+.dots{gap:8px}
+.dots button{width:22px;height:6px;border-radius:3px;border:0;transform:none;background:#7a6448;transition:width .25s ease,background .25s ease}
+.dots button[aria-current="true"]{width:42px;background:var(--foil)}
+.dots button.read{background:#a99372}
+
+/* ---------- the closed book ---------- */
+.closed{display:none;flex-direction:column;align-items:center;gap:26px;padding-block:20px 10px}
+body.is-closed .closed{display:flex}
+body.is-closed .book,body.is-closed .controls,body.is-closed .hint{display:none}
+.closed-book{position:relative;width:min(400px,78vw);aspect-ratio:400/556;perspective:1800px}
+.closed-book .block{position:absolute;inset:6px -8px -6px 6px;border-radius:2px 8px 8px 2px;background:repeating-linear-gradient(90deg,#efe6d2 0 2px,#d9cdb3 2px 3px);box-shadow:0 40px 60px -20px rgba(0,0,0,.8)}
+.closed-book .tassel{position:absolute;left:56%;bottom:-62px;width:16px;height:76px;background:var(--ribbon);clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%)}
+.cover-board{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;
+  padding:12% 10% 10% 14%;border:0;cursor:pointer;font:inherit;color:var(--foil);
+  border-radius:4px 10px 10px 4px;background-color:var(--cloth);
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0 2px,rgba(0,0,0,.05) 2px 4px);
+  box-shadow:inset 16px 0 0 rgba(0,0,0,.24),inset 19px 0 0 rgba(255,255,255,.07),0 30px 40px -16px rgba(0,0,0,.8);
+  transform-origin:0 50%;transition:transform .25s ease}
+.cover-board::before,.cover-board::after{content:"";position:absolute;border-radius:3px;pointer-events:none}
+.cover-board::before{inset:4% 5% 4% 9%;border:1.5px solid color-mix(in srgb,var(--foil-2) 70%,transparent)}
+.cover-board::after{inset:5.5% 7% 5.5% 11%;border:1px solid color-mix(in srgb,var(--foil-2) 35%,transparent)}
+.cover-board:hover{transform:rotateY(-6deg)}
+.cover-board:focus-visible{outline:3px solid var(--foil);outline-offset:6px}
+.cover-board .eyebrow{font-family:var(--body);font-size:clamp(11px,1.6vw,14px);letter-spacing:.32em;text-transform:uppercase;color:var(--foil-2)}
+.cover-board .emblem{width:52%;height:auto}
+.cover-board .title{font-family:var(--display);font-size:clamp(34px,7vw,64px);line-height:1;color:var(--foil);text-wrap:balance}
+.cover-board .sub{display:block;margin-top:8px;font-family:var(--body);font-style:italic;font-size:clamp(14px,2vw,18px);color:var(--foil-2)}
+.closed .open-tag{margin-top:46px;font-family:var(--display);font-size:19px;color:var(--ink);background:var(--paper);border:0;cursor:pointer;
+  padding:13px 26px;border-radius:3px;box-shadow:0 3px 0 #b9a983,0 10px 20px rgba(0,0,0,.4)}
+.closed .open-tag:focus-visible{outline:2px solid var(--foil);outline-offset:3px}
+.closed .meta{margin:0;font-style:italic;color:var(--wood-soft);font-size:16px;text-align:center}
+body.is-opening .cover-board{transition:transform .8s cubic-bezier(.45,.05,.3,1),opacity .8s ease;transform:rotateY(-120deg);opacity:0}
+
+@media (max-width:760px){
+  .book{padding:8px 8px 10px}
+  .ribbon{display:none}
+  .corner{width:40px;height:40px;bottom:10px}
+  .corner.next{right:10px}.corner.prev{left:10px}
+  .closed-book .tassel{bottom:-48px;height:60px}
+}
+@media (prefers-reduced-motion:reduce){
+  .cover-board,.corner svg,.dots button{transition:none}
+  body.is-opening .cover-board{transition:none}
+}
