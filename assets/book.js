@@ -117,16 +117,15 @@
   const slot = document.createElement('div');
   slot.className = 'pull-slot'; slot.hidden = true;
   controls && controls.prepend(slot);
+  /* every pull tab lives only in the navigation area, never on the page itself;
+     the one belonging to the open page is shown */
   const pulls = pages.map(p => {
     const el = p.querySelector('.pull');
-    return el ? { el, parent: el.parentNode, after: el.nextSibling } : null;
+    if (el) { el.hidden = true; slot.appendChild(el); }
+    return el;
   });
   function placePull() {
-    pulls.forEach((rec, j) => {
-      if (!rec) return;
-      if (j === cur) slot.appendChild(rec.el);
-      else if (rec.el.parentNode === slot) rec.parent.insertBefore(rec.el, rec.after);
-    });
+    pulls.forEach((el, j) => { if (el) el.hidden = j !== cur; });
     slot.hidden = !pulls[cur];
     document.body.classList.toggle('has-pull', !!pulls[cur]);
   }

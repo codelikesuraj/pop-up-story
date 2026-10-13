@@ -85,6 +85,7 @@ h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.005em}
 
 /* the pull tab, moved into the navigation area */
 .pull-slot{flex:1 0 100%;order:-1;display:flex;justify-content:center}
+.pull-slot[hidden],.pull-slot .pull[hidden]{display:none!important}
 .pull-slot .pull{width:100%;max-width:640px;margin:0;display:flex;flex-direction:column;gap:4px}
 .pull-slot .pull label{color:var(--wood-soft);font-size:15px}
 .pull-slot .pull output{color:var(--wood-ink);font-size:16px;min-height:1.5em}
