@@ -150,9 +150,16 @@
     labels();
     placePull();
   }
-  document.addEventListener('pagechange', e => update(e.detail.cur, e.detail.total));
+  /* remember where the reader is, per book, in this browser */
+  const KEY = 'popup-progress:' + location.pathname;
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { return null; } };
+  const save = o => { try { localStorage.setItem(KEY, JSON.stringify(Object.assign(load() || {}, o))); } catch (e) {} };
+
+  document.addEventListener('pagechange', e => { update(e.detail.cur, e.detail.total); save({ page: e.detail.cur }); });
   small.addEventListener('change', labels);
-  update(cur, pages.length);
+  const saved = load();
+  if (saved && saved.page > 0 && saved.page < pages.length && window.popupBook) window.popupBook.show(saved.page);
+  else update(cur, pages.length);
 
   /* 5. the closed cover */
   if (!closed) return;
@@ -165,6 +172,7 @@
   function open() {
     if (!document.body.classList.contains('is-closed') || document.body.classList.contains('is-opening')) return;
     const done = () => {
+      save({ open: true });
       document.body.classList.remove('is-closed', 'is-opening');
       restart();
       (next && next.focus({ preventScroll: true }));
@@ -174,12 +182,13 @@
     setTimeout(done, 800);
   }
   function close() {
+    save({ open: false, page: 0 });
     document.body.classList.add('is-closed');
     window.scrollTo({ top: 0 });
     const board = closed.querySelector('.cover-board');
     board && board.focus({ preventScroll: true });
   }
-  document.body.classList.add('is-closed');
+  if (!(saved && saved.open)) document.body.classList.add('is-closed');
   closed.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', open));
   prev.addEventListener('click', () => { if (cur === 0) close(); });
   document.addEventListener('keydown', e => {
