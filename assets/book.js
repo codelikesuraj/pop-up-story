@@ -82,7 +82,7 @@
     book.style.setProperty('--stacks', sh.join(','));
   }
   /* short labels on small screens, where the controls sit in a bar fixed to the bottom */
-  const small = matchMedia('(max-width:760px)');
+  const small = matchMedia('(max-width:1024px)');
   const openTag = closed && closed.querySelector('.open-tag');
   function labels() {
     const s = small.matches;
