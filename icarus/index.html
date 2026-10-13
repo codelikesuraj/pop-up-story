@@ -181,19 +181,19 @@ h1{font-size:clamp(54px,9vw,96px);letter-spacing:.01em}
 .book > .page[hidden]{display:flex!important;visibility:hidden}
 .book > .page > .spread{flex:1}
 /* page-turn */
-.book{perspective:2600px}
+.book{perspective:3200px}
 .flip{position:absolute;z-index:6;transform-style:preserve-3d;pointer-events:none;will-change:transform}
 .face{position:absolute;top:0;height:100%;background:var(--paper);overflow:hidden;display:flex;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .face > .leaf,.face > .spread{flex:1;min-width:0;height:100%}
 .face > .spread::after{display:none}
-.flip .front{left:0;width:100%}
-.flip .back{transform:rotateY(180deg)}
+.flip .face-front{left:0;width:100%}
+.flip .face-back{transform:rotateY(180deg)}
 .patch{position:absolute;z-index:5;pointer-events:none}
 .face .shade{position:absolute;inset:0;pointer-events:none;opacity:0}
-.flip-fwd .front .shade{background:linear-gradient(90deg,var(--shade),transparent 70%)}
-.flip-fwd .back .shade{background:linear-gradient(270deg,var(--shade),transparent 70%)}
-.flip-bwd .front .shade{background:linear-gradient(270deg,var(--shade),transparent 70%)}
-.flip-bwd .back .shade{background:linear-gradient(90deg,var(--shade),transparent 70%)}
+.flip-fwd .face-front .shade{background:linear-gradient(90deg,var(--shade),transparent 70%)}
+.flip-fwd .face-back .shade{background:linear-gradient(270deg,var(--shade),transparent 70%)}
+.flip-bwd .face-front .shade{background:linear-gradient(270deg,var(--shade),transparent 70%)}
+.flip-bwd .face-back .shade{background:linear-gradient(90deg,var(--shade),transparent 70%)}
 .static .layer,.static .text,.folded .layer,.folding .text{animation:none}
 .folded .layer{transform:rotateX(88deg)}
 .folding .layer{animation:fold .5s ease-in forwards}
@@ -826,8 +826,8 @@ h1{font-size:clamp(54px,9vw,96px);letter-spacing:.01em}
       const r=rel(oldP.querySelector('.spread'));
       put(flip,r);
       flip.style.transformOrigin=fwd?'left center':'right center';
-      front=face(oldP.querySelector('.spread'),oldP,'front folding');
-      back=document.createElement('div');back.className='face back';
+      front=face(oldP.querySelector('.spread'),oldP,'face-front folding');
+      back=document.createElement('div');back.className='face face-back';
       back.style.left='0';back.style.width='100%';
       const s=document.createElement('div');s.className='shade';back.appendChild(s);
     }else{
@@ -836,13 +836,13 @@ h1{font-size:clamp(54px,9vw,96px);letter-spacing:.01em}
       put(patch,fwd?rl:rr); extras.push(patch);
       if(fwd){
         put(flip,rr); flip.style.transformOrigin='left center';
-        front=face(R(oldP),oldP,'front folding');
-        back=face(L(newP),newP,'back static');
+        front=face(R(oldP),oldP,'face-front folding');
+        back=face(L(newP),newP,'face-back static');
         back.style.left='0'; back.style.width=rl.w+'px';
       }else{
         put(flip,rl); flip.style.transformOrigin='right center';
-        front=face(L(oldP),oldP,'front static');
-        back=face(R(newP),newP,'back folded');
+        front=face(L(oldP),oldP,'face-front static');
+        back=face(R(newP),newP,'face-back folded');
         back.style.right='0'; back.style.width=rr.w+'px';
         newP.style.setProperty('--wait','.8s');
       }
