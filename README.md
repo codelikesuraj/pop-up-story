@@ -16,6 +16,7 @@ Interactive pop-up storybooks, built as plain HTML and hosted on GitHub Pages.
 ```
 /
 ├── index.html          # the shelf listing every story
+├── og-image.png        # share preview for the shelf
 ├── icarus/
 │   ├── index.html      # the storybook
 │   └── og-image.png    # 1200×630 share preview
