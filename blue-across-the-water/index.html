@@ -85,7 +85,7 @@ h1{font-size:clamp(46px,7.5vw,78px)}
 .stage-leaf{padding:26px 22px 22px;display:flex;flex-direction:column;justify-content:flex-end}
 .stage{position:relative;aspect-ratio:400/280;width:100%;max-width:100%;perspective:1100px;perspective-origin:50% 0%}
 .stage::after{content:"";position:absolute;left:4%;right:4%;bottom:-6px;height:14px;background:radial-gradient(closest-side,var(--shade),transparent);pointer-events:none}
-.layer{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform-origin:50% var(--oy,100%);animation:pop 1s cubic-bezier(.2,1.35,.45,1) var(--d,0s) both;filter:drop-shadow(0 5px 3px var(--shade))}
+.layer{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform-origin:50% var(--oy,100%);animation:pop 1s cubic-bezier(.2,1.35,.45,1) calc(var(--d,0s) + var(--wait,0s)) both;filter:drop-shadow(0 5px 3px var(--shade))}
 .layer.flat{filter:none}
 @keyframes pop{from{transform:rotateX(88deg)}to{transform:rotateX(0)}}
 @keyframes turn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
@@ -151,6 +151,24 @@ h1{font-size:clamp(46px,7.5vw,78px)}
   .layer,.text,.bob,.sway{animation:none}
   #canoeA,#canoeB,#haze8,#meetKite{transition:none}
 }
+/* page-turn */
+.book{perspective:2600px}
+.flip{position:absolute;z-index:6;transform-style:preserve-3d;pointer-events:none;will-change:transform}
+.face{position:absolute;top:0;height:100%;background:var(--paper);overflow:hidden;display:flex;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.face > .leaf,.face > .spread{flex:1;min-width:0;height:100%}
+.face > .spread::after{display:none}
+.flip .front{left:0;width:100%}
+.flip .back{transform:rotateY(180deg)}
+.patch{position:absolute;z-index:5;pointer-events:none}
+.face .shade{position:absolute;inset:0;pointer-events:none;opacity:0}
+.flip-fwd .front .shade{background:linear-gradient(90deg,var(--shade),transparent 70%)}
+.flip-fwd .back .shade{background:linear-gradient(270deg,var(--shade),transparent 70%)}
+.flip-bwd .front .shade{background:linear-gradient(270deg,var(--shade),transparent 70%)}
+.flip-bwd .back .shade{background:linear-gradient(90deg,var(--shade),transparent 70%)}
+.static .layer,.static .text,.folded .layer,.folding .text{animation:none}
+.folded .layer{transform:rotateX(88deg)}
+.folding .layer{animation:fold .5s ease-in forwards}
+@keyframes fold{from{transform:rotateX(0)}to{transform:rotateX(88deg)}}
 </style>
 </head>
 <body>
@@ -620,7 +638,7 @@ h1{font-size:clamp(46px,7.5vw,78px)}
   pages.forEach((p,i)=>{
     const b=document.createElement('button');
     b.type='button'; b.id='dot-'+i; b.setAttribute('aria-label','Go to '+p.dataset.name);
-    b.addEventListener('click',()=>show(i)); dots.appendChild(b);
+    b.addEventListener('click',()=>go(i)); dots.appendChild(b);
   });
   function show(i){
     cur=Math.max(0,Math.min(pages.length-1,i));
@@ -630,17 +648,84 @@ h1{font-size:clamp(46px,7.5vw,78px)}
     next.textContent=cur===0?'Open the book ›':'Turn the page ›';
     where.textContent=pages[cur].dataset.name+' · page '+(cur+1)+' of '+pages.length;
   }
-  prev.addEventListener('click',()=>show(cur-1));
-  next.addEventListener('click',()=>show(cur+1));
+  prev.addEventListener('click',()=>go(cur-1));
+  next.addEventListener('click',()=>go(cur+1));
   document.addEventListener('keydown',e=>{
     if(e.target.id==='row')return;
-    if(e.key==='ArrowRight')show(cur+1);
-    if(e.key==='ArrowLeft')show(cur-1);
+    if(e.key==='ArrowRight')go(cur+1);
+    if(e.key==='ArrowLeft')go(cur-1);
   });
   let sx=null;
   const book=document.querySelector('.book');
+  /* page-turn: the old page lifts at the gutter and turns over */
+  const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
+  const narrow=matchMedia('(max-width:760px)');
+  let turning=null;
+  function rel(el){const b=book.getBoundingClientRect(),r=el.getBoundingClientRect();return{l:r.left-b.left,t:r.top-b.top,w:r.width,h:r.height};}
+  function put(el,r){el.style.left=r.l+'px';el.style.top=r.t+'px';el.style.width=r.w+'px';el.style.height=r.h+'px';}
+  function face(node,page,mode){
+    const c=node.cloneNode(true);
+    c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));
+    c.removeAttribute('id');
+    const f=document.createElement('div');
+    f.className='face '+mode+(page.classList.contains('cover')?' cover':'');
+    f.appendChild(c);
+    const s=document.createElement('div');s.className='shade';f.appendChild(s);
+    return f;
+  }
+  function go(i){
+    i=Math.max(0,Math.min(pages.length-1,i));
+    if(i===cur)return;
+    if(turning)turning.finish();
+    if(reduceMotion.matches||!book.animate){show(i);return;}
+    const fwd=i>cur, oldP=pages[cur], newP=pages[i];
+    const L=p=>p.querySelector('.leaf.text'), R=p=>p.querySelector('.stage-leaf');
+    const flip=document.createElement('div');
+    flip.className='flip '+(fwd?'flip-fwd':'flip-bwd');
+    const extras=[];
+    let front,back;
+    if(narrow.matches){
+      const r=rel(oldP.querySelector('.spread'));
+      put(flip,r);
+      flip.style.transformOrigin=fwd?'left center':'right center';
+      front=face(oldP.querySelector('.spread'),oldP,'front folding');
+      back=document.createElement('div');back.className='face back';
+      back.style.left='0';back.style.width='100%';
+      const s=document.createElement('div');s.className='shade';back.appendChild(s);
+    }else{
+      const rl=rel(L(oldP)), rr=rel(R(oldP));
+      const patch=face(fwd?L(oldP):R(oldP),oldP,'patch '+(fwd?'static':'folding'));
+      put(patch,fwd?rl:rr); extras.push(patch);
+      if(fwd){
+        put(flip,rr); flip.style.transformOrigin='left center';
+        front=face(R(oldP),oldP,'front folding');
+        back=face(L(newP),newP,'back static');
+        back.style.left='0'; back.style.width=rl.w+'px';
+      }else{
+        put(flip,rl); flip.style.transformOrigin='right center';
+        front=face(L(oldP),oldP,'front static');
+        back=face(R(newP),newP,'back folded');
+        back.style.right='0'; back.style.width=rr.w+'px';
+        newP.style.setProperty('--wait','.8s');
+      }
+    }
+    flip.append(front,back);
+    extras.forEach(e=>book.appendChild(e));
+    book.appendChild(flip);
+    if(fwd||narrow.matches)newP.style.removeProperty('--wait');
+    show(i);
+    const dur=950, ease='cubic-bezier(.45,.05,.3,1)';
+    const anim=flip.animate([{transform:'rotateY(0deg)'},{transform:'rotateY('+(fwd?-180:180)+'deg)'}],{duration:dur,easing:ease,fill:'forwards'});
+    const fs=front.querySelector('.shade'), bs=back.querySelector('.shade');
+    fs&&fs.animate([{opacity:0},{opacity:.9}],{duration:dur/2,easing:'ease-in',fill:'forwards'});
+    bs&&bs.animate([{opacity:.9},{opacity:0}],{duration:dur/2,delay:dur/2,easing:'ease-out',fill:'forwards'});
+    const done=()=>{flip.remove();extras.forEach(e=>e.remove());if(turning===anim)turning=null;};
+    anim.onfinish=done; anim.oncancel=done;
+    turning=anim;
+  }
+
   book.addEventListener('touchstart',e=>{sx=e.target.id==='row'?null:e.touches[0].clientX},{passive:true});
-  book.addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>60)show(cur+(dx<0?1:-1));sx=null},{passive:true});
+  book.addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>60)go(cur+(dx<0?1:-1));sx=null},{passive:true});
 
   const row=document.getElementById('row'), out=document.getElementById('row-out');
   const A=document.getElementById('canoeA'), B=document.getElementById('canoeB');
