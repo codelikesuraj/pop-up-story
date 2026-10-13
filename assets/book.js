@@ -81,15 +81,27 @@
     for (let k = 1; k <= right; k++) sh.push(`${k}px ${(k * 0.6).toFixed(1)}px 0 ${k % 2 ? '#e6dcc4' : '#cdbf9f'}`);
     book.style.setProperty('--stacks', sh.join(','));
   }
+  /* short labels on small screens, where the controls sit in a bar fixed to the bottom */
+  const small = matchMedia('(max-width:760px)');
+  const openTag = closed && closed.querySelector('.open-tag');
+  function labels() {
+    const s = small.matches;
+    next.textContent = s ? 'Next' : (cur === 0 ? 'Open the book ›' : 'Turn the page ›');
+    prev.textContent = s ? 'Back' : (closed && cur === 0 ? '‹ Close the book' : '‹ Back');
+    if (openTag) openTag.textContent = s ? 'Open' : 'Open the cover ›';
+    prev.setAttribute('aria-label', closed && cur === 0 ? 'Close the book' : 'Previous page');
+    next.setAttribute('aria-label', 'Next page');
+  }
   function update(c, total) {
     cur = c;
     stacks(cur, total);
     document.querySelectorAll('.dots button').forEach((d, j) => d.classList.toggle('read', j < cur));
     cPrev.disabled = cur === 0 && !closed; cNext.disabled = cur === total - 1;
-    if (closed && cur === 0) { prev.disabled = false; prev.textContent = '‹ Close the book'; }
-    else if (closed) prev.textContent = '‹ Back';
+    if (closed && cur === 0) prev.disabled = false;
+    labels();
   }
   document.addEventListener('pagechange', e => update(e.detail.cur, e.detail.total));
+  small.addEventListener('change', labels);
   update(cur, pages.length);
 
   /* 5. the closed cover */

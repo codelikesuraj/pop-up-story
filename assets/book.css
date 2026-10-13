@@ -116,6 +116,28 @@ body.is-closed .book,body.is-closed .controls,body.is-closed .hint{display:none}
 body.is-opening .cover-board{transition:transform .8s cubic-bezier(.45,.05,.3,1),opacity .8s ease;transform:rotateY(-120deg);opacity:0}
 
 @media (max-width:760px){
+  /* page pills, Back and Next live in a bar fixed to the bottom of the screen */
+  body{padding-bottom:calc(132px + env(safe-area-inset-bottom,0px))}
+  .controls{position:fixed;left:0;right:0;bottom:0;z-index:20;margin:0;
+    display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"dots dots" "prev next";gap:6px 12px;
+    padding:8px 16px calc(12px + env(safe-area-inset-bottom,0px));
+    background:rgba(38,25,16,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    box-shadow:0 -10px 24px rgba(0,0,0,.35);border-top:1px solid rgba(232,220,194,.12)}
+  .controls #prev{grid-area:prev}
+  .controls #next{grid-area:next}
+  .controls .btn{width:100%;min-height:48px;font-size:17px}
+  .controls .btn:disabled{visibility:hidden}
+  .dots{grid-area:dots;justify-content:center;gap:6px}
+  .dots button{height:28px;background:linear-gradient(#7a6448,#7a6448) center/100% 6px no-repeat}
+  .dots button.read{background:linear-gradient(#a99372,#a99372) center/100% 6px no-repeat}
+  .dots button[aria-current="true"]{background:linear-gradient(var(--foil),var(--foil)) center/100% 6px no-repeat}
+  .hint{padding-bottom:4px}
+  /* on the cover, a single fixed Open button */
+  body.is-closed{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+  .closed .meta{margin-top:44px}
+  .closed .open-tag{position:fixed;z-index:20;left:16px;right:16px;bottom:calc(14px + env(safe-area-inset-bottom,0px));margin:0;min-height:52px;font-size:18px}
+  .closed::after{content:"";position:fixed;left:0;right:0;bottom:0;height:calc(80px + env(safe-area-inset-bottom,0px));z-index:19;
+    background:rgba(38,25,16,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 -10px 24px rgba(0,0,0,.35);border-top:1px solid rgba(232,220,194,.12)}
   .book{padding:8px 8px 10px}
   .ribbon{display:none}
   .corner{width:40px;height:40px;bottom:10px}
