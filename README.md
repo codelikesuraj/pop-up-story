@@ -1,1 +1,27 @@
-# pop-up-story
+# Pop-up Stories
+
+Interactive pop-up storybooks, built as plain HTML and hosted on GitHub Pages.
+
+**Live:** https://codelikesuraj.github.io/pop-up-story/
+
+## Stories
+
+| Story | Link |
+|---|---|
+| Icarus | https://codelikesuraj.github.io/pop-up-story/icarus/ |
+
+## Layout
+
+```
+/
+├── index.html          # the shelf listing every story
+└── icarus/
+    ├── index.html      # the storybook
+    └── og-image.png    # 1200×630 share preview
+```
+
+## Adding a story
+
+1. Create a folder named after the story, e.g. `story-b/`, containing `index.html` and a 1200×630 `og-image.png`.
+2. In the story's `index.html`, set the `canonical`, `og:url`, `og:image` and `twitter:image` addresses to `https://codelikesuraj.github.io/pop-up-story/story-b/`.
+3. Add a card for it on the shelf in the root `index.html`.

@@ -1,0 +1,793 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="An interactive pop-up storybook retelling the Greek myth of Daedalus and Icarus, from Athens and the Labyrinth to the fall into the sea, and what the story teaches.">
+<meta name="author" content="Abdulbaki Suraj">
+<meta name="theme-color" content="#b9c6cc" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e141c" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://codelikesuraj.github.io/pop-up-story/icarus/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='26' r='16' fill='%23e3a019'/%3E%3Cpath d='M32 40C22 30 8 30 2 36c8 0 14 4 30 12 16-8 22-12 30-12-6-6-20-6-30 4z' fill='%23efd9a3' stroke='%23b3a68c'/%3E%3Cpath d='M0 54q8-6 16 0t16 0 16 0 16 0v10H0z' fill='%231f5f8b'/%3E%3C/svg%3E">
+
+<!-- Open Graph (Facebook, LinkedIn, WhatsApp, Slack) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Wings of Icarus">
+<meta property="og:title" content="The Wings of Icarus · A Pop-up Storybook">
+<meta property="og:description" content="Turn the pages of an interactive pop-up book retelling the Greek myth of Icarus, and pull the tab to choose how high he flies.">
+<meta property="og:url" content="https://codelikesuraj.github.io/pop-up-story/icarus/">
+<meta property="og:image" content="https://codelikesuraj.github.io/pop-up-story/icarus/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A cut-paper Icarus with feathered wings flying beneath a golden sun above the waves">
+<meta property="og:locale" content="en_GB">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Wings of Icarus · A Pop-up Storybook">
+<meta name="twitter:description" content="An interactive pop-up book retelling the Greek myth of Icarus.">
+<meta name="twitter:image" content="https://codelikesuraj.github.io/pop-up-story/icarus/og-image.png">
+<meta name="twitter:image:alt" content="A cut-paper Icarus with feathered wings flying beneath a golden sun above the waves">
+<title>The Wings of Icarus · A Pop-up Storybook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0}
+[hidden]{display:none!important}
+
+/* Layout: an open pop-up book on a desk. Left leaf = story text, right leaf = cut-paper scene whose layers fold up from the gutter. */
+:root{
+  --desk:#b9c6cc; --desk-2:#a7b6bd;
+  --paper:#fbf9f4; --paper-edge:#e2ddd2; --shade:rgba(29,38,51,.16);
+  --ink:#1d2633; --ink-soft:#4b5666;
+  --sky:#cfe1ea; --sky-2:#f6eedd;
+  --sea:#1f5f8b; --sea-2:#5f97bb; --sea-3:#9cc4dc; --foam:#eef6fa;
+  --sun:#e3a019; --sun-2:#f5cf6b; --wax:#efd9a3; --wax-2:#d9bb76;
+  --stone:#d8cfbd; --stone-2:#b3a68c; --stone-3:#8f8169;
+  --thread:#b8392b; --leaf:#5f7a4f; --leaf-2:#86a06f;
+  --skin:#b9825a; --cloth:#f4f1ea; --cloth-2:#2f6a8f;
+  --display:"IM Fell English SC","Iowan Old Style",Georgia,serif;
+  --fell:"IM Fell English","Iowan Old Style",Georgia,serif;
+  --body:"Spectral",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --desk:#0e141c; --desk-2:#141c27;
+  --paper:#1f2834; --paper-edge:#2c3746; --shade:rgba(0,0,0,.45);
+  --ink:#ece6d8; --ink-soft:#b3ad9f;
+  --sky:#1b2c40; --sky-2:#3a3b45;
+  --sea:#2f75a8; --sea-2:#24537a; --sea-3:#1b3f5e; --foam:#9cc3dc;
+  --sun:#f0b53c; --sun-2:#8a6a24; --wax:#d8c08a; --wax-2:#a8904f;
+  --stone:#4f5868; --stone-2:#6b7383; --stone-3:#8a92a1;
+  --thread:#e2604c; --leaf:#6f8c5e; --leaf-2:#4f6a45;
+  --skin:#c28d63; --cloth:#d9d2c3; --cloth-2:#4b8ab3;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --desk:#0e141c; --desk-2:#141c27;
+  --paper:#1f2834; --paper-edge:#2c3746; --shade:rgba(0,0,0,.45);
+  --ink:#ece6d8; --ink-soft:#b3ad9f;
+  --sky:#1b2c40; --sky-2:#3a3b45;
+  --sea:#2f75a8; --sea-2:#24537a; --sea-3:#1b3f5e; --foam:#9cc3dc;
+  --sun:#f0b53c; --sun-2:#8a6a24; --wax:#d8c08a; --wax-2:#a8904f;
+  --stone:#4f5868; --stone-2:#6b7383; --stone-3:#8a92a1;
+  --thread:#e2604c; --leaf:#6f8c5e; --leaf-2:#4f6a45;
+  --skin:#c28d63; --cloth:#d9d2c3; --cloth-2:#4b8ab3;
+  color-scheme:dark}
+
+html,body{min-height:100%}
+body{background:radial-gradient(120% 90% at 50% 0%,var(--desk) 0%,var(--desk-2) 100%);background-color:var(--desk);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;padding-inline:16px;padding-block:28px 40px}
+.wrap{max-width:1060px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+
+.book{position:relative;border-radius:6px 6px 8px 8px;background:var(--paper-edge);padding:7px;box-shadow:0 30px 50px -24px var(--shade),0 2px 0 var(--paper-edge)}
+.page[hidden]{display:none!important}
+.spread{display:grid;grid-template-columns:1fr 1.2fr;background:var(--paper);border-radius:4px;min-height:540px;position:relative;overflow:hidden}
+.spread::after{content:"";position:absolute;top:0;bottom:0;left:calc(100%/2.2);width:46px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,var(--shade) 48%,var(--shade) 52%,transparent);pointer-events:none}
+.leaf{min-width:0;padding:44px 44px 36px;display:flex;flex-direction:column;gap:14px}
+.text{animation:turn .6s ease both}
+.chapter{font-family:var(--fell);font-style:italic;color:var(--ink-soft);letter-spacing:.04em;font-size:15px}
+h1,h2{font-family:var(--display);font-weight:400;line-height:1.05;text-wrap:balance;margin:0}
+h2{font-size:clamp(30px,4vw,42px)}
+h1{font-size:clamp(54px,9vw,96px);letter-spacing:.01em}
+.text p{margin:0;max-width:34em}
+.text p:first-of-type::first-letter{font-family:var(--display);float:left;font-size:3.3em;line-height:.82;padding:6px 8px 0 0;color:var(--sea)}
+.cover .text p:first-of-type::first-letter{all:unset}
+.folio{margin-top:auto;font-family:var(--fell);font-style:italic;color:var(--ink-soft);font-size:14px}
+
+.stage-leaf{padding:26px 22px 22px;display:flex;flex-direction:column;justify-content:flex-end}
+.stage{position:relative;aspect-ratio:400/280;width:100%;max-width:100%;perspective:1100px;perspective-origin:50% 0%}
+.stage::after{content:"";position:absolute;left:4%;right:4%;bottom:-6px;height:14px;background:radial-gradient(closest-side,var(--shade),transparent);pointer-events:none}
+.layer{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform-origin:50% var(--oy,100%);animation:pop 1s cubic-bezier(.2,1.35,.45,1) var(--d,0s) both;filter:drop-shadow(0 5px 3px var(--shade))}
+@keyframes pop{from{transform:rotateX(88deg)}to{transform:rotateX(0)}}
+@keyframes turn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+.caption{font-family:var(--fell);font-style:italic;text-align:center;color:var(--ink-soft);font-size:14px;margin-top:14px}
+
+/* svg paint */
+.cut{stroke:var(--paper);stroke-width:2.4;stroke-linejoin:round;paint-order:stroke}
+.ink{fill:var(--ink)} .soft{fill:var(--ink-soft)} .paperf{fill:var(--paper)}
+.sea{fill:var(--sea)} .sea2{fill:var(--sea-2)} .sea3{fill:var(--sea-3)} .foam{fill:var(--foam)}
+.sun{fill:var(--sun)} .sun2{fill:var(--sun-2)} .wax{fill:var(--wax)} .wax2{fill:var(--wax-2)}
+.stone{fill:var(--stone)} .stone2{fill:var(--stone-2)} .stone3{fill:var(--stone-3)} .red{fill:var(--thread)}
+.leaff{fill:var(--leaf)} .leaf2{fill:var(--leaf-2)} .skin{fill:var(--skin)} .cloth{fill:var(--cloth)} .cloth2{fill:var(--cloth-2)}
+.line{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.fine{fill:none;stroke:var(--wax-2);stroke-width:1;stroke-linecap:round}
+.crest{fill:none;stroke:var(--foam);stroke-width:2;stroke-linecap:round}
+.thread{fill:none;stroke:var(--thread);stroke-width:2.2;stroke-linecap:round}
+.dash{fill:none;stroke:var(--ink-soft);stroke-width:1.5;stroke-dasharray:6 6}
+.lbl{fill:var(--ink-soft);font-family:var(--fell);font-style:italic;font-size:13px;paint-order:stroke;stroke:var(--paper);stroke-width:3px}
+.lbl-c{fill:var(--ink);font-family:var(--display);font-size:22px}
+.panel{fill:url(#sky);stroke:var(--paper-edge);stroke-width:1.5}
+
+/* figures read their colours from these */
+.skinp{fill:var(--skin)} .hair{fill:#1d2633} .robe{fill:var(--cloth)} .drape{fill:var(--drape,var(--cloth-2))}
+.fig.boy{--drape:var(--sun)} .fig.king,.fig.hero{--drape:var(--thread)} .fig.woman{--drape:var(--leaf)}
+.robe,.drape,.skinp,.hair{stroke:#1d2633;stroke-width:.7;stroke-linejoin:round}
+.wingp{fill:var(--wax);stroke:var(--wax-2);stroke-width:.9;stroke-linejoin:round}
+.wingl{fill:none;stroke:var(--wax-2);stroke-width:.8}
+
+/* pull tab */
+.pull{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.pull label{font-family:var(--fell);font-style:italic;color:var(--ink-soft);font-size:14px}
+.pull output{font-family:var(--body);font-weight:500;color:var(--ink)}
+#altitude{width:100%;accent-color:var(--sun);height:28px}
+#icarus{transition:transform .25s ease}
+#icarus .loose{transition:transform 1.4s ease-in,opacity 1.4s ease-in}
+#icarus.melt .loose{transform:translate(var(--fx,0),140px) rotate(var(--fr,90deg));opacity:0}
+#icarus.melt .wingset{opacity:.4}
+#icarus.wet .wingset{transform:translateY(5px)}
+.drip{opacity:0;transition:opacity .4s}
+#icarus.melt .drip{opacity:1}
+
+.drift{animation:drift 4.5s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+.drift:nth-child(2n){animation-duration:5.6s}
+.drift:nth-child(3n){animation-duration:3.8s}
+@keyframes drift{from{transform:translateY(-6px) rotate(-8deg)}to{transform:translateY(10px) rotate(10deg)}}
+
+.lessons{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.lessons li{display:grid;grid-template-columns:2.2em 1fr;gap:10px;align-items:baseline}
+.lessons b{font-family:var(--display);font-weight:400;font-size:19px;color:var(--sea)}
+.lessons span{font-size:15.5px;line-height:1.5}
+.moral{font-family:var(--fell);font-style:italic;font-size:19px;border-top:1px solid var(--paper-edge);padding-top:12px}
+
+.controls{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--display);font-size:17px;color:var(--ink);background:var(--paper);border:1px solid var(--paper-edge);border-radius:999px;padding:8px 18px;cursor:pointer;box-shadow:0 3px 0 var(--paper-edge)}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:default;transform:none}
+.btn:focus-visible,.dots button:focus-visible,#altitude:focus-visible{outline:2px solid var(--sun);outline-offset:3px}
+.dots{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+.dots button{width:12px;height:12px;border-radius:50%;border:1px solid var(--ink-soft);background:transparent;padding:0;cursor:pointer}
+.dots button[aria-current="true"]{background:var(--sun);border-color:var(--sun)}
+.back{align-self:flex-start;font-family:var(--fell);font-style:italic;color:var(--ink);text-decoration:none;font-size:15px;border-bottom:1px solid var(--ink-soft)}
+.back:hover{border-bottom-color:var(--sun)}
+.back:focus-visible{outline:2px solid var(--sun);outline-offset:3px}
+.hint{text-align:center;font-family:var(--fell);font-style:italic;color:var(--ink-soft);font-size:14px}
+
+@media (max-width:760px){
+  .spread{grid-template-columns:1fr;min-height:0}
+  .spread::after{display:none}
+  .stage-leaf{order:-1;padding:18px 12px 6px;border-bottom:1px dashed var(--paper-edge)}
+  .leaf{padding:24px 20px 26px}
+  body{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .layer,.text,.drift{animation:none}
+  #icarus,#icarus .loose{transition:none}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--sky)"/><stop offset="1" style="stop-color:var(--sky-2)"/></linearGradient>
+  <radialGradient id="glow"><stop offset=".45" style="stop-color:var(--sun-2);stop-opacity:.9"/><stop offset="1" style="stop-color:var(--sun-2);stop-opacity:0"/></radialGradient>
+
+  <!-- standing man, feet at 0,0, facing right, ~58 tall -->
+  <g id="man">
+   <path class="skinp" d="M-6 0h4.5l.5-15h-4zM2 0h4.5l-1-15h-4z"/>
+   <path class="robe" d="M-9-14 L-7-39 Q0-43 7-39 L10-14 Q0-11-9-14z"/>
+   <path class="drape" d="M-7-39 Q3-33 10-17 L6-15 Q1-27-8-31z"/>
+   <rect class="skinp" x="-1.6" y="-44" width="3.4" height="6"/>
+   <path class="skinp" d="M5-37 Q13-30 15-21 l-3 .8 Q9-28 3-33z"/>
+   <circle class="skinp" cx="1" cy="-48" r="5.6"/>
+   <path class="hair" d="M-5-48 q1-8 9.5-6.2 q2 .6 2 2.5 q-5-.6-7 1.6 q-1.4 3.6-2.6 4.6z"/>
+   <path class="hair" d="M2-44.5 q4.5 .6 5.6-3 q.5 7-5 8z"/>
+  </g>
+  <!-- boy: shorter, beardless, short tunic -->
+  <g id="boy">
+   <path class="skinp" d="M-5 0h4l.4-13h-3.6zM1.5 0h4l-.8-13h-3.6z"/>
+   <path class="robe" d="M-8-12 L-6-32 Q0-35 6-32 L8-12 Q0-10-8-12z"/>
+   <path class="drape" d="M-6-32 Q0-27 8-19 L6-16 Q0-23-7-27z"/>
+   <rect class="skinp" x="-1.4" y="-36" width="3" height="5"/>
+   <path class="skinp" d="M4-30 Q11-26 13-18 l-3 .6 Q8-24 3-27z"/>
+   <circle class="skinp" cx="1" cy="-40" r="5.2"/>
+   <path class="hair" d="M-4.5-40 q0-7.5 8-6.6 q3 .5 3 3 q-3-1.6-5.6 0 q-2 1.5-1.4 3.8 q-2 .6-4 -.2z"/>
+  </g>
+  <!-- woman: long peplos -->
+  <g id="woman">
+   <path class="robe" d="M-10 0 L-7-38 Q0-42 7-38 L11 0z"/>
+   <path class="drape" d="M-7-38 Q4-30 11-6 L7-4 Q0-24-8-30z"/>
+   <rect class="skinp" x="-1.5" y="-43" width="3.2" height="6"/>
+   <path class="skinp" d="M5-36 Q12-31 14-23 l-3 .8 Q8-29 3-32z"/>
+   <circle class="skinp" cx="1" cy="-47" r="5.4"/>
+   <path class="hair" d="M-5-47 q0-8 8-7.4 q4 .4 3.6 3 q-4-1-6.4 1 v10 q-4 1-5.6-2z"/>
+  </g>
+  <!-- kneeling man for the grave -->
+  <g id="kneel">
+   <path class="skinp" d="M-2 0h14l-1-5h-10z"/>
+   <path class="robe" d="M-8-2 L-6-27 Q0-30 6-27 L7-12 L14-10 L13-2z"/>
+   <path class="drape" d="M-6-27 Q2-22 7-12 L3-10 Q-1-19-7-21z"/>
+   <rect class="skinp" x="-1.2" y="-31" width="3" height="5"/>
+   <path class="skinp" d="M4-25 Q10-18 12-12 l-3 1 Q6-17 2-21z"/>
+   <circle class="skinp" cx="3" cy="-34" r="5.3" />
+   <path class="hair" d="M-2-35 q1-7 8.6-5.4 q2 .6 2 2.2 q-5-.6-6.6 1.4 q-1.2 3.2-2.4 4z"/>
+   <path class="hair" d="M4-30.5 q4 .8 5-2.6 q.6 6.5-4.6 7.2z"/>
+  </g>
+  <!-- a wing; mirror with scale(-1 1) -->
+  <g id="wing">
+   <path class="wingp" d="M0-2 C-10-20-34-28-58-22 Q-55-16-50-16 Q-50-10-44-11 Q-43-5-37-7 Q-35-1-29-3 Q-26 2-20 0 Q-15 4-10 2 Q-5 4 0 2z"/>
+   <path class="wingl" d="M-6-6 Q-26-14-50-16 M-8-2 Q-26-6-44-11 M-10 0 Q-22-1-37-7 M-12 1 Q-20 1-29-3"/>
+  </g>
+  <!-- flying figure: arms out under the wings, feet trailing -->
+  <g id="flyer">
+   <use href="#wing" transform="translate(-3 -36)"/>
+   <use href="#wing" transform="translate(3 -36) scale(-1 1)"/>
+   <path class="skinp" d="M-4 0l1-14h3l-.5 14zM1 2l1-15h3l-1 15z"/>
+   <path class="robe" d="M-8-13 L-6-36 Q0-39 6-36 L8-13 Q0-10-8-13z"/>
+   <path class="drape" d="M-6-36 Q2-30 8-16 L5-14 Q0-25-7-29z"/>
+   <path class="skinp" d="M-5-35 L-30-38 L-30-35 L-5-31z M5-35 L30-38 L30-35 L5-31z"/>
+   <rect class="skinp" x="-1.5" y="-41" width="3" height="6"/>
+   <circle class="skinp" cx="0" cy="-45" r="5.2"/>
+   <path class="hair" d="M-5-46 q.5-7 6-7 q4.5 .2 4.6 4 q-3-2-5.6-1 q-3 1.2-5 4z"/>
+  </g>
+  <g id="feather">
+   <path class="wingp" d="M0 0C5-8 5.5-19 0-27-5.5-19-5-8 0 0z"/>
+   <path class="wingl" d="M0 2V-24M0-8l3-4M0-14l3-4M0-8l-3-4M0-14l-3-4"/>
+  </g>
+  <g id="partridge">
+   <ellipse class="stone2" cx="0" cy="-7" rx="12" ry="7.5"/>
+   <path class="sun" d="M-12-7q6-6 14-1q-6 5-14 1z"/>
+   <circle class="stone2" cx="10" cy="-13" r="4.6"/>
+   <path class="red" d="M8.5-15a2 2 0 0 0 3 2.6z"/>
+   <path class="sun" d="M14-13.5l5 1.2-5 1.6z"/>
+   <path class="line" d="M-2 0v3M2 0v3" stroke-width="1.2"/>
+  </g>
+  <g id="waves">
+   <path class="sea3" d="M0 0q25-13 50 0t50 0 50 0 50 0 50 0 50 0 50 0 50 0V80H0z"/>
+   <path class="sea2" d="M-20 16q25-13 50 0t50 0 50 0 50 0 50 0 50 0 50 0 50 0 50 0V80H-20z"/>
+   <path class="sea" d="M0 32q25-13 50 0t50 0 50 0 50 0 50 0 50 0 50 0 50 0V80H0z"/>
+   <path class="crest" d="M14 28q8-6 16-2M114 28q8-6 16-2M214 28q8-6 16-2M314 28q8-6 16-2M60 12q8-6 16-2M160 12q8-6 16-2M260 12q8-6 16-2M360 12q8-6 16-2"/>
+  </g>
+  <g id="sunrays">
+   <circle r="74" fill="url(#glow)"/>
+   <g class="sun"><path d="M0-70l7 22h-14zM0 70l7-22h-14zM-70 0l22 7v-14zM70 0l-22 7v-14zM-49-49l20 10-10 10zM49-49l-20 10 10 10zM-49 49l20-10-10-10zM49 49l-20-10 10-10z"/></g>
+   <circle class="sun" r="40"/>
+   <circle class="sun2" r="30" opacity=".55"/>
+  </g>
+ </defs>
+</svg>
+
+<div class="wrap">
+<a class="back" href="../">‹ All pop-up stories</a>
+<main class="book" aria-live="polite">
+
+<!-- 0 cover -->
+<section class="page cover" data-name="Cover">
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">A pop-up retelling of the Greek myth</div>
+   <h1>Icarus</h1>
+   <p>The boy who flew too close to the sun, and the father whose genius gave him wings.</p>
+   <p style="color:var(--ink-soft);font-size:15px">Turn the pages and watch each scene fold up from the gutter. On the flight page, pull the tab to choose how high Icarus flies.</p>
+   <div class="folio">Drawn from Ovid's <i>Metamorphoses</i>, Book VIII</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <use href="#sunrays" transform="translate(200 92) scale(1.1)"/>
+   </svg>
+   <svg class="layer" style="--d:.2s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut"><path class="stone2" d="M8 236q30-24 70-22t60 22zM262 236q40-30 80-26t50 26z"/></g>
+    <path class="line" d="M70 70q5-5 10 0q5-5 10 0M300 120q4-4 8 0q4-4 8 0M110 130q4-4 8 0q4-4 8 0" stroke-width="1.6"/>
+   </svg>
+   <svg class="layer" style="--d:.38s;--oy:94%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut"><use href="#flyer" class="fig boy" transform="translate(200 202) scale(1.35)"/></g>
+   </svg>
+   <svg class="layer" style="--d:.55s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#waves" transform="translate(0 222)"/>
+   </svg>
+  </div><div class="caption">The Icarian Sea</div></div>
+ </div>
+</section>
+
+<!-- 1 Athens -->
+<section class="page" data-name="Athens" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter One · Athens</div>
+   <h2>A Jealous Genius</h2>
+   <p>Daedalus was the greatest inventor in Athens. His statues seemed to breathe and his tools made work easy. Then his young nephew and apprentice, Perdix, began to outshine him. The boy studied a fish's spine and made the first saw, then joined two iron arms and made the first compass.</p>
+   <p>Envy ate at Daedalus. On the heights of the Acropolis he pushed the boy over the edge. Athena caught Perdix as he fell and turned him into a partridge, a bird that nests low and never flies high, as if it remembers falling. Daedalus was condemned and fled the city.</p>
+   <div class="folio">i</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <path class="stone" d="M8 200q60-40 130-34t110 6 144 18V276H8z" opacity=".6"/>
+   </svg>
+   <svg class="layer" style="--d:.2s;--oy:80%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="stone2" d="M40 226Q66 150 128 140H286Q336 150 360 226z"/>
+     <rect class="stone" x="132" y="128" width="148" height="12"/>
+     <g class="paperf"><rect x="142" y="92" width="9" height="36"/><rect x="161" y="92" width="9" height="36"/><rect x="180" y="92" width="9" height="36"/><rect x="199" y="92" width="9" height="36"/><rect x="218" y="92" width="9" height="36"/><rect x="237" y="92" width="9" height="36"/><rect x="256" y="92" width="9" height="36"/></g>
+     <rect class="stone" x="136" y="84" width="140" height="8"/>
+     <path class="stone" d="M132 84l74-24 74 24z"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.38s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="stone3" d="M150 280V200q60-12 112-4l6 84z"/>
+     <use href="#man" class="fig" transform="translate(222 200) scale(1.1)"/>
+     <use href="#boy" class="fig boy" transform="translate(292 184) rotate(62) scale(.95)"/>
+     <use href="#partridge" transform="translate(328 86) scale(1.3)"/>
+    </g>
+    <path class="dash" d="M298 168q16-40 28-72"/>
+    <text class="lbl" x="276" y="78">Perdix</text>
+   </svg>
+   <svg class="layer" style="--d:.55s" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="stone3" d="M44 280V196h8v84z"/>
+     <g class="leaff"><circle cx="30" cy="186" r="20"/><circle cx="60" cy="176" r="22"/><circle cx="84" cy="194" r="17"/></g>
+     <g class="leaf2"><circle cx="46" cy="164" r="14"/><circle cx="72" cy="198" r="12"/></g>
+     <path class="leaff" d="M340 280q10-36 52-46v46zM310 280q6-14 20-18 2 10-6 18z"/>
+    </g>
+   </svg>
+  </div><div class="caption">The Acropolis, where Perdix fell</div></div>
+ </div>
+</section>
+
+<!-- 2 Crete -->
+<section class="page" data-name="Crete" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Two · Crete</div>
+   <h2>The Monster and the Maze</h2>
+   <p>Daedalus found shelter with King Minos of Crete. Minos had broken a promise to Poseidon by keeping a white bull meant for sacrifice, so the god made the queen, Pasiphaë, fall in love with the bull. Daedalus built her a hollow wooden cow, and from that union came the Minotaur, half man and half bull.</p>
+   <p>To hide his shame, Minos had Daedalus build the Labyrinth, a maze so tangled that even its maker could barely find the way out. The Minotaur was shut inside and fed young Athenians sent as tribute. In these years Daedalus also had a son: Icarus.</p>
+   <div class="folio">ii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <path class="stone2" d="M8 170l70-60 50 30 60-70 80 70 50-30 74 60V276H8z" opacity=".55"/>
+   </svg>
+   <svg class="layer" style="--d:.2s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <rect class="stone" x="92" y="74" width="216" height="158" rx="3"/>
+     <path fill="none" stroke="var(--stone-3)" stroke-width="7" stroke-linejoin="round" d="M104 86h192v134H104V108h170v90H126v-68h126v46H148v-24h80"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.38s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <g transform="translate(200 226) scale(1.4)">
+      <path class="stone3" d="M-6 0h4.5l.5-15h-4zM2 0h4.5l-1-15h-4z"/>
+      <path class="ink" d="M-10-14 L-8-38 Q0-42 8-38 L10-14z"/>
+      <path class="stone3" d="M7-36 Q15-30 16-20 l-3 .6 Q11-28 4-32z M-7-36 Q-15-30-16-20 l3 .6 Q-11-28-4-32z"/>
+      <ellipse class="stone3" cx="0" cy="-47" rx="7" ry="8"/>
+      <ellipse class="stone2" cx="0" cy="-42" rx="4.5" ry="3.5"/>
+      <path class="paperf" d="M-6-52q-10-2-11-12q5 7 10 7zM6-52q10-2 11-12q-5 7-10 7z"/>
+      <circle class="red" cx="-3" cy="-49" r="1.2"/><circle class="red" cx="3" cy="-49" r="1.2"/>
+     </g>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.55s" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <rect class="ink" x="8" y="48" width="384" height="12"/>
+     <path class="sun" d="M8 48c10-14 20-14 30 0s20 14 30 0 20-14 30 0 20 14 30 0 20-14 30 0 20 14 30 0 20-14 30 0 20 14 30 0 20-14 30 0 20 14 30 0 20-14 30 0 20 14 30 0 20-14 34 0z"/>
+     <g>
+      <path class="ink" d="M18 60h32v8H18zM68 60h32v8H68zM300 60h32v8h-32zM350 60h32v8h-32z"/>
+      <ellipse class="ink" cx="34" cy="72" rx="16" ry="6"/><ellipse class="ink" cx="84" cy="72" rx="16" ry="6"/><ellipse class="ink" cx="316" cy="72" rx="16" ry="6"/><ellipse class="ink" cx="366" cy="72" rx="16" ry="6"/>
+      <path class="red" d="M24 76h20l-5 200h-10zM74 76h20l-5 200h-10zM306 76h20l-5 200h-10zM356 76h20l-5 200h-10z"/>
+     </g>
+    </g>
+   </svg>
+  </div><div class="caption">The Minotaur in the Labyrinth</div></div>
+ </div>
+</section>
+
+<!-- 3 Thread -->
+<section class="page" data-name="The Thread" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Three · The Thread</div>
+   <h2>A Secret Given Away</h2>
+   <p>Years later the Athenian hero Theseus arrived to kill the Minotaur. Minos's daughter Ariadne fell in love with him and begged Daedalus for a way out of the maze. He gave her a simple answer: a ball of thread.</p>
+   <p>Theseus tied one end at the entrance and unwound it as he went. He slew the monster, followed the thread back to daylight, and sailed away with Ariadne. Only the Labyrinth's builder could have known the trick, and Minos knew it.</p>
+   <div class="folio">iii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <rect class="sea3" x="8" y="150" width="384" height="126"/>
+    <g class="cut"><path class="ink" d="M290 140h76l-10 14h-56z"/><path class="line" d="M328 140V92"/><path class="paperf" d="M330 94q22 16 26 40h-26z"/><circle class="paperf" cx="298" cy="146" r="2.5"/></g>
+   </svg>
+   <svg class="layer" style="--d:.2s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <rect class="stone" x="30" y="96" width="210" height="140"/>
+     <g class="stone2"><rect x="30" y="96" width="70" height="20"/><rect x="100" y="116" width="70" height="20"/><rect x="170" y="96" width="70" height="20"/><rect x="30" y="156" width="40" height="20"/><rect x="200" y="176" width="40" height="20"/><rect x="30" y="216" width="50" height="20"/></g>
+     <path class="ink" d="M104 236v-62a31 31 0 0 1 62 0v62z"/>
+     <path class="stone3" d="M96 180a39 39 0 0 1 78 0h-8a31 31 0 0 0-62 0z"/>
+    </g>
+    <path class="thread" d="M135 236q-6-20 6-36t-10-30"/>
+   </svg>
+   <svg class="layer" style="--d:.38s" viewBox="0 0 400 280" aria-hidden="true">
+    <path class="thread" d="M135 252q60 10 130-14"/>
+    <g class="cut">
+     <use href="#man" class="fig hero" transform="translate(262 252) scale(1.25)"/>
+     <path class="stone3" d="M282 222l14-26 3 2-12 26z"/>
+     <use href="#woman" class="fig woman" transform="translate(318 254) scale(1.2)"/>
+     <circle class="red" cx="336" cy="227" r="6"/>
+    </g>
+    <path class="thread" d="M330 230q-30 18-64 8"/>
+    <text class="lbl" x="230" y="273">Theseus</text><text class="lbl" x="306" y="273">Ariadne</text>
+   </svg>
+  </div><div class="caption">One end tied at the door</div></div>
+ </div>
+</section>
+
+<!-- 4 Workshop -->
+<section class="page" data-name="The Wings" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Four · The Tower</div>
+   <h2>Feathers and Wax</h2>
+   <p>Furious, Minos locked Daedalus and Icarus away and set guards on every harbour. "He may rule the land and the sea," Daedalus thought, looking up, "but not the sky."</p>
+   <p>He gathered feathers and laid them out from smallest to largest, like the reeds of a shepherd's pipe. He tied them at the middle with thread, sealed them at the base with wax, and bent them into a gentle curve. Icarus played at his feet, chasing feathers on the breeze and pressing the soft wax with his thumb, not knowing he was handling his own death.</p>
+   <div class="folio">iv</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="stone" x="8" y="4" width="384" height="272" rx="6"/>
+    <g class="stone2" opacity=".7"><rect x="20" y="40" width="44" height="16"/><rect x="330" y="70" width="44" height="16"/><rect x="40" y="150" width="44" height="16"/><rect x="300" y="24" width="44" height="16"/><rect x="320" y="160" width="44" height="16"/></g>
+    <g class="cut">
+     <path fill="url(#sky)" d="M150 158V74a50 50 0 0 1 100 0v84z"/>
+     <path class="line" d="M178 92q6-5 12 0q6-5 12 0M206 118q5-4 10 0q5-4 10 0" stroke-width="1.5"/>
+     <rect class="stone3" x="142" y="156" width="116" height="8"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.2s;--oy:90%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <rect class="stone3" x="86" y="200" width="228" height="10"/>
+     <path class="stone3" d="M96 210h8v40h-8zM296 210h8v40h-8z"/>
+     <use href="#wing" transform="translate(198 196) scale(1.4)"/>
+     <use href="#wing" transform="translate(204 196) scale(-1.4 1.4)"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.38s" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <use href="#man" class="fig" transform="translate(78 262) scale(1.35)"/>
+     <use href="#boy" class="fig boy" transform="translate(320 262) scale(-1.1 1.1)"/>
+     <use href="#feather" transform="translate(296 222) rotate(-30) scale(.8)"/>
+     <use href="#feather" transform="translate(350 200) rotate(40) scale(.7)"/>
+     <rect class="cloth" x="196" y="236" width="12" height="26"/>
+     <path class="sun" d="M202 234c-7-8 0-17 0-23 0 6 7 15 0 23z"/>
+     <path class="wax" d="M196 240q-3 6 0 12h2q-2-6 0-12z"/>
+    </g>
+    <text class="lbl" x="56" y="276">Daedalus</text><text class="lbl" x="300" y="276">Icarus</text>
+   </svg>
+  </div><div class="caption">The workshop in the tower</div></div>
+ </div>
+</section>
+
+<!-- 5 Warning -->
+<section class="page" data-name="The Warning" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Five · The Warning</div>
+   <h2>The Middle Course</h2>
+   <p>When the wings were finished, Daedalus strapped them to his son's shoulders. His hands shook and there were tears on his face as he gave the one rule that mattered.</p>
+   <p>"Fly the middle way. Too low, and the spray from the sea will soak your feathers and drag you down. Too high, and the sun will melt the wax. Stay between the two, follow me, and don't set your own course by the stars." Then he kissed the boy, a kiss he would never give again.</p>
+   <div class="folio">v</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <use href="#sunrays" transform="translate(200 18) scale(.9)"/>
+    <text class="lbl" x="34" y="42">too high: the wax melts</text>
+   </svg>
+   <svg class="layer" style="--d:.2s;--oy:82%" viewBox="0 0 400 280" aria-hidden="true">
+    <path class="dash" d="M24 156H376"/>
+    <g class="cut">
+     <use href="#flyer" class="fig" transform="translate(140 150) scale(.9)"/>
+     <use href="#flyer" class="fig boy" transform="translate(262 152) scale(.72)"/>
+    </g>
+    <text class="lbl-c" x="200" y="184" text-anchor="middle">the middle way</text>
+   </svg>
+   <svg class="layer" style="--d:.38s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#waves" transform="translate(0 226)"/>
+    <g class="foam"><circle cx="90" cy="216" r="2.5"/><circle cx="98" cy="208" r="1.8"/><circle cx="300" cy="214" r="2.5"/><circle cx="292" cy="206" r="1.6"/></g>
+    <text class="lbl" x="200" y="214" text-anchor="middle">too low: the spray soaks</text>
+   </svg>
+  </div><div class="caption">Between the sun and the sea</div></div>
+ </div>
+</section>
+
+<!-- 6 Flight (interactive) -->
+<section class="page" data-name="The Flight" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Six · The Flight</div>
+   <h2>Higher and Higher</h2>
+   <p>They rose together over the sea. Daedalus kept turning back to watch his son, like a bird coaxing a fledgling from the nest. Below, a fisherman with his rod, a shepherd on his staff and a farmer at his plough looked up and took them for gods.</p>
+   <p>They passed Samos, Delos and Paros. But the freedom went to Icarus's head. He left his father's path and climbed toward the open sky, closer and closer to the sun.</p>
+   <div class="pull">
+    <label for="altitude">Pull the tab: how high does Icarus fly?</label>
+    <input type="range" id="altitude" min="0" max="100" value="45">
+    <output id="alt-out" for="altitude">Following his father on the middle course.</output>
+   </div>
+   <div class="folio">vi</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <use href="#sunrays" transform="translate(336 40) scale(.8)"/>
+    <g class="paperf" opacity=".85"><ellipse cx="80" cy="56" rx="38" ry="11"/><ellipse cx="106" cy="48" rx="24" ry="11"/><ellipse cx="200" cy="96" rx="30" ry="9"/></g>
+   </svg>
+   <svg class="layer" style="--d:.2s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="stone2" d="M8 210q30-30 70-28t50 28z"/>
+     <path class="leaff" d="M260 214q50-40 132-30v30z"/>
+     <g class="paperf"><ellipse cx="320" cy="200" rx="7" ry="5"/><ellipse cx="340" cy="196" rx="7" ry="5"/></g>
+     <use href="#man" class="fig" transform="translate(362 204) scale(.5)"/>
+     <path class="line" d="M370 182v22" stroke-width="1.4"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.38s;--oy:88%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut"><use href="#flyer" class="fig" transform="translate(110 150)"/></g>
+    <g id="icarus" transform="translate(250 133)">
+     <g class="cut">
+      <g class="wingset"><use href="#flyer" class="fig boy" transform="scale(.8)"/></g>
+     </g>
+     <g class="loose-set">
+      <use class="loose" href="#feather" transform="translate(-34 -26) scale(.55)" style="--fx:-24px;--fr:-140deg"/>
+      <use class="loose" href="#feather" transform="translate(34 -26) scale(.55)" style="--fx:30px;--fr:160deg"/>
+      <use class="loose" href="#feather" transform="translate(-22 -22) scale(.5)" style="--fx:-8px;--fr:100deg"/>
+      <use class="loose" href="#feather" transform="translate(22 -22) scale(.5)" style="--fx:12px;--fr:-110deg"/>
+     </g>
+     <g class="drip sun"><path d="M-28-24q-2.5 7 0 10 2.5-3 0-10zM28-24q-2.5 7 0 10 2.5-3 0-10zM-14-26q-2 6 0 9 2-3 0-9z"/></g>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.55s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#waves" transform="translate(0 226)"/>
+    <g class="cut">
+     <path class="ink" d="M36 232h54l-8 12H44z"/>
+     <use href="#man" class="fig" transform="translate(58 232) scale(.45)"/>
+     <path class="line" d="M64 216l30-18" stroke-width="1.3"/><path class="line" d="M94 198v34" stroke-width=".8"/>
+    </g>
+   </svg>
+  </div><div class="caption">Over the islands of the Aegean</div></div>
+ </div>
+</section>
+
+<!-- 7 Fall -->
+<section class="page" data-name="The Fall" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Seven · The Fall</div>
+   <h2>The Wax Gives Way</h2>
+   <p>So close to the sun, the wax softened and ran. The feathers slipped loose one by one and scattered on the wind. Icarus beat his bare arms, but they caught nothing but air.</p>
+   <p>He cried out his father's name as he fell, and the dark blue water closed over him. Daedalus, no longer a father, turned and called, "Icarus! Where are you?" Then he saw the feathers floating on the waves.</p>
+   <div class="folio">vii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <use href="#sunrays" transform="translate(276 44) scale(1.05)"/>
+    <g class="wax2"><path d="M258 82q-3 10 0 14 3-4 0-14zM288 84q-3 12 0 16 3-4 0-16z"/></g>
+   </svg>
+   <svg class="layer" style="--d:.2s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut"><use href="#flyer" class="fig" transform="translate(70 92) scale(.6)"/></g>
+    <g>
+     <g class="drift"><use href="#feather" transform="translate(150 60) rotate(40) scale(.7)"/></g>
+     <g class="drift"><use href="#feather" transform="translate(312 116) rotate(-60) scale(.7)"/></g>
+     <g class="drift"><use href="#feather" transform="translate(176 138) rotate(110) scale(.7)"/></g>
+     <g class="drift"><use href="#feather" transform="translate(262 168) rotate(-20) scale(.7)"/></g>
+     <g class="drift"><use href="#feather" transform="translate(128 120) rotate(70) scale(.7)"/></g>
+     <g class="drift"><use href="#feather" transform="translate(336 64) rotate(150) scale(.7)"/></g>
+    </g>
+    <g class="cut">
+     <g transform="translate(220 140) rotate(200) scale(1.15)">
+      <use href="#boy" class="fig boy"/>
+      <path class="skinp" style="fill:var(--skin)" d="M-4-30 L-18-46 L-15-48 L-2-34z"/>
+      <use href="#feather" transform="translate(-18 -46) rotate(-40) scale(.35)"/>
+     </g>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.38s" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut"><path class="foam" d="M196 238l6-30 8 20 10-34 8 32 10-22 6 34z"/></g>
+    <use href="#waves" transform="translate(0 226)"/>
+    <g class="drift"><use href="#feather" transform="translate(120 238) rotate(90) scale(.6)"/></g>
+    <g class="drift"><use href="#feather" transform="translate(300 244) rotate(80) scale(.6)"/></g>
+   </svg>
+  </div><div class="caption">Feathers on the water</div></div>
+ </div>
+</section>
+
+<!-- 8 Icaria -->
+<section class="page" data-name="Icaria" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Eight · Icaria</div>
+   <h2>A Grave by the Sea</h2>
+   <p>Daedalus cursed his own skill. He pulled his son's body from the water and buried it on a nearby island, which has carried the boy's name ever since: Icaria. The sea around it is still called the Icarian Sea.</p>
+   <p>As he laid Icarus in the earth, a partridge watched from a muddy ditch and clapped its wings with delight. It was Perdix, the nephew Daedalus had thrown from the Acropolis long ago, now witness to his uncle's grief.</p>
+   <div class="folio">viii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <circle class="sun" cx="84" cy="150" r="26" opacity=".85"/>
+    <rect class="sea3" x="8" y="156" width="384" height="120"/>
+    <path class="crest" d="M40 176q10-5 20 0M150 190q10-5 20 0M300 172q10-5 20 0"/>
+   </svg>
+   <svg class="layer" style="--d:.2s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="stone2" d="M40 236q50-90 170-92t160 92z"/>
+     <path class="leaff" d="M120 160q20-30 40-28-6 20-40 28zM250 152q24-20 46-12-14 16-46 12z"/>
+     <path class="stone3" d="M150 236q50-38 104 0z"/>
+     <path class="cloth" d="M192 210v-38a10 10 0 0 1 20 0v38z"/>
+     <use href="#wing" transform="translate(196 228) scale(.7)"/>
+     <use href="#wing" transform="translate(208 228) scale(-.7 .7)"/>
+     <use href="#kneel" class="fig" transform="translate(136 228) scale(1.25)"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.38s" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="stone3" d="M290 280q14-40 54-56l3 4q-36 18-48 52z"/>
+     <use href="#partridge" transform="translate(338 226) scale(1.3)"/>
+     <g class="leaff"><path d="M20 280q4-56 14-74 0 40-2 74zM40 280q4-44 18-62-4 32-8 62zM62 280q0-32-8-50 16 18 16 50z"/></g>
+    </g>
+    <text class="lbl" x="318" y="268">Perdix</text>
+   </svg>
+  </div><div class="caption">The island of Icaria</div></div>
+ </div>
+</section>
+
+<!-- 9 Sicily -->
+<section class="page" data-name="Sicily" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Nine · Sicily</div>
+   <h2>The Spiral Shell</h2>
+   <p>Daedalus flew on alone to Sicily, where King Cocalus took him in. Minos hunted him across the sea, carrying a spiral seashell and promising a reward to anyone who could pass a thread through it. Only Daedalus would be clever enough.</p>
+   <p>Cocalus handed the shell back threaded. Daedalus had tied the string to an ant and let it walk the spiral. Minos knew he had found his man, but Cocalus's daughters loved Daedalus for the toys he made them, and they killed Minos in his bath. Daedalus lived on and kept inventing. His son was gone forever.</p>
+   <div class="folio">ix</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <path class="stone2" d="M8 190l60-50 40 30 70-80 70 70 50-40 94 70V276H8z" opacity=".5"/>
+   </svg>
+   <svg class="layer" style="--d:.2s;--oy:82%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="stone" d="M40 68l160-40 160 40z"/>
+     <rect class="stone2" x="44" y="68" width="312" height="12"/>
+     <g class="paperf"><rect x="60" y="80" width="16" height="150"/><rect x="118" y="80" width="16" height="150"/><rect x="266" y="80" width="16" height="150"/><rect x="324" y="80" width="16" height="150"/></g>
+     <rect class="stone2" x="40" y="228" width="320" height="10"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.38s;--oy:90%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="wax" d="M200 214c-58 0-80-44-60-76 18-28 70-30 84-4 12 22-4 46-26 44-18-1-26-18-18-30 6-9 20-8 22 2z"/>
+     <path fill="none" stroke="var(--wax-2)" stroke-width="2" d="M200 214c-58 0-80-44-60-76 18-28 70-30 84-4 12 22-4 46-26 44-18-1-26-18-18-30 6-9 20-8 22 2"/>
+    </g>
+    <path class="thread" d="M203 155q60 10 92 96"/>
+    <g class="ink"><ellipse cx="201" cy="153" rx="3" ry="2"/><circle cx="206" cy="151" r="2.2"/><circle cx="196" cy="155" r="2"/><path class="line" stroke-width=".8" d="M198 151l-2-4M202 151l1-4M204 155l2 3"/></g>
+   </svg>
+   <svg class="layer" style="--d:.55s" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <use href="#man" class="fig king" transform="translate(72 262) scale(1.2)"/>
+     <path class="sun" d="M66 196l3-9 3 5 3-7 3 7 3-5 3 9z"/>
+     <use href="#man" class="fig" transform="translate(316 262) scale(-1.2 1.2)"/>
+     <use href="#woman" class="fig woman" transform="translate(352 264) scale(-.8 .8)"/>
+    </g>
+    <text class="lbl" x="52" y="276">Minos</text><text class="lbl" x="294" y="276">Cocalus</text>
+   </svg>
+  </div><div class="caption">An ant walks the spiral</div></div>
+ </div>
+</section>
+
+<!-- 10 Meaning -->
+<section class="page" data-name="The Meaning" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Afterword</div>
+   <h2>What the Myth Teaches</h2>
+   <ul class="lessons">
+    <li><b>I</b><span><strong>Hubris.</strong> A great gift used without limits destroys the one who holds it.</span></li>
+    <li><b>II</b><span><strong>The middle way.</strong> Too low is as dangerous as too high. The Greeks called this balance <i>sophrosyne</i>.</span></li>
+    <li><b>III</b><span><strong>Listening.</strong> Youthful confidence ignored hard-won experience, and learned too late.</span></li>
+    <li><b>IV</b><span><strong>Consequences.</strong> The man who made a boy fall watched his own son fall.</span></li>
+    <li><b>V</b><span><strong>Invention.</strong> The cow, the maze and the wings each carried a cost. Cleverness needs conscience.</span></li>
+    <li><b>VI</b><span><strong>Daring.</strong> Some see Icarus as brave, not foolish. The failure was in judgement, not in wanting to fly.</span></li>
+    <li><b>VII</b><span><strong>Indifference.</strong> In Bruegel's painting the ploughman keeps ploughing while Icarus drowns in a corner.</span></li>
+   </ul>
+   <p class="moral">Freedom must be matched by the wisdom to use it. Ambition without limits, and genius without conscience, both end in a fall.</p>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <use href="#sunrays" transform="translate(200 82)"/>
+   </svg>
+   <svg class="layer" style="--d:.2s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut"><use href="#feather" transform="translate(200 206) rotate(14) scale(4.2)"/></g>
+   </svg>
+   <svg class="layer" style="--d:.38s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#waves" transform="translate(0 236)"/>
+    <g class="cut"><path class="paperf" d="M40 206h320l-14 22 14 22H40l14-22z" stroke="var(--ink)" stroke-width="1.5"/></g>
+    <text class="lbl-c" x="200" y="236" text-anchor="middle">Fly the middle course</text>
+   </svg>
+  </div><div class="caption">The end</div></div>
+ </div>
+</section>
+
+</main>
+
+<nav class="controls" aria-label="Turn pages">
+ <button class="btn" id="prev" type="button">‹ Back</button>
+ <div class="dots" id="dots"></div>
+ <button class="btn" id="next" type="button">Turn the page ›</button>
+</nav>
+<div class="hint" id="where">Cover</div>
+</div>
+
+<script>
+(function(){
+  const pages=[...document.querySelectorAll('.page')];
+  const dots=document.getElementById('dots');
+  const prev=document.getElementById('prev'), next=document.getElementById('next'), where=document.getElementById('where');
+  let cur=0;
+  pages.forEach((p,i)=>{
+    const b=document.createElement('button');
+    b.type='button'; b.id='dot-'+i; b.setAttribute('aria-label','Go to '+p.dataset.name);
+    b.addEventListener('click',()=>show(i)); dots.appendChild(b);
+  });
+  function show(i){
+    cur=Math.max(0,Math.min(pages.length-1,i));
+    pages.forEach((p,j)=>p.hidden=j!==cur);
+    [...dots.children].forEach((d,j)=>d.setAttribute('aria-current',j===cur?'true':'false'));
+    prev.disabled=cur===0; next.disabled=cur===pages.length-1;
+    next.textContent=cur===0?'Open the book ›':'Turn the page ›';
+    where.textContent=pages[cur].dataset.name+' · page '+(cur+1)+' of '+pages.length;
+  }
+  prev.addEventListener('click',()=>show(cur-1));
+  next.addEventListener('click',()=>show(cur+1));
+  document.addEventListener('keydown',e=>{
+    if(e.target.id==='altitude')return;
+    if(e.key==='ArrowRight')show(cur+1);
+    if(e.key==='ArrowLeft')show(cur-1);
+  });
+  let sx=null;
+  const book=document.querySelector('.book');
+  book.addEventListener('touchstart',e=>{sx=e.target.id==='altitude'?null:e.touches[0].clientX},{passive:true});
+  book.addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>60)show(cur+(dx<0?1:-1));sx=null},{passive:true});
+
+  const alt=document.getElementById('altitude'), out=document.getElementById('alt-out'), ic=document.getElementById('icarus');
+  function fly(){
+    const v=+alt.value, y=212-v*1.75;
+    ic.setAttribute('transform','translate(250 '+y.toFixed(1)+')');
+    ic.classList.toggle('melt',v>78);
+    ic.classList.toggle('wet',v<15);
+    out.textContent = v<15 ? 'Too low. Sea spray is soaking the feathers.'
+      : v<60 ? 'Following his father on the middle course.'
+      : v<=78 ? 'Climbing toward the sun. The wax is softening.'
+      : 'Too high. The wax melts and the feathers fall.';
+  }
+  alt.addEventListener('input',fly); fly();
+  show(0);
+})();
+</script>
+
+</body>
+</html>
