@@ -81,6 +81,56 @@
     for (let k = 1; k <= right; k++) sh.push(`${k}px ${(k * 0.6).toFixed(1)}px 0 ${k % 2 ? '#e6dcc4' : '#cdbf9f'}`);
     book.style.setProperty('--stacks', sh.join(','));
   }
+  /* page details sit at the top, beside the link back to the shelf */
+  const wrap = document.querySelector('.wrap');
+  const backLink = wrap && wrap.querySelector('.back');
+  const where = document.getElementById('where');
+  if (wrap && backLink && where) {
+    const topbar = document.createElement('div');
+    topbar.className = 'topbar';
+    wrap.insertBefore(topbar, backLink);
+    topbar.append(backLink, where);
+  }
+
+  /* on phones each scene sits after the paragraph it illustrates.
+     A page names that paragraph with data-scene-after="2" (or "end"); the default is the first. */
+  pages.forEach(page => {
+    const text = page.querySelector('.leaf.text'), scene = page.querySelector('.stage-leaf');
+    if (!text || !scene) return;
+    const kids = [...text.children];
+    kids.forEach((k, i) => { k.style.order = String((i + 1) * 10); });
+    const want = page.dataset.sceneAfter || '1';
+    let at;
+    if (want === 'end') {
+      const folio = kids.find(k => k.classList.contains('folio'));
+      at = folio ? Number(folio.style.order) - 5 : (kids.length + 1) * 10;
+    } else {
+      const paras = kids.filter(k => k.tagName === 'P' || k.tagName === 'UL');
+      const p = paras[Math.min(paras.length, Number(want)) - 1];
+      at = p ? Number(p.style.order) + 5 : 15;
+    }
+    scene.style.setProperty('--scene-order', String(at));
+  });
+
+  /* a page's pull tab moves into the navigation area while that page is open */
+  const controls = document.querySelector('.controls');
+  const slot = document.createElement('div');
+  slot.className = 'pull-slot'; slot.hidden = true;
+  controls && controls.prepend(slot);
+  const pulls = pages.map(p => {
+    const el = p.querySelector('.pull');
+    return el ? { el, parent: el.parentNode, after: el.nextSibling } : null;
+  });
+  function placePull() {
+    pulls.forEach((rec, j) => {
+      if (!rec) return;
+      if (j === cur) slot.appendChild(rec.el);
+      else if (rec.el.parentNode === slot) rec.parent.insertBefore(rec.el, rec.after);
+    });
+    slot.hidden = !pulls[cur];
+    document.body.classList.toggle('has-pull', !!pulls[cur]);
+  }
+
   /* short labels on small screens, where the controls sit in a bar fixed to the bottom */
   const small = matchMedia('(max-width:1024px)');
   const openTag = closed && closed.querySelector('.open-tag');
@@ -99,6 +149,7 @@
     cPrev.disabled = cur === 0 && !closed; cNext.disabled = cur === total - 1;
     if (closed && cur === 0) prev.disabled = false;
     labels();
+    placePull();
   }
   document.addEventListener('pagechange', e => update(e.detail.cur, e.detail.total));
   small.addEventListener('change', labels);

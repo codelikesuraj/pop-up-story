@@ -22,6 +22,9 @@ h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.005em}
 .back{color:var(--wood-ink);border-bottom-color:rgba(232,220,194,.4);font-family:var(--body)}
 .back:hover{color:var(--foil);border-bottom-color:var(--foil)}
 .hint{color:var(--wood-soft);font-family:var(--body)}
+.topbar{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px}
+.topbar .hint{margin:0;text-align:right;font-style:italic;font-size:15px}
+.topbar .back{align-self:auto}
 
 /* ---------- the open book ---------- */
 .book{
@@ -61,8 +64,9 @@ h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.005em}
 .corner:focus-visible{outline:2px solid var(--foil);outline-offset:2px}
 .corner[disabled]{display:none}
 
-/* paper depth: shadows are set per layer by book.js */
-.layer{filter:var(--depth,drop-shadow(0 5px 3px var(--shade)))}
+/* paper depth: shadows are set per layer by book.js.
+   fill-mode backwards: after popping up, a layer keeps no 3D transform, so phones redraw it sharply */
+.layer{filter:var(--depth,drop-shadow(0 5px 3px var(--shade)));animation-fill-mode:backwards}
 
 /* pull tab: a gold paper tab sliding in a slot */
 .pull{gap:10px}
@@ -78,6 +82,15 @@ h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.005em}
   background:repeating-linear-gradient(90deg,transparent 0 40px,rgba(0,0,0,.18) 40px 41px,transparent 41px 45px),linear-gradient(var(--foil),#d0a541);
   box-shadow:0 6px 10px rgba(0,0,0,.35),inset 0 -3px 0 rgba(0,0,0,.18)}
 .pull input[type=range]:focus-visible{outline:2px solid var(--cloth);outline-offset:4px}
+
+/* the pull tab, moved into the navigation area */
+.pull-slot{flex:1 0 100%;order:-1;display:flex;justify-content:center}
+.pull-slot .pull{width:100%;max-width:640px;margin:0;display:flex;flex-direction:column;gap:4px}
+.pull-slot .pull label{color:var(--wood-soft);font-size:15px}
+.pull-slot .pull output{color:var(--wood-ink);font-size:16px;min-height:1.5em}
+.pull-slot .pull input[type=range]::-webkit-slider-runnable-track{background:rgba(232,220,194,.22)}
+.pull-slot .pull input[type=range]::-moz-range-track{background:rgba(232,220,194,.22)}
+.pull-slot .pull input[type=range]:focus-visible{outline-color:var(--foil)}
 
 /* controls on the desk */
 .btn{font-family:var(--display);background:var(--paper);color:var(--ink);border:0;border-radius:3px;box-shadow:0 3px 0 #b9a983,0 8px 16px rgba(0,0,0,.3)}
@@ -119,10 +132,12 @@ body.is-opening .cover-board{transition:transform .8s cubic-bezier(.45,.05,.3,1)
   /* tablets and phones: page pills, Back and Next live in a bar fixed to the bottom of the screen */
   body{padding-bottom:calc(132px + env(safe-area-inset-bottom,0px))}
   .controls{position:fixed;left:0;right:0;bottom:0;z-index:20;margin:0;
-    display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"dots dots" "prev next";gap:6px 12px;
+    display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"pull pull" "dots dots" "prev next";gap:6px 12px;
     padding:8px max(16px,calc((100% - 640px)/2)) calc(12px + env(safe-area-inset-bottom,0px));
     background:rgba(38,25,16,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
     box-shadow:0 -10px 24px rgba(0,0,0,.35);border-top:1px solid rgba(232,220,194,.12)}
+  .pull-slot{grid-area:pull}
+  body.has-pull{padding-bottom:calc(220px + env(safe-area-inset-bottom,0px))}
   .controls #prev{grid-area:prev}
   .controls #next{grid-area:next}
   .controls .btn{width:100%;min-height:48px;font-size:17px}
@@ -131,7 +146,6 @@ body.is-opening .cover-board{transition:transform .8s cubic-bezier(.45,.05,.3,1)
   .dots button{height:28px;background:linear-gradient(#7a6448,#7a6448) center/100% 6px no-repeat}
   .dots button.read{background:linear-gradient(#a99372,#a99372) center/100% 6px no-repeat}
   .dots button[aria-current="true"]{background:linear-gradient(var(--foil),var(--foil)) center/100% 6px no-repeat}
-  .hint{padding-bottom:4px}
   /* on the cover, a single fixed Open button */
   body.is-closed{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
   .closed .meta{margin-top:44px}
@@ -140,6 +154,11 @@ body.is-opening .cover-board{transition:transform .8s cubic-bezier(.45,.05,.3,1)
     background:rgba(38,25,16,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 -10px 24px rgba(0,0,0,.35);border-top:1px solid rgba(232,220,194,.12)}
 }
 @media (max-width:760px){
+  /* phones: one column, with the scene placed after the paragraph it illustrates */
+  .spread{grid-template-columns:1fr;row-gap:14px;padding-block:26px 30px;align-content:start}
+  .spread > .leaf.text{display:contents}
+  .spread > .leaf.text > *{margin-inline:20px}
+  .spread > .stage-leaf{order:var(--scene-order,15);border-bottom:0;padding:6px 8px}
   .book{padding:8px 8px 10px}
   .ribbon{display:none}
   .corner{width:40px;height:40px;bottom:10px}
