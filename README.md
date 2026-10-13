@@ -9,15 +9,19 @@ Interactive pop-up storybooks, built as plain HTML and hosted on GitHub Pages.
 | Story | Link |
 |---|---|
 | Icarus | https://codelikesuraj.github.io/pop-up-story/icarus/ |
+| Blue Across the Water | https://codelikesuraj.github.io/pop-up-story/blue-across-the-water/ |
 
 ## Layout
 
 ```
 /
 ├── index.html          # the shelf listing every story
-└── icarus/
-    ├── index.html      # the storybook
-    └── og-image.png    # 1200×630 share preview
+├── icarus/
+│   ├── index.html      # the storybook
+│   └── og-image.png    # 1200×630 share preview
+└── blue-across-the-water/
+    ├── index.html
+    └── og-image.png
 ```
 
 ## Adding a story

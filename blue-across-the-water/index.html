@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Blue Across the Water · A Pop-up Storybook</title>
+<meta name="description" content="An original pop-up love story: an indigo dyer and a kite-maker who talk across a lagoon in patterns of cloth and kites, until the harmattan haze falls between them.">
+<meta name="author" content="Abdulbaki Suraj">
+<meta name="theme-color" content="#d9c7a4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1424" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://codelikesuraj.github.io/pop-up-story/blue-across-the-water/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 4 50 24 32 44 14 24z' fill='%2323356b'/%3E%3Cpath d='M32 44q-4 6 2 10t-2 8' fill='none' stroke='%23b8693f' stroke-width='3'/%3E%3C/svg%3E">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pop-up Stories">
+<meta property="og:title" content="Blue Across the Water · A Pop-up Storybook">
+<meta property="og:description" content="An indigo dyer and a kite-maker fall in love across a lagoon, talking only in patterns. An original interactive pop-up story.">
+<meta property="og:url" content="https://codelikesuraj.github.io/pop-up-story/blue-across-the-water/">
+<meta property="og:image" content="https://codelikesuraj.github.io/pop-up-story/blue-across-the-water/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A patterned indigo kite flying over a lagoon between two rooftops hung with blue cloth">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Blue Across the Water · A Pop-up Storybook">
+<meta name="twitter:description" content="An original interactive pop-up love story told in cloth and kites.">
+<meta name="twitter:image" content="https://codelikesuraj.github.io/pop-up-story/blue-across-the-water/og-image.png">
+<meta name="twitter:image:alt" content="A patterned indigo kite flying over a lagoon between two rooftops hung with blue cloth">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+/* Layout: the series' open pop-up book. Left leaf = story, right leaf = cut-paper lagoon scene folding up from the gutter. */
+:root{
+  --desk:#d9c7a4; --desk-2:#c6b08a;
+  --paper:#fbf8f1; --paper-edge:#e6dccb; --shade:rgba(35,30,40,.18);
+  --ink:#1f2236; --ink-soft:#56586a;
+  --sky:#f3d9ae; --sky-2:#f9efdc;
+  --indigo:#23356b; --indigo-2:#4a63a8; --indigo-3:#a9b8e0;
+  --lagoon:#2c7470; --lagoon-2:#5fa39b; --lagoon-3:#a6d1c8; --foam:#eef7f4;
+  --dust:#e6c99a; --clay:#b8693f; --clay-2:#d99a6c; --palm:#4f7a3e; --palm-2:#78a35c;
+  --wall:#ecdcc0; --wall-2:#cdb48d; --skin:#7a4a2e; --cloth:#f4efe4; --sun:#e2a033;
+  --display:"Young Serif","Iowan Old Style",Georgia,serif;
+  --body:"Spectral",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --desk:#0f1424; --desk-2:#161c30; --paper:#1d2236; --paper-edge:#2b3149; --shade:rgba(0,0,0,.45);
+  --ink:#ece6da; --ink-soft:#b2adbd; --sky:#2a2a44; --sky-2:#3d3546;
+  --indigo:#5b74c2; --indigo-2:#334a8a; --indigo-3:#1f2c55;
+  --lagoon:#3d918b; --lagoon-2:#25615d; --lagoon-3:#1a4642; --foam:#a9d6cd;
+  --dust:#7d6a4b; --clay:#c9784b; --clay-2:#8e5434; --palm:#6a9452; --palm-2:#47693a;
+  --wall:#4a4458; --wall-2:#6a6278; --skin:#9a6443; --cloth:#d8d1c3; --sun:#eeb04a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --desk:#0f1424; --desk-2:#161c30; --paper:#1d2236; --paper-edge:#2b3149; --shade:rgba(0,0,0,.45);
+  --ink:#ece6da; --ink-soft:#b2adbd; --sky:#2a2a44; --sky-2:#3d3546;
+  --indigo:#5b74c2; --indigo-2:#334a8a; --indigo-3:#1f2c55;
+  --lagoon:#3d918b; --lagoon-2:#25615d; --lagoon-3:#1a4642; --foam:#a9d6cd;
+  --dust:#7d6a4b; --clay:#c9784b; --clay-2:#8e5434; --palm:#6a9452; --palm-2:#47693a;
+  --wall:#4a4458; --wall-2:#6a6278; --skin:#9a6443; --cloth:#d8d1c3; --sun:#eeb04a; color-scheme:dark}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:radial-gradient(120% 90% at 50% 0%,var(--desk),var(--desk-2));background-color:var(--desk);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;padding-inline:16px;padding-block:28px 40px}
+[hidden]{display:none!important}
+.wrap{max-width:1060px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.back{align-self:flex-start;font-style:italic;color:var(--ink);text-decoration:none;font-size:15px;border-bottom:1px solid var(--ink-soft)}
+.back:hover{border-bottom-color:var(--clay)}
+
+.book{position:relative;border-radius:6px 6px 8px 8px;background:var(--paper-edge);padding:7px;box-shadow:0 30px 50px -24px var(--shade),0 2px 0 var(--paper-edge)}
+.spread{display:grid;grid-template-columns:1fr 1.2fr;background:var(--paper);border-radius:4px;min-height:540px;position:relative;overflow:hidden}
+.spread::after{content:"";position:absolute;top:0;bottom:0;left:calc(100%/2.2);width:46px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,var(--shade) 48%,var(--shade) 52%,transparent);pointer-events:none}
+.leaf{min-width:0;padding:44px 44px 36px;display:flex;flex-direction:column;gap:14px}
+.text{animation:turn .6s ease both}
+.chapter{font-style:italic;color:var(--ink-soft);letter-spacing:.04em;font-size:15px}
+h1,h2{font-family:var(--display);font-weight:400;line-height:1.08;text-wrap:balance;margin:0}
+h2{font-size:clamp(28px,3.6vw,38px)}
+h1{font-size:clamp(46px,7.5vw,78px)}
+.text p{margin:0;max-width:34em}
+.text p:first-of-type::first-letter{font-family:var(--display);float:left;font-size:3.1em;line-height:.85;padding:6px 8px 0 0;color:var(--indigo)}
+.cover .text p::first-letter{all:unset}
+.folio{margin-top:auto;font-style:italic;color:var(--ink-soft);font-size:14px}
+
+.stage-leaf{padding:26px 22px 22px;display:flex;flex-direction:column;justify-content:flex-end}
+.stage{position:relative;aspect-ratio:400/280;width:100%;max-width:100%;perspective:1100px;perspective-origin:50% 0%}
+.stage::after{content:"";position:absolute;left:4%;right:4%;bottom:-6px;height:14px;background:radial-gradient(closest-side,var(--shade),transparent);pointer-events:none}
+.layer{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform-origin:50% var(--oy,100%);animation:pop 1s cubic-bezier(.2,1.35,.45,1) var(--d,0s) both;filter:drop-shadow(0 5px 3px var(--shade))}
+.layer.flat{filter:none}
+@keyframes pop{from{transform:rotateX(88deg)}to{transform:rotateX(0)}}
+@keyframes turn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+.caption{font-style:italic;text-align:center;color:var(--ink-soft);font-size:14px;margin-top:14px}
+
+/* svg paint */
+.cut{stroke:var(--paper);stroke-width:2.4;stroke-linejoin:round;paint-order:stroke}
+.panel{fill:url(#sky);stroke:var(--paper-edge);stroke-width:1.5}
+.ind{fill:var(--indigo)} .ind2{fill:var(--indigo-2)} .ind3{fill:var(--indigo-3)}
+.lag{fill:var(--lagoon)} .lag2{fill:var(--lagoon-2)} .lag3{fill:var(--lagoon-3)} .foam{fill:var(--foam)}
+.dust{fill:var(--dust)} .clay{fill:var(--clay)} .clay2{fill:var(--clay-2)} .palm{fill:var(--palm)} .palm2{fill:var(--palm-2)}
+.wallf{fill:var(--wall)} .wall2{fill:var(--wall-2)} .paperf{fill:var(--paper)} .inkf{fill:var(--ink)} .sunf{fill:var(--sun)}
+.line{fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.string{fill:none;stroke:var(--ink-soft);stroke-width:1;stroke-dasharray:3 3}
+.tail{fill:none;stroke:var(--clay);stroke-width:1.6;stroke-linecap:round}
+.crest{fill:none;stroke:var(--foam);stroke-width:1.8;stroke-linecap:round}
+.lbl{fill:var(--ink-soft);font-family:var(--body);font-style:italic;font-size:13px;paint-order:stroke;stroke:var(--paper);stroke-width:3px}
+.p1{fill:url(#adire-dots)} .p2{fill:url(#adire-lines)} .p3{fill:url(#adire-rings)} .p4{fill:url(#adire-zig)}
+.skinp{fill:var(--skin)} .hair{fill:#1f2236} .robe{fill:var(--cloth)} .drape{fill:var(--drape,var(--indigo))}
+.bluehand{fill:var(--indigo)}
+.robe,.drape,.skinp,.hair,.bluehand{stroke:#1f2236;stroke-width:.7;stroke-linejoin:round}
+.fig.him{--drape:var(--clay)}
+.haze{fill:var(--dust)}
+
+/* pull tab */
+.pull{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.pull label{font-style:italic;color:var(--ink-soft);font-size:14px}
+.pull output{font-weight:500;color:var(--ink)}
+#row{width:100%;accent-color:var(--indigo);height:28px}
+#canoeA,#canoeB{transition:transform .25s ease}
+#haze8{transition:opacity .3s ease}
+#meetKite{transition:opacity .5s ease,transform .6s ease}
+
+.bob{animation:bob 3.4s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+.sway{animation:sway 4s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes bob{from{transform:translateY(-4px) rotate(-3deg)}to{transform:translateY(4px) rotate(3deg)}}
+@keyframes sway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
+
+.lessons{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.lessons li{display:grid;grid-template-columns:1.6em 1fr;gap:10px;align-items:baseline}
+.lessons b{font-family:var(--display);font-weight:400;color:var(--indigo)}
+.lessons span{font-size:15.5px;line-height:1.5}
+.moral{font-style:italic;font-size:18px;border-top:1px solid var(--paper-edge);padding-top:12px}
+
+.controls{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--display);font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--paper-edge);border-radius:999px;padding:8px 18px;cursor:pointer;box-shadow:0 3px 0 var(--paper-edge)}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:default;transform:none}
+.btn:focus-visible,.dots button:focus-visible,#row:focus-visible,.back:focus-visible{outline:2px solid var(--clay);outline-offset:3px}
+.dots{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+.dots button{width:12px;height:12px;border-radius:2px;transform:rotate(45deg);border:1px solid var(--ink-soft);background:transparent;padding:0;cursor:pointer}
+.dots button[aria-current="true"]{background:var(--indigo);border-color:var(--indigo)}
+.hint{text-align:center;font-style:italic;color:var(--ink-soft);font-size:14px}
+
+@media (max-width:760px){
+  .spread{grid-template-columns:1fr;min-height:0}
+  .spread::after{display:none}
+  .stage-leaf{order:-1;padding:18px 12px 6px;border-bottom:1px dashed var(--paper-edge)}
+  .leaf{padding:24px 20px 26px}
+  body{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .layer,.text,.bob,.sway{animation:none}
+  #canoeA,#canoeB,#haze8,#meetKite{transition:none}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--sky)"/><stop offset="1" style="stop-color:var(--sky-2)"/></linearGradient>
+  <!-- adire-style resist patterns -->
+  <pattern id="adire-dots" width="10" height="10" patternUnits="userSpaceOnUse"><rect class="ind" width="10" height="10"/><circle class="ind3" cx="5" cy="5" r="1.8"/></pattern>
+  <pattern id="adire-lines" width="12" height="12" patternUnits="userSpaceOnUse"><rect class="ind" width="12" height="12"/><path d="M0 3h12M0 9h12" stroke="var(--indigo-3)" stroke-width="1.6"/><path d="M6 0v12" stroke="var(--indigo-2)" stroke-width="1"/></pattern>
+  <pattern id="adire-rings" width="16" height="16" patternUnits="userSpaceOnUse"><rect class="ind" width="16" height="16"/><circle cx="8" cy="8" r="5.5" fill="none" stroke="var(--indigo-3)" stroke-width="1.4"/><circle class="ind3" cx="8" cy="8" r="1.6"/></pattern>
+  <pattern id="adire-zig" width="14" height="10" patternUnits="userSpaceOnUse"><rect class="ind2" width="14" height="10"/><path d="M0 7l3.5-4 3.5 4 3.5-4 3.5 4" fill="none" stroke="var(--indigo-3)" stroke-width="1.5"/></pattern>
+
+  <!-- woman, feet at 0,0, ~56 tall; her hands are dyed blue -->
+  <g id="dyer">
+   <path class="robe" d="M-10 0 L-7-36 Q0-40 7-36 L11 0z"/>
+   <path class="drape" d="M-10 0 L-8-16 L10-16 L11 0z"/>
+   <path class="drape" d="M-7-36 Q0-30 7-36 L8-30 Q0-25-8-30z"/>
+   <rect class="skinp" x="-1.6" y="-41" width="3.2" height="6"/>
+   <path class="skinp" d="M5-34 Q12-28 13-21 l-3 .6 Q8-26 3-30z"/>
+   <circle class="bluehand" cx="11.6" cy="-19.6" r="2.4"/>
+   <circle class="skinp" cx="1" cy="-45" r="5.4"/>
+   <path class="drape" d="M-6-47 q2-10 13-6 q3 2 1 5 q-6-3-14 1z"/>
+   <path class="drape" d="M7-52 q6-3 4 4z"/>
+  </g>
+  <g id="maker">
+   <path class="skinp" d="M-6 0h4.5l.5-15h-4zM2 0h4.5l-1-15h-4z"/>
+   <path class="robe" d="M-10-14 L-8-38 Q0-42 8-38 L10-14 Q0-11-10-14z"/>
+   <path class="drape" d="M-8-38 Q2-32 10-17 L6-15 Q1-27-9-31z"/>
+   <rect class="skinp" x="-1.6" y="-43" width="3.4" height="6"/>
+   <path class="skinp" d="M6-36 Q14-32 17-24 l-3 .8 Q11-29 4-32z"/>
+   <circle class="skinp" cx="1" cy="-47" r="5.6"/>
+   <path class="hair" d="M-4.6-49 q1-6 6-6 q4.4 0 5.4 4 q-3-2-6-1.6 q-3 .6-5.4 3.6z"/>
+   <rect class="drape" x="-5.6" y="-56" width="12" height="5" rx="1.5"/>
+  </g>
+  <!-- canoe, centre at 0,0 -->
+  <g id="canoe">
+   <path class="clay" d="M-34-6 Q0 6 34-6 L30 2 Q0 10-30 2z"/>
+   <path class="clay2" d="M-30-4 Q0 4 30-4"/>
+   <path class="line" d="M6-30 L22 6" stroke-width="1.6"/>
+   <path class="inkf" d="M20 2l5 10 3-2z"/>
+  </g>
+  <!-- kite, centre at 0,0 -->
+  <g id="kite-shape"><path d="M0-22 L16 0 L0 26 L-16 0z"/></g>
+  <g id="house">
+   <rect class="wallf" x="-34" y="-46" width="68" height="46"/>
+   <rect class="wall2" x="-38" y="-50" width="76" height="6"/>
+   <path class="inkf" d="M-8 0v-20a8 8 0 0 1 16 0v20z"/>
+   <rect class="wall2" x="-26" y="-34" width="10" height="10"/><rect class="wall2" x="16" y="-34" width="10" height="10"/>
+  </g>
+  <g id="palm">
+   <path class="clay2" d="M-2 0 Q2-30-4-62 l4 0 Q8-30 3 0z"/>
+   <path class="palm" d="M-2-62 Q-20-72-36-62 Q-20-66-2-60z M-2-62 Q16-76 34-66 Q16-68-2-60z M-2-62 Q-14-84-28-84 Q-14-78-2-60z M-2-62 Q10-86 24-88 Q10-78-2-60z M-2-62 Q-28-58-34-44 Q-22-58-2-60z M-2-62 Q24-60 30-46 Q18-58-2-60z"/>
+  </g>
+  <g id="pot"><path class="clay" d="M-16 0 Q-22-14-14-24 h28 Q22-14 16 0z"/><ellipse class="ind" cx="0" cy="-24" rx="14" ry="4"/><rect class="clay2" x="-15" y="-27" width="30" height="4" rx="2"/></g>
+  <g id="water">
+   <path class="lag3" d="M0 0q25-10 50 0t50 0 50 0 50 0 50 0 50 0 50 0 50 0V80H0z"/>
+   <path class="lag2" d="M-20 14q25-10 50 0t50 0 50 0 50 0 50 0 50 0 50 0 50 0 50 0V80H-20z"/>
+   <path class="lag" d="M0 28q25-10 50 0t50 0 50 0 50 0 50 0 50 0 50 0 50 0V80H0z"/>
+   <path class="crest" d="M20 24q8-5 16-1M120 24q8-5 16-1M220 24q8-5 16-1M320 24q8-5 16-1M70 10q8-5 16-1M170 10q8-5 16-1M270 10q8-5 16-1"/>
+  </g>
+ </defs>
+</svg>
+
+<div class="wrap">
+<a class="back" href="../">‹ All pop-up stories</a>
+<main class="book" aria-live="polite">
+
+<!-- 0 cover -->
+<section class="page cover" data-name="Cover">
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">An original pop-up love story</div>
+   <h1>Blue Across the Water</h1>
+   <p>An indigo dyer and a kite-maker who lived on opposite shores of a lagoon, and the conversation they held for a whole season without ever saying a word.</p>
+   <p style="color:var(--ink-soft);font-size:15px">Turn the pages to watch each scene fold up. Near the end, pull the tab to row the boats through the haze.</p>
+   <div class="folio">Written for the Pop-up Stories shelf</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <circle class="sunf" cx="300" cy="62" r="26" opacity=".85"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <use href="#palm" transform="translate(30 206) scale(.8)"/>
+     <use href="#house" transform="translate(80 206)"/>
+     <path class="line" d="M48 154h64" stroke-width="1"/>
+     <rect class="p2" x="52" y="154" width="18" height="30"/><rect class="p1" x="74" y="154" width="16" height="26"/><rect class="p3" x="94" y="154" width="16" height="30"/>
+     <use href="#house" transform="translate(326 206) scale(-1 1)"/>
+     <use href="#palm" transform="translate(372 206) scale(-.8 .8)"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.36s;--oy:90%" viewBox="0 0 400 280" aria-hidden="true">
+    <path class="string" d="M330 150Q260 120 210 110"/>
+    <g class="bob"><g class="cut"><use href="#kite-shape" class="p3" transform="translate(206 92) scale(1.4)"/></g><path class="tail" d="M206 128q-8 8 0 14t0 14 0 14"/></g>
+   </svg>
+   <svg class="layer" style="--d:.52s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#water" transform="translate(0 214)"/>
+   </svg>
+  </div><div class="caption">The lagoon at the end of the dry season</div></div>
+ </div>
+</section>
+
+<!-- 1 Dyer -->
+<section class="page" data-name="The Dyer" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter One · The near shore</div>
+   <h2>Ireti's Blue Hands</h2>
+   <p>On the near shore of the lagoon lived Ireti, a dyer. All day she worked over clay pots of indigo, folding and tying cloth, stitching it with raffia and painting it with cassava paste so the dye would leave patterns where it could not reach.</p>
+   <p>Her hands were blue to the wrist, and no amount of scrubbing would change it. Each morning she climbed to her flat roof and hung the new cloth to dry, rows of blue facing the water. Nobody on her side of the lagoon ever looked at them for long.</p>
+   <div class="folio">i</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <rect class="lag3" x="8" y="150" width="384" height="40"/>
+    <path class="palm2" d="M300 150q20-14 40-10t52 6v4z"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <rect class="wallf" x="60" y="120" width="190" height="110"/>
+     <rect class="wall2" x="54" y="114" width="202" height="8"/>
+     <path class="line" d="M74 66h164M74 66v48M238 66v48" stroke-width="1.4"/>
+     <g class="sway"><rect class="p1" x="82" y="66" width="34" height="46"/></g>
+     <g class="sway"><rect class="p2" x="124" y="66" width="34" height="42"/></g>
+     <g class="sway"><rect class="p3" x="166" y="66" width="30" height="48"/></g>
+     <g class="sway"><rect class="p4" x="202" y="66" width="30" height="40"/></g>
+     <path class="inkf" d="M140 230v-34a15 15 0 0 1 30 0v34z"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <use href="#pot" transform="translate(58 262) scale(1.3)"/>
+     <use href="#pot" transform="translate(100 266) scale(1.1)"/>
+     <use href="#dyer" class="fig" transform="translate(300 262) scale(1.45)"/>
+     <rect class="p2" x="226" y="232" width="36" height="30" transform="rotate(-8 244 247)"/>
+    </g>
+    <text class="lbl" x="284" y="278">Ireti</text>
+   </svg>
+  </div><div class="caption">The dye pots and the drying roof</div></div>
+ </div>
+</section>
+
+<!-- 2 Kite-maker -->
+<section class="page" data-name="The Kite-Maker" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Two · The far shore</div>
+   <h2>Folarin's Workshop</h2>
+   <p>Across the water, where the palms leaned over the mud, lived Folarin, who made kites. He split bamboo thinner than a fingernail, glued paper over the frames and tied tails of rag that snapped in the wind.</p>
+   <p>Most mornings he tested a kite above the lagoon. And most mornings, while it climbed, he found himself looking past it at a rooftop on the near shore, where rows of blue cloth came out with the sun. He did not know whose they were. He only knew he waited for them.</p>
+   <div class="folio">ii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <rect class="lag3" x="8" y="160" width="384" height="116"/>
+    <g class="cut"><rect class="wallf" x="30" y="136" width="40" height="26"/><rect class="p1" x="34" y="126" width="9" height="12"/><rect class="p3" x="46" y="126" width="9" height="12"/><rect class="p2" x="58" y="126" width="9" height="12"/></g>
+    <text class="lbl" x="22" y="120">her roof, far away</text>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="palm2" d="M120 232q60-30 272-20v20z"/>
+     <use href="#palm" transform="translate(372 216)"/>
+     <rect class="wallf" x="160" y="140" width="150" height="80"/>
+     <path class="clay" d="M150 142l85-36 85 36z"/>
+     <use href="#kite-shape" class="sunf" transform="translate(190 176) scale(.8)"/>
+     <use href="#kite-shape" class="clay2" transform="translate(276 176) scale(.8)"/>
+     <path class="inkf" d="M222 220v-30a13 13 0 0 1 26 0v30z"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#water" transform="translate(0 246)"/>
+    <g class="cut">
+     <use href="#maker" class="fig him" transform="translate(132 252) scale(1.45)"/>
+     <path d="M160 214 L184 186 L208 214 L184 248z" fill="none" stroke="var(--clay-2)" stroke-width="2.4"/>
+     <path d="M184 186v62M160 214h48" stroke="var(--clay-2)" stroke-width="1.6"/>
+    </g>
+    <text class="lbl" x="104" y="276">Folarin</text>
+   </svg>
+  </div><div class="caption">Bamboo, paper and rag tails</div></div>
+ </div>
+</section>
+
+<!-- 3 First kite -->
+<section class="page" data-name="The First Kite" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Three · An answer in the sky</div>
+   <h2>The First Kite</h2>
+   <p>One evening Folarin painted a kite in indigo, with ringed circles copied as well as he could from a cloth he had stared at all week. The next morning he flew it high over the lagoon, straight toward her roof.</p>
+   <p>Ireti looked up from her pots and saw her own pattern hanging in the sky. She laughed out loud, alone on the roof, the first time anyone had answered her work. She did not know his name. But she knew someone over there had been looking.</p>
+   <div class="folio">iii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <circle class="sunf" cx="74" cy="56" r="20" opacity=".85"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <path class="string" d="M400 210Q330 130 252 90"/>
+    <g class="bob"><g class="cut"><use href="#kite-shape" class="p3" transform="translate(248 78) scale(2)"/></g><path class="tail" d="M248 130q-10 10 0 18t0 18 0 18"/></g>
+   </svg>
+   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#water" transform="translate(0 236)"/>
+    <g class="cut">
+     <rect class="wallf" x="8" y="196" width="160" height="50"/>
+     <rect class="wall2" x="8" y="190" width="168" height="8"/>
+     <path class="line" d="M26 150h120" stroke-width="1.2"/>
+     <rect class="p3" x="34" y="150" width="30" height="38"/><rect class="p1" x="70" y="150" width="28" height="34"/>
+     <use href="#dyer" class="fig" transform="translate(130 190) scale(1.15)"/>
+    </g>
+    <path class="line" d="M146 150l14-14M150 160l18-6" stroke-width="1.2"/>
+   </svg>
+  </div><div class="caption">Her own pattern, flying back to her</div></div>
+ </div>
+</section>
+
+<!-- 4 Conversation -->
+<section class="page" data-name="A Conversation in Blue" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Four · The dry season</div>
+   <h2>A Conversation in Blue</h2>
+   <p>So it began. Ireti dyed a cloth of zigzags like waves, and the next day a zigzag kite rose from the far shore. She answered with dots like rain. He sent up a kite with a tail of rain. When a storm tore one of his kites, she hung out a cloth stitched with mending lines.</p>
+   <p>For a whole season they spoke this way, a cloth at dawn and a kite by noon. The fishermen in between began to read it too. Neither lover crossed the water. It felt too fine a thing to risk spoiling by speaking.</p>
+   <div class="folio">iv</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <g class="sunf" opacity=".75"><circle cx="70" cy="34" r="8"/><circle cx="130" cy="28" r="8"/><circle cx="200" cy="26" r="8"/><circle cx="270" cy="28" r="8"/><circle cx="330" cy="34" r="8"/></g>
+    <text class="lbl" x="200" y="56" text-anchor="middle">a cloth at dawn, a kite by noon</text>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
+    <path class="string" d="M392 220Q330 140 236 96M392 220Q340 150 300 132M392 220Q350 140 340 80"/>
+    <g class="cut">
+     <g class="bob"><use href="#kite-shape" class="p4" transform="translate(236 96) scale(1.05)"/></g>
+     <g class="bob"><use href="#kite-shape" class="p1" transform="translate(300 132) scale(.9)"/></g>
+     <g class="bob"><use href="#kite-shape" class="p2" transform="translate(340 80) scale(.8)"/></g>
+    </g>
+    <path class="tail" d="M236 124q-6 6 0 12t0 12M300 156q-6 6 0 12t0 12M340 102q-6 6 0 12"/>
+   </svg>
+   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#water" transform="translate(0 226)"/>
+    <g class="cut">
+     <rect class="wallf" x="8" y="176" width="150" height="66"/>
+     <rect class="wall2" x="8" y="170" width="158" height="8"/>
+     <path class="line" d="M20 112h132" stroke-width="1.2"/>
+     <g class="sway"><rect class="p4" x="24" y="112" width="28" height="50"/></g>
+     <g class="sway"><rect class="p1" x="58" y="112" width="28" height="44"/></g>
+     <g class="sway"><rect class="p2" x="92" y="112" width="26" height="52"/></g>
+     <g class="sway"><rect class="ind" x="124" y="112" width="24" height="46"/></g>
+     <use href="#canoe" transform="translate(250 240) scale(.8)"/>
+    </g>
+    <path d="M128 120l16 30M144 118l-14 34" stroke="var(--indigo-3)" stroke-width="1.6"/>
+   </svg>
+  </div><div class="caption">Waves answered with waves, rain with rain</div></div>
+ </div>
+</section>
+
+<!-- 5 Harmattan -->
+<section class="page" data-name="The Harmattan" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Five · The dust wind</div>
+   <h2>The Harmattan</h2>
+   <p>Then the harmattan came down from the north. Fine dust filled the air until the far shore vanished and the sun hung pale as a coin. Ireti hung her best cloth every morning and could not tell if anyone saw it. Folarin flew kite after kite into a sky that swallowed them.</p>
+   <p>Day after day there was no answer. Each began to fear the other had grown tired of the game. Ireti stopped climbing to the roof. On the far shore, Folarin sat among his unflown kites and wondered if a season of patterns had meant anything at all.</p>
+   <div class="folio">v</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <circle class="paperf" cx="200" cy="80" r="26" opacity=".9"/>
+    <g class="cut" opacity=".35"><rect class="wallf" x="300" y="150" width="70" height="40"/><use href="#kite-shape" class="ind" transform="translate(320 110) scale(.6)"/></g>
+   </svg>
+   <svg class="layer flat" style="--d:.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="haze" x="8" y="4" width="384" height="272" rx="6" opacity=".55"/>
+    <path class="paperf" opacity=".35" d="M8 80q80-20 160 0t160 0 64 0v20q-60 10-120-4t-140 6-124-4zM8 160q90-16 180 0t204-4v16q-110 12-204-2t-180 4z"/>
+   </svg>
+   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#water" transform="translate(0 232)"/>
+    <g class="cut">
+     <rect class="wallf" x="8" y="186" width="170" height="60"/>
+     <rect class="wall2" x="8" y="180" width="178" height="8"/>
+     <path class="line" d="M24 130h140" stroke-width="1.2"/>
+     <rect class="p3" x="88" y="130" width="34" height="44"/>
+     <use href="#dyer" class="fig" transform="translate(60 180) scale(1.1)"/>
+    </g>
+   </svg>
+  </div><div class="caption">The far shore disappears</div></div>
+ </div>
+</section>
+
+<!-- 6 Last kite -->
+<section class="page" data-name="The Last Kite" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Six · Too big to miss</div>
+   <h2>The Last Kite</h2>
+   <p>At last Folarin built the biggest kite of his life, taller than himself. He tied every scrap of string he owned into one line, waited for a strong wind, and let it run out over the water until the line ended and the kite flew free.</p>
+   <p>It came down in the dust on Ireti's roof. On it he had painted no pattern this time, only a picture: a small canoe in the middle of the lagoon, with two people in it. Ireti held it in her blue hands for a long time. Then she went down to the water.</p>
+   <div class="folio">vi</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <rect class="haze" x="8" y="4" width="384" height="272" rx="6" opacity=".4"/>
+    <path class="string" d="M392 120Q300 90 210 150"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:88%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <rect class="wallf" x="40" y="196" width="320" height="50"/>
+     <rect class="wall2" x="34" y="190" width="332" height="8"/>
+     <g transform="translate(200 120) rotate(-8)">
+      <path class="paperf" d="M0-66 L54 0 L0 74 L-54 0z" stroke="var(--clay-2)" stroke-width="3"/>
+      <path d="M0-66V74M-54 0H54" stroke="var(--clay-2)" stroke-width="1.6"/>
+      <use href="#canoe" transform="translate(0 20) scale(.85)"/>
+      <use href="#dyer" class="fig" transform="translate(-10 18) scale(.42)"/>
+      <use href="#maker" class="fig him" transform="translate(10 18) scale(.42)"/>
+      <path class="lag2" d="M-34 34q10-4 20 0t20 0 20 0 8 0v4h-68z"/>
+     </g>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut"><use href="#dyer" class="fig" transform="translate(84 270) scale(1.3)"/><use href="#pot" transform="translate(330 270)"/></g>
+    <text class="lbl" x="200" y="272" text-anchor="middle">a canoe, with two people in it</text>
+   </svg>
+  </div><div class="caption">The kite lands on her roof</div></div>
+ </div>
+</section>
+
+<!-- 7 Passing -->
+<section class="page" data-name="Passing in the Haze" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Seven · Two empty houses</div>
+   <h2>Passing in the Haze</h2>
+   <p>Ireti pushed off in her neighbour's canoe and rowed toward the far shore. She could see nothing but dust. She did not know that Folarin, unable to bear waiting for an answer, had already launched his own canoe and was rowing toward her.</p>
+   <p>In the thick of the haze they passed each other, a stone's throw apart, each hearing only the splash of a stranger's paddle. Ireti reached an empty workshop full of kites. Folarin reached an empty roof full of blue cloth. And each sat down in the other's doorway to wait.</p>
+   <div class="folio">vii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <rect class="lag3" x="8" y="140" width="384" height="136"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <g transform="translate(140 196)"><use href="#canoe"/><use href="#dyer" class="fig" transform="translate(-4 -2) scale(.6)"/></g>
+     <g transform="translate(262 170) scale(-1 1)"><use href="#canoe"/><use href="#maker" class="fig him" transform="translate(-4 -2) scale(.6)"/></g>
+    </g>
+    <path class="line" d="M96 196h-24M86 204h-18M306 170h24M316 178h18" stroke-width="1.2" opacity=".6"/>
+   </svg>
+   <svg class="layer flat" style="--d:.3s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="haze" x="8" y="4" width="384" height="272" rx="6" opacity=".5"/>
+    <path class="paperf" opacity=".4" d="M8 150q70-14 150 0t234-6v20q-120 14-234-2t-150 4zM8 210q100-12 190 0t194 0v16q-100 10-194-2t-190 2z"/>
+   </svg>
+   <svg class="layer" style="--d:.42s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#water" transform="translate(0 244)"/>
+    <text class="lbl" x="200" y="132" text-anchor="middle">a stone's throw apart</text>
+   </svg>
+  </div><div class="caption">Each heard only a stranger's paddle</div></div>
+ </div>
+</section>
+
+<!-- 8 Halfway (interactive) -->
+<section class="page" data-name="Halfway" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Eight · Meeting in the middle</div>
+   <h2>Halfway</h2>
+   <p>By evening the neighbours on both shores were laughing. "Your dyer is sitting at the kite-maker's door," the fishermen shouted across. "And your kite-maker is sitting at hers!"</p>
+   <p>So, at the same moment, both of them pushed off again. This time neither aimed for the other's house. They rowed for the middle of the lagoon, where the painted kite had put them. As the wind turned and the dust began to clear, they saw each other at last.</p>
+   <div class="pull">
+    <label for="row">Pull the tab to row them to the middle</label>
+    <input type="range" id="row" min="0" max="100" value="20">
+    <output id="row-out" for="row">Each pushes off from the other's shore.</output>
+   </div>
+   <div class="folio">viii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <circle class="sunf" cx="200" cy="120" r="34" opacity=".8"/>
+    <rect class="lag3" x="8" y="150" width="384" height="126"/>
+    <g class="cut"><rect class="wallf" x="14" y="128" width="50" height="24"/><rect class="wallf" x="336" y="128" width="50" height="24"/><path class="clay" d="M330 130l31-14 31 14z"/></g>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g id="meetKite" opacity="0">
+     <path class="string" d="M216 196Q214 130 200 80"/>
+     <g class="cut"><use href="#kite-shape" class="p3" transform="translate(200 64) scale(1.2)"/></g>
+     <path class="tail" d="M200 96q-6 6 0 12t0 12"/>
+    </g>
+    <g id="canoeA"><g class="cut"><use href="#canoe" transform="translate(0 210)"/><use href="#dyer" class="fig" transform="translate(-4 208) scale(.7)"/></g></g>
+    <g id="canoeB"><g class="cut"><g transform="translate(0 210) scale(-1 1)"><use href="#canoe"/><use href="#maker" class="fig him" transform="translate(-4 -2) scale(.7)"/></g></g></g>
+   </svg>
+   <svg class="layer flat" style="--d:.3s" viewBox="0 0 400 280" aria-hidden="true">
+    <g id="haze8"><rect class="haze" x="8" y="4" width="384" height="272" rx="6" opacity=".55"/><path class="paperf" opacity=".35" d="M8 170q70-14 150 0t234-6v20q-120 14-234-2t-150 4z"/></g>
+   </svg>
+   <svg class="layer" style="--d:.42s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#water" transform="translate(0 236)"/>
+   </svg>
+  </div><div class="caption">The middle of the lagoon</div></div>
+ </div>
+</section>
+
+<!-- 9 Afterword -->
+<section class="page" data-name="Afterword" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Afterword · The festival of blue kites</div>
+   <h2>What the Story Keeps</h2>
+   <p>They married that same dry season, with a cloth of ringed circles for her wrapper and a kite of ringed circles flying over the feast. Ever since, when the harmattan clears, the lagoon town flies blue kites, and the dyers hang out their best cloth to answer them.</p>
+   <ul class="lessons">
+    <li><b>◇</b><span><strong>Love is noticing.</strong> It began with one person looking closely at another's work.</span></li>
+    <li><b>◇</b><span><strong>Love is a conversation.</strong> Each pattern was an answer to the last one.</span></li>
+    <li><b>◇</b><span><strong>Silence is not an answer.</strong> In the haze, both assumed the worst and were both wrong.</span></li>
+    <li><b>◇</b><span><strong>Someone has to cross the water,</strong> and it works best when both set out to meet in the middle.</span></li>
+   </ul>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6"/>
+    <circle class="sunf" cx="200" cy="168" r="30" opacity=".85"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <g class="bob"><use href="#kite-shape" class="p3" transform="translate(200 70) scale(1.6)"/></g>
+     <g class="bob"><use href="#kite-shape" class="p1" transform="translate(96 96) scale(.9)"/></g>
+     <g class="bob"><use href="#kite-shape" class="p4" transform="translate(304 92) scale(.9)"/></g>
+     <g class="bob"><use href="#kite-shape" class="p2" transform="translate(52 40) scale(.6)"/></g>
+     <g class="bob"><use href="#kite-shape" class="p2" transform="translate(350 40) scale(.6)"/></g>
+     <g class="bob"><use href="#kite-shape" class="ind" transform="translate(146 30) scale(.5)"/></g>
+     <g class="bob"><use href="#kite-shape" class="p1" transform="translate(256 28) scale(.5)"/></g>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#water" transform="translate(0 220)"/>
+    <g class="cut">
+     <g transform="translate(200 226)"><use href="#canoe" transform="scale(1.3)"/><use href="#dyer" class="fig" transform="translate(-14 -2) scale(.8)"/><use href="#maker" class="fig him" transform="translate(12 -2) scale(.8)"/></g>
+    </g>
+   </svg>
+  </div><div class="caption">The end</div></div>
+ </div>
+</section>
+
+</main>
+
+<nav class="controls" aria-label="Turn pages">
+ <button class="btn" id="prev" type="button">‹ Back</button>
+ <div class="dots" id="dots"></div>
+ <button class="btn" id="next" type="button">Turn the page ›</button>
+</nav>
+<div class="hint" id="where">Cover</div>
+</div>
+
+<script>
+(function(){
+  const pages=[...document.querySelectorAll('.page')];
+  const dots=document.getElementById('dots');
+  const prev=document.getElementById('prev'), next=document.getElementById('next'), where=document.getElementById('where');
+  let cur=0;
+  pages.forEach((p,i)=>{
+    const b=document.createElement('button');
+    b.type='button'; b.id='dot-'+i; b.setAttribute('aria-label','Go to '+p.dataset.name);
+    b.addEventListener('click',()=>show(i)); dots.appendChild(b);
+  });
+  function show(i){
+    cur=Math.max(0,Math.min(pages.length-1,i));
+    pages.forEach((p,j)=>p.hidden=j!==cur);
+    [...dots.children].forEach((d,j)=>d.setAttribute('aria-current',j===cur?'true':'false'));
+    prev.disabled=cur===0; next.disabled=cur===pages.length-1;
+    next.textContent=cur===0?'Open the book ›':'Turn the page ›';
+    where.textContent=pages[cur].dataset.name+' · page '+(cur+1)+' of '+pages.length;
+  }
+  prev.addEventListener('click',()=>show(cur-1));
+  next.addEventListener('click',()=>show(cur+1));
+  document.addEventListener('keydown',e=>{
+    if(e.target.id==='row')return;
+    if(e.key==='ArrowRight')show(cur+1);
+    if(e.key==='ArrowLeft')show(cur-1);
+  });
+  let sx=null;
+  const book=document.querySelector('.book');
+  book.addEventListener('touchstart',e=>{sx=e.target.id==='row'?null:e.touches[0].clientX},{passive:true});
+  book.addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>60)show(cur+(dx<0?1:-1));sx=null},{passive:true});
+
+  const row=document.getElementById('row'), out=document.getElementById('row-out');
+  const A=document.getElementById('canoeA'), B=document.getElementById('canoeB');
+  const haze=document.getElementById('haze8'), kite=document.getElementById('meetKite');
+  function rowTo(){
+    const v=+row.value, t=v/100;
+    A.setAttribute('transform','translate('+(70+t*92).toFixed(1)+' 0)');
+    B.setAttribute('transform','translate('+(330-t*92).toFixed(1)+' 0)');
+    haze.style.opacity=(1-t*.95).toFixed(2);
+    kite.style.opacity=t>.9?1:0;
+    out.textContent = v<35 ? 'Each pushes off from the other’s shore.'
+      : v<70 ? 'The wind turns and the dust begins to thin.'
+      : v<95 ? 'Two shapes in the haze, then two faces.'
+      : 'They meet in the middle of the lagoon.';
+  }
+  row.addEventListener('input',rowTo); rowTo();
+  show(0);
+})();
+</script>
+</body>
+</html>
