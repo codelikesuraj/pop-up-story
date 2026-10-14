@@ -102,9 +102,11 @@ h1{font-size:clamp(46px,7.5vw,78px)}
 .drift:nth-child(2n){animation-duration:5.6s}
 .sweep{animation:sweep 6s ease-in-out infinite alternate;transform-box:view-box;transform-origin:300px 81px}
 .rainfall{animation:rain .9s linear infinite}
+.float{animation:float 5s ease-in-out infinite alternate}
 @keyframes bob{from{transform:translateY(-3px) rotate(-3deg)}to{transform:translateY(3px) rotate(3deg)}}
 @keyframes drift{from{transform:translateY(-6px) rotate(-10deg)}to{transform:translateY(10px) rotate(12deg)}}
 @keyframes sweep{from{transform:rotate(-4deg)}to{transform:rotate(5deg)}}
+@keyframes float{from{transform:translate(4px,4px)}to{transform:translate(-6px,-6px)}}
 @keyframes rain{from{transform:translate(0,0)}to{transform:translate(-20px,230px)}}
 .lessons{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .lessons li{display:grid;grid-template-columns:1.6em 1fr;gap:10px;align-items:baseline}
@@ -129,7 +131,7 @@ h1{font-size:clamp(46px,7.5vw,78px)}
   body{font-size:16px}
 }
 @media (prefers-reduced-motion:reduce){
-  .layer,.text,.bob,.drift,.sweep,.rainfall{animation:none}
+  .layer,.text,.bob,.drift,.sweep,.rainfall,.float{animation:none}
   #beam5,#glow5,.boat5,#fire5{transition:none}
 }
 
@@ -237,6 +239,9 @@ h1{font-size:clamp(46px,7.5vw,78px)}
   <g id="rain">
    <path d="M20 0l-8 22M70 30l-8 22M120 6l-8 22M170 40l-8 22M220 10l-8 22M270 34l-8 22M320 4l-8 22M370 28l-8 22M45 80l-8 22M95 110l-8 22M145 84l-8 22M195 120l-8 22M245 90l-8 22M295 116l-8 22M345 86l-8 22M30 160l-8 22M80 190l-8 22M130 164l-8 22M180 196l-8 22M230 168l-8 22M280 192l-8 22M330 160l-8 22M380 186l-8 22" stroke="#c9d6e2" stroke-width="1.3" stroke-linecap="round" opacity=".7"/>
   </g>
+  <linearGradient id="room" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3f2c"/><stop offset="1" stop-color="#8a6446"/></linearGradient>
+  <g id="note"><ellipse cx="0" cy="0" rx="3.2" ry="2.4" transform="rotate(-20)"/><path d="M2.6-1 V-14 q5 2 6 7" fill="none" stroke="#ffe7a8" stroke-width="1.4" stroke-linecap="round"/></g>
+ <clipPath id="leftWater"><rect x="0" y="0" width="210" height="280"/></clipPath>
  </defs>
 </svg>
 
@@ -253,7 +258,7 @@ h1{font-size:clamp(46px,7.5vw,78px)}
   </button>
  </div>
  <button type="button" class="open-tag" data-open>Open the cover ›</button>
- <p class="meta">10 pages · Original story</p>
+ <p class="meta">12 pages · Original story</p>
 </section>
 <main class="book" aria-live="polite">
 
@@ -523,175 +528,302 @@ h1{font-size:clamp(46px,7.5vw,78px)}
  </div>
 </section>
 
-<!-- 6 The Wave -->
-<section class="page" data-name="The Wave" data-scene-after="2" hidden>
+<!-- 6 The Last Song -->
+<section class="page" data-name="The Last Song" data-scene-after="2" hidden>
  <div class="spread">
   <div class="leaf text">
-   <div class="chapter">Chapter Six · Dawn</div>
-   <h2>The Wave</h2>
-   <p>All night they kept the fire alive, and boat after boat slipped through the channel into the harbour. When the grey light came, only one boat was still outside the reef: old Bayo's, slow and heavy with water.</p>
-   <p>Then the surge arrived, a wall of sea that filled the whole horizon. The fishermen on the quay watched the beacon rise with it, still burning, still pointing the way, until Bayo's boat crossed the harbour mouth. Then the wave passed over the Outer Rock, and the rock was bare.</p>
+   <div class="chapter">Chapter Six · Before dawn</div>
+   <h2>The Last Song</h2>
+   <p>All night they fed the fire, and boat after boat slipped through the channel into the harbour. Towards dawn the oil ran out, and Kayode broke up the last of their own boat to keep the flame alive. There was no way back now, and they both knew it.</p>
+   <p>So Amara held the lens, and Kayode held Amara, and they sang the old keeper's song across the water toward the harbour, where one small window still glowed in Mama Yemi's house. They were still singing when Bayo's boat, the last of the forty, crossed the harbour mouth.</p>
+   <p>Then the surge came over the Outer Rock, and the light went out.</p>
    <div class="folio">vi</div>
   </div>
   <div class="leaf stage-leaf"><div class="stage">
    <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
     <rect class="panel dawn" x="8" y="4" width="384" height="272" rx="6"/>
-    <rect class="sea3" x="8" y="190" width="384" height="86"/>
+    <rect class="sea2" x="8" y="182" width="384" height="94"/>
+    <rect class="stone3f" x="8" y="176" width="64" height="8"/>
+    <rect x="22" y="162" width="16" height="14" class="wallf"/>
+    <rect x="27" y="166" width="6" height="5" fill="#ffe7a8"/>
+    <circle cx="30" cy="168" r="10" fill="url(#glow)"/>
+    <text class="lbl" x="14" y="152">Ife's window</text>
    </svg>
-   <svg class="layer" style="--d:.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+   <svg class="layer" style="--d:.16s;--oy:88%" viewBox="0 0 400 280" aria-hidden="true">
     <g class="cut">
-     <rect class="stone3f" x="8" y="194" width="104" height="44"/>
-     <use href="#man" transform="translate(30 196) scale(.55)" class="fig"/>
-     <use href="#woman" transform="translate(48 196) scale(.55)" class="fig yemi"/>
-     <use href="#man" transform="translate(66 196) scale(.55)" class="fig keeper"/>
-     <use href="#man" transform="translate(84 196) scale(.55)" class="fig"/>
-     <use href="#boat" transform="translate(140 214) scale(-.8 .8)"/>
+     <path class="sea" d="M392 250 V40 Q352 22 318 46 Q294 64 300 92 Q314 80 330 86 Q312 104 312 130 L340 250z"/>
+     <path class="foamf" d="M318 46 Q294 64 300 92 Q314 80 330 86 Q326 70 336 60 Q326 56 318 46z"/>
     </g>
-    <text class="lbl" x="122" y="186">Bayo's boat</text>
+    <g data-moves><polygon points="232,150 20,160 20,184 232,158" fill="url(#beamL)" opacity=".85"/></g>
    </svg>
-   <svg class="layer" style="--d:.36s;--oy:90%" viewBox="0 0 400 280" aria-hidden="true">
+   <svg class="layer" style="--d:.32s;--oy:90%" viewBox="0 0 400 280" aria-hidden="true">
     <g class="cut">
-     <path class="sea2" d="M392 256 V58 Q340 34 290 70 Q256 98 262 136 Q282 116 302 124 Q276 152 266 194 Q252 230 214 256z"/>
-     <path class="sea" d="M392 256 V96 Q356 82 330 108 Q306 134 312 170 Q300 210 270 256z"/>
-     <path class="foamf" d="M290 70 Q256 98 262 136 Q282 116 302 124 Q300 104 312 92 Q302 88 290 70z"/>
+     <path class="rockf" d="M176 250 Q190 196 214 172 Q232 162 250 172 Q274 198 288 250z"/>
+     <use href="#bowl" transform="translate(232 172)"/>
     </g>
-    <circle cx="352" cy="64" r="26" fill="url(#glow)"/>
-    <use href="#fire" transform="translate(352 70) scale(.7)"/>
+    <circle cx="232" cy="160" r="28" fill="url(#glow)"/>
+    <use href="#fire" transform="translate(232 166) scale(.8)"/>
+    <g class="cut">
+     <use href="#woman" class="fig amara" transform="translate(252 206) scale(1.05)"/>
+     <use href="#man" class="fig keeper" transform="translate(266 206) scale(-1.08 1.08)"/>
+     <path class="skinp" d="M258 170 Q250 172 246 180 l3 1 Q252 175 259 174z"/>
+    </g>
+    <use href="#lens" transform="translate(242 172) scale(.42)"/>
+    <g fill="#ffe7a8" opacity=".9" data-moves class="float">
+     <use href="#note" transform="translate(200 148)"/>
+     <use href="#note" transform="translate(160 138) scale(.85)"/>
+     <use href="#note" transform="translate(118 150) scale(.75)"/>
+     <use href="#note" transform="translate(80 140) scale(.6)"/>
+    </g>
    </svg>
-   <svg class="layer" style="--d:.5s" viewBox="0 0 400 280" aria-hidden="true">
-    <use href="#waves" transform="translate(0 244)"/>
+   <svg class="layer" style="--d:.48s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#waves" transform="translate(0 238)"/>
+    <g class="cut"><use href="#boat" transform="translate(96 230) scale(-.55 .55)"/></g>
    </svg>
-  </div><div class="caption">The beacon rides the wave</div></div>
+  </div><div class="caption">The keeper's song, sung toward one lit window</div></div>
  </div>
 </section>
 
-<!-- 7 The Keeper's Girl -->
-<section class="page" data-name="The Keeper's Girl" data-scene-after="2" hidden>
+<!-- 7 The Morning After -->
+<section class="page" data-name="The Morning After" data-scene-after="2" hidden>
  <div class="spread">
   <div class="leaf text">
-   <div class="chapter">Chapter Seven · Ten years on</div>
-   <h2>The Keeper's Girl</h2>
-   <p>Mama Yemi raised Ife in the harbourmaster's house. The tower stood dark, because no one in town could grind a lens like Amara's, and no one wanted the keeper's job after what had happened.</p>
-   <p>And people told the story wrong. Some had seen the keepers rowing away from the Point in the storm, and they whispered that Kayode and Amara had abandoned the light and fled. Ife heard the whispers. Every evening she climbed the dark tower with the brass key around her neck and sat in the empty lantern room, looking out at the Outer Rock.</p>
+   <div class="chapter">Chapter Seven · The quay</div>
+   <h2>The Morning After</h2>
+   <p>When the sea fell calm, the quay was full. Forty crews climbed out of forty boats into the arms of their families. Mothers held their sons, children rode on their fathers' shoulders, and someone rang the harbour bell for joy.</p>
+   <p>Mama Yemi stood at the far edge of it all with the baby in her arms, watching the empty water past the reef. Old Bayo, soaked to the bone, came and stood beside her. He did not say anything. He took off his cap, held it to his chest, and stayed.</p>
    <div class="folio">vii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel calm" x="8" y="4" width="384" height="272" rx="6"/>
+    <circle cx="330" cy="150" r="24" fill="#f6d39c"/>
+    <rect class="sea3" x="8" y="150" width="384" height="126"/>
+    <path class="rockf" d="M300 152 q12-18 26-18 q12 3 16 18z"/>
+    <text class="lbl" x="286" y="128">the Outer Rock, bare</text>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <use href="#boat" transform="translate(70 172) scale(.6)"/>
+     <use href="#boat" transform="translate(130 176) scale(.5)"/>
+     <use href="#boat" transform="translate(186 170) scale(.45)"/>
+     <path d="M50 120v40" stroke="#1f2633" stroke-width="2"/>
+     <path class="lampf" d="M42 120 h16 l-2 10 h-12z" stroke="#1f2633" stroke-width="1"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.34s" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="stone3f" d="M8 280 V232 H392 V280z"/>
+     <g>
+      <use href="#man" class="fig" transform="translate(40 238)"/>
+      <use href="#woman" class="fig ife" transform="translate(41 192) scale(.5)"/>
+      <use href="#woman" class="fig" transform="translate(76 240)" style="--drape:#7b5ea7"/>
+      <use href="#man" class="fig keeper" transform="translate(88 240) scale(-1 1)"/>
+      <use href="#woman" class="fig yemi" transform="translate(124 240) scale(.95)" style="--drape:#c07a3a"/>
+      <use href="#man" class="fig" transform="translate(138 240) scale(-.95 .95)"/>
+      <use href="#woman" class="fig ife" transform="translate(150 240) scale(.6)" style="--drape:#5f7a4f"/>
+     </g>
+     <use href="#woman" class="fig yemi" transform="translate(292 244) scale(1.3)"/>
+     <use href="#baby" transform="translate(306 206)"/>
+     <use href="#man" class="fig" transform="translate(336 244) scale(1.25)" style="--drape:#6b6f78"/>
+     <ellipse cx="344" cy="198" rx="7" ry="4" fill="#3a3f4c"/>
+    </g>
+    <text class="lbl" x="256" y="268">Mama Yemi</text><text class="lbl" x="336" y="268">Bayo</text>
+   </svg>
+  </div><div class="caption">Forty boats home, and one empty sea</div></div>
+ </div>
+</section>
+
+<!-- 8 The Story Told Wrong -->
+<section class="page" data-name="The Story Told Wrong" data-scene-after="3" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Eight · Growing up</div>
+   <h2>The Story Told Wrong</h2>
+   <p>No one in the fleet had seen who lit the fire on the Outer Rock. They called it a miracle, the ghost-fire of the old keepers come back to save them. But people remembered Kayode and Amara rowing away from the dark tower that night, and since their boat was never found, they said the keepers had fled the storm and drowned running.</p>
+   <p>Mama Yemi told the truth to anyone who would listen. But she was only an old woman with a baby, and a miracle makes a better story than two neighbours.</p>
+   <p>Ife grew up hearing it. Some evenings she climbed the dark tower with the brass key around her neck and asked the Outer Rock the question she could never ask anyone else: why did you leave me?</p>
+   <div class="folio">viii</div>
   </div>
   <div class="leaf stage-leaf"><div class="stage">
    <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
     <rect class="panel dusk" x="8" y="4" width="384" height="272" rx="6"/>
     <rect class="sea3" x="8" y="188" width="384" height="88"/>
-    <path class="rockf" d="M340 190 q10-18 24-18 q10 3 14 18z"/>
+    <path class="rockf" d="M332 190 q10-18 24-18 q10 3 14 18z"/>
    </svg>
    <svg class="layer" style="--d:.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
     <g class="cut">
-     <path class="rockf" d="M60 246 Q80 216 130 212 Q186 210 210 226 Q222 236 226 246z"/>
-     <use href="#tower" transform="translate(142 226) scale(1.15)" style="--glass:#3a3f4c"/>
-     <use href="#woman" class="fig ife" transform="translate(142 70) scale(.42)"/>
+     <path class="rockf" d="M40 246 Q60 216 110 212 Q166 210 190 226 Q202 236 206 246z"/>
+     <use href="#tower" transform="translate(122 226) scale(1.15)" style="--glass:#3a3f4c"/>
     </g>
+    <g class="cut"><use href="#woman" class="fig ife" transform="translate(126 69) scale(.4)"/></g>
+    <path d="M140 52 q70-20 190 120" fill="none" stroke="#f4ead6" stroke-width="1.2" stroke-dasharray="2 5" opacity=".8"/>
+    <text class="lbl" x="196" y="64">why did you leave me?</text>
    </svg>
-   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
+   <svg class="layer" style="--d:.34s" viewBox="0 0 400 280" aria-hidden="true">
     <g class="cut">
-     <path class="stone2f" d="M200 280 Q240 252 300 252 Q360 252 392 260 V280z"/>
-     <use href="#man" class="fig" transform="translate(290 262) scale(1.15)"/>
-     <use href="#woman" class="fig yemi" transform="translate(326 262) scale(-1.15 1.15)" style="--drape:#7b5ea7"/>
+     <path class="stone2f" d="M180 280 Q230 250 300 250 Q360 250 392 258 V280z"/>
+     <use href="#man" class="fig" transform="translate(248 262) scale(1.05)"/>
+     <use href="#woman" class="fig ife" transform="translate(268 262) scale(.6)" style="--drape:#5f7a4f"/>
+     <path class="skinp" d="M254 232 l14 6 -1 2 -14-5z"/>
+     <use href="#man" class="fig" transform="translate(326 262) scale(1.1)" style="--drape:#6b6f78"/>
+     <use href="#woman" class="fig yemi" transform="translate(356 262) scale(-1.1 1.1)" style="--drape:#7b5ea7"/>
     </g>
-    <path d="M300 196 q8-10 18-4 M304 186 q6-8 14-4" fill="none" stroke="#56586a" stroke-width="1.4" stroke-dasharray="2 3"/>
-    <text class="lbl" x="262" y="276">the whispers</text>
-    <use href="#waves" transform="translate(-200 256)"/>
+    <path d="M334 196 q8-10 18-4 M338 186 q6-8 14-4" fill="none" stroke="#56586a" stroke-width="1.4" stroke-dasharray="2 3"/>
+    <text class="lbl" x="314" y="278">the whispers</text>
+    <use href="#waves" transform="translate(0 256)" clip-path="url(#leftWater)"/>
    </svg>
-  </div><div class="caption">The dark tower, ten years on</div></div>
+  </div><div class="caption">The dark tower, sixteen years on</div></div>
  </div>
 </section>
 
-<!-- 8 The Heart of the Lens -->
-<section class="page" data-name="The Heart of the Lens" data-scene-after="3" hidden>
+<!-- 9 What Mama Yemi Kept -->
+<section class="page" data-name="What Mama Yemi Kept" data-scene-after="2" hidden>
  <div class="spread">
   <div class="leaf text">
-   <div class="chapter">Chapter Eight · The second storm</div>
-   <h2>The Heart of the Lens</h2>
-   <p>When Ife was sixteen, a storm like the old one came down on the town with the fleet still at sea. Mama Yemi took a box from under her bed. Inside, wrapped in a faded red shawl, lay a disc of glass. "It washed up at the foot of the Outer Rock the morning after," she said. "Bayo found it. It was still warm."</p>
-   <p>Then she told Ife everything: the shattered lantern, the fire on the rock, forty boats brought home. Her parents had not run from their post. They had carried it out to sea.</p>
-   <p>Ife ran to the Point, unlocked the tower with her father's key, and set the heart of the lens behind a new flame. For the first time in sixteen years, the light came on. One by one, the boats turned for home.</p>
-   <div class="folio">viii</div>
+   <div class="chapter">Chapter Nine · The box</div>
+   <h2>What Mama Yemi Kept</h2>
+   <p>When Ife was sixteen she finally asked her question out loud. Mama Yemi was quiet for a long time. Then she took a box from under her bed. Inside, wrapped in a faded red shawl, lay the heart of a lens. "Bayo found it at the foot of the Outer Rock at low tide," she said. "It was still warm."</p>
+   <p>She told Ife everything: the shattered lantern, the boat broken up for firewood, the song carried across the water. "They did not leave you, child. They went so that every other child in this town would have someone come home. And they left you the key, so that one day you could climb the stairs after them."</p>
+   <p>Ife wrapped her mother's shawl around her shoulders, held the warm glass to her chest, and cried for the first time for her parents, instead of at them.</p>
+   <div class="folio">ix</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel" x="8" y="4" width="384" height="272" rx="6" fill="url(#room)"/>
+    <rect x="250" y="40" width="110" height="90" rx="4" fill="url(#storm)" stroke="#6b4a2a" stroke-width="6"/>
+    <path d="M305 40v90M250 85h110" stroke="#6b4a2a" stroke-width="4"/>
+    <path class="rockf" d="M318 124 q8-12 18-12 q8 2 10 12z"/>
+    <path d="M268 50 l-4 12 M290 66 l-4 12 M334 52 l-4 12 M348 92 l-4 12" stroke="#c9d6e2" stroke-width="1.2" stroke-linecap="round"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <rect x="40" y="196" width="150" height="10" rx="2" fill="#8a5d3b"/>
+     <path d="M52 206v54M178 206v54" stroke="#6b4a2a" stroke-width="6"/>
+     <path d="M70 196 v-18 h52 v18z" fill="#a0805a"/>
+     <path d="M70 178 l-4-22 h52 l4 22z" fill="#8a6a44"/>
+     <path class="drape" d="M74 196 q24-14 44 0z" style="fill:var(--red)"/>
+     <path d="M156 196 v-22" stroke="#1f2633" stroke-width="1.4"/>
+     <rect x="148" y="166" width="16" height="16" rx="3" fill="#ffe7a8" stroke="#1f2633"/>
+    </g>
+    <circle cx="156" cy="174" r="26" fill="url(#glow)"/>
+   </svg>
+   <svg class="layer" style="--d:.34s" viewBox="0 0 400 280" aria-hidden="true">
+    <path class="stone2f" d="M8 280 V256 H392 V280z"/>
+    <g class="cut">
+     <use href="#woman" class="fig yemi" transform="translate(212 262) scale(1.6)"/>
+     <use href="#woman" class="fig amara" transform="translate(262 262) scale(-1.45 1.45)"/>
+     <path class="drape" d="M248 210 q14-10 28 0 l2 18 q-16 6-32 0z" style="fill:var(--red)"/>
+     <path class="skinp" d="M222 206 Q238 200 252 206 l-1 3 Q238 204 223 210z"/>
+    </g>
+    <circle cx="258" cy="222" r="18" fill="url(#glow)"/>
+    <use href="#lens" transform="translate(258 222) scale(.6)"/>
+    <path d="M262 190 q-1 4 0 6 q1-2 0-6z" fill="#9cbfcc"/>
+    <text class="lbl" x="166" y="276">Mama Yemi</text><text class="lbl" x="252" y="276">Ife</text>
+   </svg>
+  </div><div class="caption">The red shawl and the warm glass</div></div>
+ </div>
+</section>
+
+<!-- 10 The Light Comes On -->
+<section class="page" data-name="The Light Comes On" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Ten · The second storm</div>
+   <h2>The Light Comes On</h2>
+   <p>That same night a storm came down on the town like the old one, with the fleet still at sea. Ife ran to the Point with the shawl around her shoulders and her father's key in her hand, climbed all hundred and twelve steps without stopping, and set the heart of the lens behind a new flame.</p>
+   <p>For the first time in sixteen years, the light came on. It swept over the reef, and over the boats as they turned for home, and over the Outer Rock, where for one heartbeat Ife was sure she saw two figures standing in the spray, side by side. Then the beam moved on, and it was only rock.</p>
+   <div class="folio">x</div>
   </div>
   <div class="leaf stage-leaf"><div class="stage">
    <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
     <rect class="panel storm" x="8" y="4" width="384" height="272" rx="6"/>
     <rect class="sea2" x="8" y="186" width="384" height="90"/>
    </svg>
-   <svg class="layer" style="--d:.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
-    <g data-moves><polygon points="200,58 8,24 8,100 200,66" fill="url(#beamL)"/><polygon points="200,58 392,24 392,100 200,66" fill="url(#beamR)"/></g>
-    <circle cx="200" cy="62" r="30" fill="url(#glow)"/>
-    <g class="cut">
-     <path class="rockf" d="M110 246 Q136 216 190 212 Q250 210 276 226 Q290 236 296 246z"/>
-     <use href="#tower" transform="translate(200 230) scale(1.25)"/>
+   <svg class="layer" style="--d:.16s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut"><path class="rockf" d="M300 196 q16-34 40-34 q22 4 30 34z"/></g>
+    <g opacity=".5">
+     <use href="#woman" transform="translate(328 166) scale(.7)" style="--drape:#ffe7a8;--skin:#ffe7a8;--cloth:#fff6dc"/>
+     <use href="#man" transform="translate(344 166) scale(.72)" style="--drape:#ffe7a8;--skin:#ffe7a8;--cloth:#fff6dc"/>
     </g>
    </svg>
-   <svg class="layer" style="--d:.36s;--oy:90%" viewBox="0 0 400 280" aria-hidden="true">
+   <svg class="layer" style="--d:.3s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g data-moves><polygon points="130,58 8,22 8,96 130,66" fill="url(#beamL)"/><polygon points="130,58 392,110 392,170 130,66" fill="url(#beamR)"/></g>
+    <circle cx="130" cy="62" r="30" fill="url(#glow)"/>
     <g class="cut">
-     <use href="#boat" transform="translate(60 196) scale(.55)"/>
-     <use href="#boat" transform="translate(320 200) scale(-.6 .6)"/>
-     <use href="#boat" transform="translate(360 190) scale(-.45 .45)"/>
+     <path class="rockf" d="M40 246 Q66 216 120 212 Q180 210 206 226 Q220 236 226 246z"/>
+     <use href="#tower" transform="translate(130 230) scale(1.25)"/>
     </g>
+    <g class="cut"><use href="#woman" class="fig amara" transform="translate(134 67) scale(.34)"/></g>
    </svg>
-   <svg class="layer" style="--d:.5s" viewBox="0 0 400 280" aria-hidden="true">
+   <svg class="layer" style="--d:.44s;--oy:90%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <use href="#boat" transform="translate(250 214) scale(-.6 .6)"/>
+     <use href="#boat" transform="translate(296 222) scale(-.5 .5)"/>
+     <use href="#boat" transform="translate(206 222) scale(-.45 .45)"/>
+    </g>
     <use href="#waves" transform="translate(0 244)"/>
-    <g class="cut">
-     <path class="stone3f" d="M8 280 V258 H150 V280z"/>
-     <use href="#man" class="fig" transform="translate(30 262) scale(.85)"/>
-     <use href="#woman" class="fig yemi" transform="translate(56 262) scale(.85)"/>
-     <use href="#man" class="fig keeper" transform="translate(84 262) scale(.85)"/>
-     <use href="#woman" class="fig" transform="translate(110 262) scale(.85)" style="--drape:#7b5ea7"/>
-    </g>
-    <text class="lbl" x="160" y="274">the whole town, watching</text>
    </svg>
    <svg class="layer flat" style="--d:.6s" viewBox="0 0 400 280" aria-hidden="true">
     <g data-moves class="rainfall"><use href="#rain"/><use href="#rain" transform="translate(0 -230)"/></g>
    </svg>
-  </div><div class="caption">The light comes on again</div></div>
+  </div><div class="caption">For one heartbeat, two figures in the spray</div></div>
  </div>
 </section>
 
-<!-- 9 Afterword -->
-<section class="page" data-name="Afterword" hidden>
+<!-- 11 The Night of Lanterns -->
+<section class="page" data-name="The Night of Lanterns" data-scene-after="2" hidden>
  <div class="spread">
   <div class="leaf text">
    <div class="chapter">Afterword · The night of lanterns</div>
-   <h2>What the Light Keeps</h2>
-   <p>Ife became the keeper of the Point. On the anniversary of the great storm, the whole town carries paper lanterns down to the quay and sets them on the water, one for every boat that came home, and two more that drift out toward the Outer Rock.</p>
+   <h2>The Night of Lanterns</h2>
+   <p>When the fleet came in, old Bayo climbed onto a crate on the quay and told the whole town what he had seen and found that night, and what Mama Yemi had been saying for sixteen years. Nobody whispered after that. Ife became the keeper of the Point.</p>
+   <p>Now, every year on the night of the great storm, the town sets paper lanterns on the water, one for every boat that came home, and two more that drift out toward the Outer Rock. Ife lights those two herself.</p>
    <ul class="lessons">
     <li><b>✦</b><span><strong>Love is often unseen.</strong> The greatest thing Kayode and Amara ever did, almost nobody saw.</span></li>
-    <li><b>✦</b><span><strong>What we give keeps going.</strong> The light on the rock was the same light their daughter carried up the tower.</span></li>
-    <li><b>✦</b><span><strong>A story half told is a story told wrong.</strong> The town judged the keepers by the one part it could see.</span></li>
-    <li><b>✦</b><span><strong>Every keeper was first someone kept.</strong> A whole harbour raised Ife before she watched over it.</span></li>
+    <li><b>✦</b><span><strong>A story half told is a story told wrong.</strong> The town judged them by the one part it could see.</span></li>
+    <li><b>✦</b><span><strong>What we give keeps going.</strong> The light on the rock became the light their daughter carried up the stairs.</span></li>
    </ul>
   </div>
   <div class="leaf stage-leaf"><div class="stage">
    <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
     <rect class="panel night" x="8" y="4" width="384" height="272" rx="6"/>
     <g fill="#f4ead6"><circle cx="40" cy="30" r="1.4"/><circle cx="90" cy="54" r="1"/><circle cx="140" cy="22" r="1.4"/><circle cx="210" cy="40" r="1"/><circle cx="260" cy="18" r="1.4"/><circle cx="310" cy="48" r="1"/><circle cx="360" cy="26" r="1.4"/></g>
-    <rect class="sea2" x="8" y="178" width="384" height="98"/>
-    <path class="rockf" d="M330 182 q12-20 28-20 q12 3 16 20z"/>
+    <rect class="sea2" x="8" y="170" width="384" height="106"/>
+    <path class="rockf" d="M330 174 q12-20 28-20 q12 3 16 20z"/>
    </svg>
-   <svg class="layer" style="--d:.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
-    <g data-moves><polygon points="70,92 392,60 392,126 70,100" fill="url(#beamR)" opacity=".8"/></g>
-    <circle cx="70" cy="96" r="20" fill="url(#glow)"/>
+   <svg class="layer" style="--d:.16s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
+    <g data-moves><polygon points="56,82 392,140 392,180 56,90" fill="url(#beamR)" opacity=".7"/></g>
+    <circle cx="56" cy="86" r="18" fill="url(#glow)"/>
     <g class="cut">
-     <path class="rockf" d="M8 244 Q30 214 70 210 Q110 208 130 226 Q140 236 142 244z"/>
-     <use href="#tower" transform="translate(70 231)"/>
+     <path class="rockf" d="M8 230 Q24 204 56 200 Q92 198 108 214 Q116 222 118 230z"/>
+     <use href="#tower" transform="translate(56 220) scale(.9)"/>
     </g>
    </svg>
-   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
-    <use href="#waves" transform="translate(0 222)"/>
+   <svg class="layer" style="--d:.32s" viewBox="0 0 400 280" aria-hidden="true">
     <g>
-     <g class="bob"><circle cx="160" cy="236" r="10" fill="url(#glow)"/><rect x="155" y="230" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
-     <g class="bob"><circle cx="196" cy="246" r="10" fill="url(#glow)"/><rect x="191" y="240" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
-     <g class="bob"><circle cx="230" cy="232" r="10" fill="url(#glow)"/><rect x="225" y="226" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
-     <g class="bob"><circle cx="262" cy="250" r="10" fill="url(#glow)"/><rect x="257" y="244" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
-     <g class="bob"><circle cx="128" cy="252" r="10" fill="url(#glow)"/><rect x="123" y="246" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
-     <g class="bob"><circle cx="318" cy="204" r="9" fill="url(#glow)"/><rect x="314" y="199" width="8" height="8" rx="2" fill="#ffe7a8" stroke="#a8382c"/></g>
-     <g class="bob"><circle cx="336" cy="198" r="9" fill="url(#glow)"/><rect x="332" y="193" width="8" height="8" rx="2" fill="#ffe7a8" stroke="#a8382c"/></g>
+     <g class="bob"><circle cx="150" cy="210" r="10" fill="url(#glow)"/><rect x="145" y="204" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
+     <g class="bob"><circle cx="186" cy="200" r="10" fill="url(#glow)"/><rect x="181" y="194" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
+     <g class="bob"><circle cx="222" cy="214" r="10" fill="url(#glow)"/><rect x="217" y="208" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
+     <g class="bob"><circle cx="252" cy="198" r="10" fill="url(#glow)"/><rect x="247" y="192" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
+     <g class="bob"><circle cx="120" cy="196" r="9" fill="url(#glow)"/><rect x="115" y="191" width="9" height="8" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
+     <g class="bob"><circle cx="314" cy="182" r="10" fill="url(#glow)"/><rect x="309" y="176" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#a8382c"/></g>
+     <g class="bob"><circle cx="334" cy="186" r="10" fill="url(#glow)"/><rect x="329" y="180" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#a8382c"/></g>
     </g>
-    <text class="lbl" x="276" y="226">two for the keepers</text>
+    <text class="lbl" x="282" y="166">two for the keepers</text>
+   </svg>
+   <svg class="layer" style="--d:.46s" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="stone3f" d="M8 280 V236 H392 V280z"/>
+     <use href="#man" class="fig" transform="translate(40 242) scale(.9)"/>
+     <use href="#woman" class="fig" transform="translate(62 242) scale(.9)" style="--drape:#7b5ea7"/>
+     <use href="#man" class="fig" transform="translate(84 242) scale(.9)" style="--drape:#6b6f78"/>
+     <use href="#woman" class="fig yemi" transform="translate(300 242) scale(1.05)"/>
+     <use href="#woman" class="fig amara" transform="translate(330 244) scale(1.15)"/>
+    </g>
+    <circle cx="350" cy="214" r="12" fill="url(#glow)"/>
+    <rect x="345" y="209" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#a8382c"/>
+    <text class="lbl" x="318" y="270">Ife</text>
    </svg>
   </div><div class="caption">The end</div></div>
  </div>

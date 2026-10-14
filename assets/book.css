@@ -64,6 +64,10 @@ h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.005em}
 .corner:focus-visible{outline:2px solid var(--foil);outline-offset:2px}
 .corner[disabled]{display:none}
 
+/* every scene is clipped to its own frame, so nothing it draws can spill onto the text around it */
+.stage{clip-path:inset(0 round 6px)}
+.stage::after{display:none}
+
 /* paper depth: shadows are set per layer by book.js.
    fill-mode backwards: after popping up, a layer keeps no 3D transform, so phones redraw it sharply */
 .layer{filter:var(--depth,drop-shadow(0 5px 3px var(--shade)));animation-fill-mode:backwards}
