@@ -24,7 +24,8 @@
   document.body.prepend(defs);
 
   /* 2. dress every pop-up layer: grain on static paper, deeper shadows nearer the front, hinge tabs on the back card */
-  const MOVING = '.drift,.bob,.sway,#icarus,#canoeA,#canoeB,#haze8,#meetKite';
+  /* parts that animate or respond to a pull tab are left without grain; new stories mark them data-moves */
+  const MOVING = '.drift,.bob,.sway,#icarus,#canoeA,#canoeB,#haze8,#meetKite,[data-moves]';
   const moving = n => n.nodeType === 1 && (n.matches(MOVING) || n.querySelector(MOVING));
   document.querySelectorAll('.stage').forEach(stage => {
     const layers = [...stage.querySelectorAll(':scope > .layer')];

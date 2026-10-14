@@ -1,7 +1,7 @@
 /* Pop-up Stories · shared book frame
    Loaded after each story's own <style>. A story sets --cloth, --foil and --foil-2 for its binding. */
 :root{
-  --cloth:#1f5f8b; --foil:#e7c46f; --foil-2:#d9b25a; --ribbon:#b8392b;
+  --binding:#1f5f8b; --foil:#e7c46f; --foil-2:#d9b25a; --ribbon:#b8392b;
   --wood:#4a3020; --wood-ink:#e8dcc2; --wood-soft:#cdbb9a;
   --paper:#f7f1e3; --paper-edge:#d9ccb0; --shade:rgba(42,29,16,.28);
   --ink:#1d2633; --ink-soft:#5f5a4c;
@@ -28,7 +28,7 @@ h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.005em}
 
 /* ---------- the open book ---------- */
 .book{
-  background-color:var(--cloth);
+  background-color:var(--binding);
   background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0 2px,rgba(0,0,0,.05) 2px 4px);
   padding:12px 16px 14px; border-radius:9px;
   box-shadow:0 46px 60px -24px rgba(0,0,0,.85),inset 0 0 0 1px rgba(0,0,0,.15);
@@ -43,7 +43,7 @@ h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.005em}
   width:90px;
   background:linear-gradient(90deg,rgba(60,40,20,0),rgba(60,40,20,.2) 44%,rgba(60,40,20,.3) 50%,rgba(60,40,20,.2) 56%,rgba(60,40,20,0));
 }
-.text p:first-of-type::first-letter{color:var(--cloth)}
+.text p:first-of-type::first-letter{color:var(--binding)}
 .chapter{font-style:italic;color:var(--ink-soft);display:flex;align-items:center;gap:12px}
 .chapter::after{content:"";flex:1;height:1px;background:var(--paper-edge)}
 .cover .chapter::after{display:none}
@@ -81,7 +81,7 @@ h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.005em}
 .pull input[type=range]::-moz-range-thumb{width:62px;height:30px;border-radius:2px 6px 6px 2px;border:0;
   background:repeating-linear-gradient(90deg,transparent 0 40px,rgba(0,0,0,.18) 40px 41px,transparent 41px 45px),linear-gradient(var(--foil),#d0a541);
   box-shadow:0 6px 10px rgba(0,0,0,.35),inset 0 -3px 0 rgba(0,0,0,.18)}
-.pull input[type=range]:focus-visible{outline:2px solid var(--cloth);outline-offset:4px}
+.pull input[type=range]:focus-visible{outline:2px solid var(--binding);outline-offset:4px}
 
 /* the pull tab, moved into the navigation area */
 .pull-slot{flex:1 0 100%;order:-1;display:flex;justify-content:center}
@@ -110,7 +110,7 @@ body.is-closed .book,body.is-closed .controls,body.is-closed .hint{display:none}
 .closed-book .tassel{position:absolute;left:56%;bottom:-62px;width:16px;height:76px;background:var(--ribbon);clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%)}
 .cover-board{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;
   padding:12% 10% 10% 14%;border:0;cursor:pointer;font:inherit;color:var(--foil);
-  border-radius:4px 10px 10px 4px;background-color:var(--cloth);
+  border-radius:4px 10px 10px 4px;background-color:var(--binding);
   background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0 2px,rgba(0,0,0,.05) 2px 4px);
   box-shadow:inset 16px 0 0 rgba(0,0,0,.24),inset 19px 0 0 rgba(255,255,255,.07),0 30px 40px -16px rgba(0,0,0,.8);
   transform-origin:0 50%;transition:transform .25s ease}

@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Keeper's Light · A Pop-up Storybook</title>
+<meta name="description" content="An original pop-up story: a lighthouse keeper and a lens-maker give everything to bring their town's fleet home on the night their daughter is born, and she grows up hearing the story told wrong.">
+<meta name="author" content="Abdulbaki Suraj">
+<meta name="theme-color" content="#4a3020">
+<meta name="color-scheme" content="light">
+<link rel="canonical" href="https://codelikesuraj.github.io/pop-up-story/the-keepers-light/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M24 60 L27 20 H37 L40 60z' fill='%23f4efe4'/%3E%3Cpath d='M25 44 H39 V36 H26z' fill='%23a8382c'/%3E%3Crect x='26' y='10' width='12' height='10' fill='%23f2b33d'/%3E%3Cpath d='M24 10 L32 3 L40 10z' fill='%23a8382c'/%3E%3C/svg%3E">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pop-up Stories">
+<meta property="og:title" content="The Keeper's Light · A Pop-up Storybook">
+<meta property="og:description" content="A lighthouse keeper and a lens-maker, the night the sea came for their town, and the daughter born that same night. An original interactive pop-up story.">
+<meta property="og:url" content="https://codelikesuraj.github.io/pop-up-story/the-keepers-light/">
+<meta property="og:image" content="https://codelikesuraj.github.io/pop-up-story/the-keepers-light/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The open Keeper's Light pop-up book: the title and story details on the left page, a lighthouse beam over the evening sea on the right">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Keeper's Light · A Pop-up Storybook">
+<meta name="twitter:description" content="An original interactive pop-up story about a lighthouse, a storm, and the daughter left behind.">
+<meta name="twitter:image" content="https://codelikesuraj.github.io/pop-up-story/the-keepers-light/og-image.png">
+<meta name="twitter:image:alt" content="The open Keeper's Light pop-up book: the title and story details on the left page, a lighthouse beam over the evening sea on the right">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400&family=Crimson+Pro:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+/* Layout: the series' open pop-up book. Left leaf = story, right leaf = cut-paper scene of the Point, the sea and the Outer Rock. */
+:root{
+  --paper:#fbf8f1; --paper-edge:#e6dccb; --shade:rgba(35,30,40,.18);
+  --ink:#1f2633; --ink-soft:#56586a;
+  --sea:#1e4a5e; --sea-2:#3f7186; --sea-3:#9cbfcc; --foam:#eef5f7;
+  --stone:#cfc6b4; --stone-2:#a99c83; --stone-3:#7e715c; --rock:#4b4f57;
+  --lamp:#f2b33d; --lamp-2:#ffe7a8; --red:#a8382c; --clay:#b8693f; --leaf:#5f7a4f;
+  --wall:#ecdcc0; --skin:#7a4a2e; --cloth:#f4efe4;
+  --display:"Fraunces","Iowan Old Style",Georgia,serif;
+  --body:"Crimson Pro",Georgia,"Times New Roman",serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:radial-gradient(120% 90% at 50% 0%,var(--desk),var(--desk-2));background-color:var(--desk);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;padding-inline:16px;padding-block:28px 40px}
+[hidden]{display:none!important}
+.wrap{max-width:1060px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.back{align-self:flex-start;font-style:italic;color:var(--ink);text-decoration:none;font-size:15px;border-bottom:1px solid var(--ink-soft)}
+.back:hover{border-bottom-color:var(--clay)}
+
+.book{position:relative;border-radius:6px 6px 8px 8px;background:var(--paper-edge);padding:7px;box-shadow:0 30px 50px -24px var(--shade),0 2px 0 var(--paper-edge)}
+.spread{display:grid;grid-template-columns:1fr 1.2fr;background:var(--paper);border-radius:4px;min-height:540px;position:relative;overflow:hidden}
+.spread::after{content:"";position:absolute;top:0;bottom:0;left:calc(100%/2.2);width:46px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,var(--shade) 48%,var(--shade) 52%,transparent);pointer-events:none}
+.leaf{min-width:0;padding:44px 44px 36px;display:flex;flex-direction:column;gap:14px}
+.text{animation:turn .6s ease both}
+.chapter{font-style:italic;color:var(--ink-soft);letter-spacing:.04em;font-size:15px}
+h1,h2{font-family:var(--display);font-weight:400;line-height:1.08;text-wrap:balance;margin:0}
+h2{font-size:clamp(28px,3.6vw,38px)}
+h1{font-size:clamp(46px,7.5vw,78px)}
+.text p{margin:0;max-width:34em}
+.text p:first-of-type::first-letter{font-family:var(--display);float:left;font-size:3.1em;line-height:.85;padding:6px 8px 0 0;color:var(--indigo)}
+.cover .text p::first-letter{all:unset}
+.folio{margin-top:auto;font-style:italic;color:var(--ink-soft);font-size:14px}
+
+.stage-leaf{padding:26px 22px 22px;display:flex;flex-direction:column;justify-content:center}
+.stage{position:relative;aspect-ratio:400/280;width:100%;max-width:100%;perspective:1100px;perspective-origin:50% 0%}
+.stage::after{content:"";position:absolute;left:4%;right:4%;bottom:-6px;height:14px;background:radial-gradient(closest-side,var(--shade),transparent);pointer-events:none}
+.layer{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform-origin:50% var(--oy,100%);animation:pop 1s cubic-bezier(.2,1.35,.45,1) calc(var(--d,0s) + var(--wait,0s)) both;filter:drop-shadow(0 5px 3px var(--shade))}
+.layer.flat{filter:none}
+@keyframes pop{from{transform:rotateX(88deg)}to{transform:rotateX(0)}}
+@keyframes turn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+.caption{font-style:italic;text-align:center;color:var(--ink-soft);font-size:14px;margin-top:14px}
+
+/* svg paint */
+.cut{stroke:var(--paper);stroke-width:2.4;stroke-linejoin:round;paint-order:stroke}
+.panel{stroke:var(--paper-edge);stroke-width:1.5}
+.calm{fill:url(#calm)} .storm{fill:url(#storm)} .dawn{fill:url(#dawn)} .dusk{fill:url(#dusk)} .night{fill:url(#night)}
+.sea{fill:var(--sea)} .sea2{fill:var(--sea-2)} .sea3{fill:var(--sea-3)} .foamf{fill:var(--foam)}
+.stone2f{fill:var(--stone-2)} .stone3f{fill:var(--stone-3)} .rockf{fill:var(--rock)}
+.lampf{fill:var(--lamp-2)} .redf{fill:var(--red)} .clayf{fill:var(--clay)}
+.wallf{fill:var(--wall)} .paperf{fill:var(--paper)} .inkf{fill:var(--ink)}
+.line{fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.crest{fill:none;stroke:var(--foam);stroke-width:1.8;stroke-linecap:round}
+.lbl{fill:var(--ink-soft);font-family:var(--body);font-style:italic;font-size:13px;paint-order:stroke;stroke:var(--paper);stroke-width:3px}
+.skinp{fill:var(--skin)} .hair{fill:#1f2236} .robe{fill:var(--cloth)} .drape{fill:var(--drape,var(--sea-2))}
+.robe,.drape,.skinp,.hair{stroke:#1f2236;stroke-width:.7;stroke-linejoin:round}
+.fig.keeper{--drape:#3f5f7a} .fig.amara{--drape:var(--red)} .fig.ife{--drape:var(--lamp)} .fig.yemi{--drape:var(--leaf)}
+
+/* pull tab */
+.pull{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.pull label{font-style:italic;color:var(--ink-soft);font-size:14px}
+.pull output{font-weight:500;color:var(--ink)}
+#beam{width:100%;height:28px}
+#beam5,#glow5,.boat5{transition:opacity .3s ease,transform .3s ease}
+#fire5{transition:transform .3s ease}
+
+/* motion */
+.bob{animation:bob 3.4s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+.drift{animation:drift 4.5s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+.drift:nth-child(2n){animation-duration:5.6s}
+.sweep{animation:sweep 6s ease-in-out infinite alternate;transform-box:view-box;transform-origin:300px 81px}
+.rainfall{animation:rain .9s linear infinite}
+@keyframes bob{from{transform:translateY(-3px) rotate(-3deg)}to{transform:translateY(3px) rotate(3deg)}}
+@keyframes drift{from{transform:translateY(-6px) rotate(-10deg)}to{transform:translateY(10px) rotate(12deg)}}
+@keyframes sweep{from{transform:rotate(-4deg)}to{transform:rotate(5deg)}}
+@keyframes rain{from{transform:translate(0,0)}to{transform:translate(-20px,230px)}}
+.lessons{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.lessons li{display:grid;grid-template-columns:1.6em 1fr;gap:10px;align-items:baseline}
+.lessons b{font-family:var(--display);font-weight:400;color:var(--indigo)}
+.lessons span{font-size:15.5px;line-height:1.5}
+.moral{font-style:italic;font-size:18px;border-top:1px solid var(--paper-edge);padding-top:12px}
+
+.controls{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--display);font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--paper-edge);border-radius:999px;padding:8px 18px;cursor:pointer;box-shadow:0 3px 0 var(--paper-edge)}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:default;transform:none}
+.btn:focus-visible,.dots button:focus-visible,#beam:focus-visible,.back:focus-visible{outline:2px solid var(--clay);outline-offset:3px}
+.dots{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+.dots button{width:12px;height:12px;border-radius:2px;transform:rotate(45deg);border:1px solid var(--ink-soft);background:transparent;padding:0;cursor:pointer}
+.dots button[aria-current="true"]{background:var(--indigo);border-color:var(--indigo)}
+.hint{text-align:center;font-style:italic;color:var(--ink-soft);font-size:14px}
+@media (max-width:760px){
+  .spread{grid-template-columns:1fr;min-height:0}
+  .spread::after{display:none}
+  .stage-leaf{order:-1;padding:18px 12px 6px;border-bottom:1px dashed var(--paper-edge)}
+  .leaf{padding:24px 20px 26px}
+  body{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .layer,.text,.bob,.drift,.sweep,.rainfall{animation:none}
+  #beam5,#glow5,.boat5,#fire5{transition:none}
+}
+
+/* every page shares one grid cell, so the book is always as tall as its tallest page */
+.book{display:grid}
+.book > .page{grid-area:1/1;min-width:0;display:flex;flex-direction:column}
+.book > .page[hidden]{display:flex!important;visibility:hidden}
+.book > .page > .spread{flex:1}
+/* page-turn */
+.book{perspective:3200px}
+.flip{position:absolute;z-index:6;transform-style:preserve-3d;pointer-events:none;will-change:transform}
+.face{position:absolute;top:0;height:100%;background:var(--paper);overflow:hidden;display:flex;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.face > .leaf,.face > .spread{flex:1;min-width:0;height:100%}
+.face > .spread::after{display:none}
+.flip .face-front{left:0;width:100%}
+.flip .face-back{transform:rotateY(180deg)}
+.patch{position:absolute;z-index:5;pointer-events:none}
+.face .shade{position:absolute;inset:0;pointer-events:none;opacity:0}
+.flip-fwd .face-front .shade{background:linear-gradient(90deg,var(--shade),transparent 70%)}
+.flip-fwd .face-back .shade{background:linear-gradient(270deg,var(--shade),transparent 70%)}
+.flip-bwd .face-front .shade{background:linear-gradient(270deg,var(--shade),transparent 70%)}
+.flip-bwd .face-back .shade{background:linear-gradient(90deg,var(--shade),transparent 70%)}
+.static .layer,.static .text,.folded .layer,.folding .text{animation:none}
+.folded .layer{transform:rotateX(88deg)}
+.folding .layer{animation:fold .5s ease-in forwards}
+@keyframes fold{from{transform:rotateX(0)}to{transform:rotateX(88deg)}}
+</style>
+<link rel="stylesheet" href="../assets/book.css">
+<style>:root{--binding:#6b2b2b;--foil:#e9c46a;--foil-2:#e8a87c}</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <defs>
+  <linearGradient id="calm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0c995"/><stop offset="1" stop-color="#f8eadb"/></linearGradient>
+  <linearGradient id="storm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#27313f"/><stop offset="1" stop-color="#5c6879"/></linearGradient>
+  <linearGradient id="dawn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8d97a6"/><stop offset="1" stop-color="#ead8bf"/></linearGradient>
+  <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6d6283"/><stop offset="1" stop-color="#e8b991"/></linearGradient>
+  <linearGradient id="night" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2438"/><stop offset="1" stop-color="#3d4762"/></linearGradient>
+  <linearGradient id="beamL" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#ffe7a8" stop-opacity=".95"/><stop offset="1" stop-color="#ffe7a8" stop-opacity="0"/></linearGradient>
+  <linearGradient id="beamR" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffe7a8" stop-opacity=".95"/><stop offset="1" stop-color="#ffe7a8" stop-opacity="0"/></linearGradient>
+  <radialGradient id="glow"><stop offset=".2" stop-color="#ffe7a8" stop-opacity=".95"/><stop offset="1" stop-color="#ffe7a8" stop-opacity="0"/></radialGradient>
+
+  <!-- lighthouse, base at 0,0, lantern centre at 0,-135 -->
+  <g id="tower">
+   <path class="wallf" d="M-18 0 L-12-120 H12 L18 0z"/>
+   <path class="redf" d="M-16.7-40 L-15.4-60 H15.4 L16.7-40z M-14-80 L-12.7-100 H12.7 L14-80z"/>
+   <path class="inkf" d="M-5 0 v-14 a5 5 0 0 1 10 0 v14z"/>
+   <rect class="inkf" x="-3" y="-72" width="6" height="7" rx="1"/>
+   <rect class="inkf" x="-19" y="-125" width="38" height="5"/>
+   <rect x="-11" y="-146" width="22" height="21" style="fill:var(--glass,var(--lamp-2))" stroke="#1f2633" stroke-width="1.4"/>
+   <path d="M-3.6-146v21M3.6-146v21" stroke="#1f2633" stroke-width="1"/>
+   <path class="redf" d="M-14-146 L0-160 L14-146z"/>
+   <circle class="inkf" cx="0" cy="-162" r="2"/>
+  </g>
+  <g id="boat">
+   <path class="clayf" d="M-22-4 Q0 6 22-4 L18 4 Q0 10-18 4z"/>
+   <path class="line" d="M2-4 V-32" stroke-width="1.4"/>
+   <path class="paperf" d="M3-31 L3-7 L19-7z"/>
+  </g>
+  <g id="cottage">
+   <rect class="wallf" x="-30" y="-34" width="60" height="34"/>
+   <path class="redf" d="M-36-32 L0-56 L36-32z"/>
+   <rect class="lampf" x="-20" y="-24" width="12" height="11"/>
+   <path class="inkf" d="M6 0v-18h12v18z"/>
+  </g>
+  <g id="lens"><circle r="11" fill="#ffe7a8" stroke="#d99a2b" stroke-width="1.2"/><circle r="7.5" fill="none" stroke="#e5ad45" stroke-width="1"/><circle r="4" fill="none" stroke="#e5ad45" stroke-width="1"/><path d="M-6-6 q3-3 7-3" fill="none" stroke="#fffaf0" stroke-width="1.6" stroke-linecap="round"/></g>
+  <g id="fire">
+   <path class="lampf" d="M-9 0 Q-12-12-3-24 Q-2-13 3-18 Q11-9 9 0z"/>
+   <path fill="#ffe7a8" d="M-4 0 Q-5-8 0-13 Q5-7 4 0z"/>
+  </g>
+  <g id="bowl"><path class="stone3f" d="M-14-6 h28 l-4 7 h-20z"/><rect class="stone3f" x="-3" y="0" width="6" height="8"/></g>
+  <g id="key"><circle r="3" fill="none" stroke="#d9a441" stroke-width="1.6"/><path d="M3 0 h8 v3 M8 0 v3" fill="none" stroke="#d9a441" stroke-width="1.6"/></g>
+
+  <!-- people: feet at 0,0 -->
+  <g id="man">
+   <path class="skinp" d="M-6 0h4.5l.5-15h-4zM2 0h4.5l-1-15h-4z"/>
+   <path class="robe" d="M-10-14 L-8-38 Q0-42 8-38 L10-14 Q0-11-10-14z"/>
+   <path class="drape" d="M-8-38 Q2-32 10-17 L6-15 Q1-27-9-31z"/>
+   <rect class="skinp" x="-1.6" y="-43" width="3.4" height="6"/>
+   <path class="skinp" d="M6-36 Q14-32 17-24 l-3 .8 Q11-29 4-32z"/>
+   <circle class="skinp" cx="1" cy="-47" r="5.6"/>
+   <path class="hair" d="M-4.6-49 q1-6 6-6 q4.4 0 5.4 4 q-3-2-6-1.6 q-3 .6-5.4 3.6z"/>
+   <path class="hair" d="M2-43.5 q4.5 .6 5.6-3 q.5 7-5 8z"/>
+  </g>
+  <g id="woman">
+   <path class="robe" d="M-10 0 L-7-36 Q0-40 7-36 L11 0z"/>
+   <path class="drape" d="M-10 0 L-8-16 L10-16 L11 0z"/>
+   <path class="drape" d="M-7-36 Q0-30 7-36 L8-30 Q0-25-8-30z"/>
+   <rect class="skinp" x="-1.6" y="-41" width="3.2" height="6"/>
+   <path class="skinp" d="M5-34 Q12-28 13-21 l-3 .6 Q8-26 3-30z"/>
+   <circle class="skinp" cx="1" cy="-45" r="5.4"/>
+   <path class="drape" d="M-6-47 q2-10 13-6 q3 2 1 5 q-6-3-14 1z"/>
+  </g>
+  <g id="baby">
+   <ellipse class="drape" cx="0" cy="0" rx="8" ry="4.6" style="fill:var(--red)"/>
+   <circle class="skinp" cx="7" cy="-2" r="3.2"/>
+  </g>
+  <g id="waves">
+   <path class="sea3" d="M0 0q25-10 50 0t50 0 50 0 50 0 50 0 50 0 50 0 50 0V80H0z"/>
+   <path class="sea2" d="M-20 14q25-10 50 0t50 0 50 0 50 0 50 0 50 0 50 0 50 0 50 0V80H-20z"/>
+   <path class="sea" d="M0 28q25-10 50 0t50 0 50 0 50 0 50 0 50 0 50 0 50 0V80H0z"/>
+   <path class="crest" d="M20 24q8-5 16-1M120 24q8-5 16-1M220 24q8-5 16-1M320 24q8-5 16-1M70 10q8-5 16-1M170 10q8-5 16-1M270 10q8-5 16-1"/>
+  </g>
+  <g id="rain">
+   <path d="M20 0l-8 22M70 30l-8 22M120 6l-8 22M170 40l-8 22M220 10l-8 22M270 34l-8 22M320 4l-8 22M370 28l-8 22M45 80l-8 22M95 110l-8 22M145 84l-8 22M195 120l-8 22M245 90l-8 22M295 116l-8 22M345 86l-8 22M30 160l-8 22M80 190l-8 22M130 164l-8 22M180 196l-8 22M230 168l-8 22M280 192l-8 22M330 160l-8 22M380 186l-8 22" stroke="#c9d6e2" stroke-width="1.3" stroke-linecap="round" opacity=".7"/>
+  </g>
+ </defs>
+</svg>
+
+<div class="wrap">
+<a class="back" href="../">‹ All pop-up stories</a>
+<section class="closed" aria-label="Book cover">
+ <div class="closed-book">
+  <div class="block" aria-hidden="true"></div>
+  <div class="tassel" aria-hidden="true"></div>
+  <button type="button" class="cover-board" data-open aria-label="Open the book: The Keeper's Light">
+   <span class="eyebrow">An original pop-up story</span>
+   <svg class="emblem" viewBox="0 0 120 120" aria-hidden="true"><path d="M50 108 L54 44 H66 L70 108z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M52 80 H68 M53 62 H67" stroke="currentColor" stroke-width="1.4"/><rect x="53" y="30" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"/><path d="M50 30 L60 20 L70 30z" fill="currentColor"/><circle cx="60" cy="37" r="3" fill="currentColor"/><path d="M50 34 L8 22 M50 40 L8 50 M70 34 L112 22 M70 40 L112 50" stroke="var(--foil-2)" stroke-width="1.4" stroke-linecap="round"/><path d="M20 112 q10-5 20 0 t20 0 20 0 20 0" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+   <span><span class="title">The Keeper's Light</span><span class="sub">The night the sea came for the town</span></span>
+  </button>
+ </div>
+ <button type="button" class="open-tag" data-open>Open the cover ›</button>
+ <p class="meta">10 pages · Original story</p>
+</section>
+<main class="book" aria-live="polite">
+
+<!-- 0 cover -->
+<section class="page cover" data-name="Cover">
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">An original pop-up story</div>
+   <h1>The Keeper's Light</h1>
+   <p>A lighthouse keeper, a lens-maker, and the night the sea came for their town, the same night their daughter was born.</p>
+   <p style="color:var(--ink-soft);font-size:15px">Turn the pages to watch each scene fold up. Halfway through, pull the tab to light the beacon.</p>
+   <div class="folio">Written for the Pop-up Stories shelf</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel calm" x="8" y="4" width="384" height="272" rx="6"/>
+    <circle cx="96" cy="182" r="26" fill="#f6dfae"/>
+    <rect class="sea3" x="8" y="182" width="384" height="94"/>
+    <path class="line" d="M150 60q5-5 10 0q5-5 10 0M186 44q4-4 8 0q4-4 8 0" stroke-width="1.5"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
+    <g data-moves class="sweep"><polygon points="300,77 20,44 20,114 300,85" fill="url(#beamL)"/></g>
+    <circle cx="300" cy="81" r="22" fill="url(#glow)"/>
+    <g class="cut">
+     <path class="rockf" d="M226 246 Q246 214 284 210 Q330 204 354 214 Q380 226 394 246z"/>
+     <use href="#tower" transform="translate(300 216)"/>
+     <use href="#cottage" transform="translate(352 216) scale(.6)"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.36s;--oy:90%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <use href="#boat" transform="translate(176 220) scale(-.9 .9)"/>
+     <use href="#boat" transform="translate(112 228) scale(-.7 .7)"/>
+     <use href="#boat" transform="translate(60 222) scale(-.55 .55)"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.52s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#waves" transform="translate(0 226)"/>
+   </svg>
+  </div><div class="caption">The light on the Point</div></div>
+ </div>
+</section>
+
+<!-- 1 The Keeper -->
+<section class="page" data-name="The Keeper" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter One · The Point</div>
+   <h2>The Keeper and the Lens-Maker</h2>
+   <p>At the end of the harbour town, on a finger of black rock called the Point, stood a striped lighthouse. Its keeper was Kayode, who could row faster than any fisherman and climb all hundred and twelve steps without stopping for breath.</p>
+   <p>His wife, Amara, made the lens. She ground glass by hand into rings that caught the smallest flame and threw it miles out to sea. Every night the fishing fleet sailed out by that light, and every morning it brought them home.</p>
+   <div class="folio">i</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel dusk" x="8" y="4" width="384" height="272" rx="6"/>
+    <circle cx="330" cy="178" r="22" fill="#f6d39c"/>
+    <rect class="sea3" x="8" y="180" width="384" height="96"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
+    <g data-moves><polygon points="236,77 392,40 392,112 236,85" fill="url(#beamR)"/></g>
+    <circle cx="236" cy="81" r="20" fill="url(#glow)"/>
+    <g class="cut">
+     <path class="rockf" d="M150 240 Q170 214 210 210 Q262 206 286 218 Q304 228 312 240z"/>
+     <use href="#tower" transform="translate(236 216)"/>
+     <use href="#boat" transform="translate(340 210) scale(.6)"/>
+     <use href="#boat" transform="translate(70 214) scale(-.55 .55)"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="stone2f" d="M60 280 Q100 250 200 250 Q290 252 330 280z"/>
+     <use href="#man" class="fig keeper" transform="translate(150 256) scale(1.3)"/>
+     <use href="#woman" class="fig amara" transform="translate(196 258) scale(1.25)"/>
+     <use href="#lens" transform="translate(214 226) scale(.75)"/>
+    </g>
+    <text class="lbl" x="128" y="273">Kayode</text><text class="lbl" x="180" y="273">Amara</text>
+   </svg>
+  </div><div class="caption">The Point at dusk</div></div>
+ </div>
+</section>
+
+<!-- 2 The Night She Was Born -->
+<section class="page" data-name="The Night She Was Born" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Two · The storm</div>
+   <h2>The Night She Was Born</h2>
+   <p>Their daughter came early, on the wildest night anyone could remember. Rain hammered the shutters of the keeper's cottage and the wind made the tower hum like a struck bell. Amara named her Ifeoluwa, and they called her Ife.</p>
+   <p>But Kayode could not stop looking out to sea. The whole fleet was still out there, forty boats with half the town aboard, and somewhere beyond the reef they were steering by his light.</p>
+   <div class="folio">ii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel storm" x="8" y="4" width="384" height="272" rx="6"/>
+    <path d="M70 14 L58 52 L72 52 L60 92" fill="none" stroke="#ffe7a8" stroke-width="2.6" stroke-linejoin="round"/>
+    <rect class="sea2" x="8" y="186" width="384" height="90"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
+    <g data-moves><polygon points="322,90 392,64 392,120 322,98" fill="url(#beamR)"/></g>
+    <circle cx="322" cy="94" r="18" fill="url(#glow)"/>
+    <g class="cut">
+     <path class="rockf" d="M262 236 Q282 210 318 208 Q356 208 378 236z"/>
+     <use href="#tower" transform="translate(322 222) scale(.95)"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="stone2f" d="M30 280 L30 240 Q140 232 280 240 L280 280z"/>
+     <rect class="wallf" x="60" y="150" width="150" height="92"/>
+     <path class="redf" d="M48 154 L135 108 L222 154z"/>
+     <rect class="lampf" x="96" y="170" width="58" height="44"/>
+     <path d="M125 170v44M96 192h58" stroke="#7a5a2a" stroke-width="1.6"/>
+     <path class="inkf" d="M170 242v-34h24v34z"/>
+     <use href="#man" class="fig keeper" transform="translate(238 254) scale(1.3)"/>
+    </g>
+    <g opacity=".85"><use href="#woman" class="fig amara" transform="translate(116 216) scale(.62)"/><use href="#baby" transform="translate(124 200) scale(.6)"/></g>
+   </svg>
+   <svg class="layer flat" style="--d:.5s" viewBox="0 0 400 280" aria-hidden="true">
+    <g data-moves class="rainfall"><use href="#rain"/><use href="#rain" transform="translate(0 -230)"/></g>
+   </svg>
+  </div><div class="caption">The keeper's cottage, with the whole fleet still at sea</div></div>
+ </div>
+</section>
+
+<!-- 3 The Light Goes Out -->
+<section class="page" data-name="The Light Goes Out" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Three · Midnight</div>
+   <h2>The Light Goes Out</h2>
+   <p>Just after midnight a wave taller than the tower struck the Point. It burst the lantern windows, drowned the flame, and smashed Amara's lens into a thousand pieces across the stones.</p>
+   <p>Kayode climbed through the spray to the top. Only the heart of the lens had survived, a disc of glass no bigger than a hand. Without the light, the fleet would run onto the reef in the dark, and the surge behind them would reach the town before morning.</p>
+   <div class="folio">iii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel storm" x="8" y="4" width="384" height="272" rx="6"/>
+    <path d="M330 10 L318 46 L334 46 L320 86" fill="none" stroke="#ffe7a8" stroke-width="2.6" stroke-linejoin="round"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="rockf" d="M110 250 Q140 216 196 212 Q256 210 284 226 Q300 236 306 250z"/>
+     <use href="#tower" transform="translate(200 226) scale(1.15)" style="--glass:#2b3340"/>
+     <path d="M206 72 l-5 14 6 10 -7 16" fill="none" stroke="#1f2633" stroke-width="1.6"/>
+     <g class="foamf"><circle cx="112" cy="226" r="18"/><circle cx="134" cy="206" r="15"/><circle cx="122" cy="186" r="11"/><circle cx="150" cy="226" r="14"/><circle cx="96" cy="208" r="10"/><circle cx="140" cy="176" r="7"/><circle cx="108" cy="170" r="5"/></g>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
+    <g>
+     <g class="drift"><path d="M150 50 l8 -4 -2 10z" fill="#e8f1f6" stroke="#8fa6b4" stroke-width=".8"/></g>
+     <g class="drift"><path d="M248 70 l9 3 -7 7z" fill="#ffe7a8" stroke="#d99a2b" stroke-width=".8"/></g>
+     <g class="drift"><path d="M170 96 l6 -6 3 9z" fill="#e8f1f6" stroke="#8fa6b4" stroke-width=".8"/></g>
+     <g class="drift"><path d="M262 112 l8 2 -5 7z" fill="#e8f1f6" stroke="#8fa6b4" stroke-width=".8"/></g>
+     <g class="drift"><path d="M132 120 l7 -2 -2 8z" fill="#ffe7a8" stroke="#d99a2b" stroke-width=".8"/></g>
+    </g>
+    <g class="cut">
+     <path class="stone3f" d="M220 280 Q250 248 300 246 Q350 246 392 262 V280z"/>
+     <use href="#man" class="fig keeper" transform="translate(312 256) scale(1.25)"/>
+    </g>
+    <circle cx="334" cy="218" r="20" fill="url(#glow)"/>
+    <use href="#lens" transform="translate(334 218) scale(.9)"/>
+    <text class="lbl" x="212" y="196">the heart of the lens</text>
+    <use href="#waves" transform="translate(0 252)"/>
+   </svg>
+  </div><div class="caption">The lantern shatters</div></div>
+ </div>
+</section>
+
+<!-- 4 The Choice -->
+<section class="page" data-name="The Choice" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Four · Before dawn</div>
+   <h2>The Choice</h2>
+   <p>Beyond the reef stood the Outer Rock, where the first keepers had burned a fire long before the tower was built. A beacon lit there would show the fleet the one safe channel. But whoever lit it would be standing in the path of the surge when it came.</p>
+   <p>Amara would not let him go alone. The heart of the lens needed a steady hand while the fire was fed. So they wrapped Ife in her mother's red shawl and carried her through the rain to Mama Yemi, the old harbourmaster.</p>
+   <p>Kayode hung his brass keeper's key around the baby's neck. "Keep it until you need it," he said. Then they walked down to the boat together and did not look back, because they knew that if they did, they could not go.</p>
+   <div class="folio">iv</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel storm" x="8" y="4" width="384" height="272" rx="6"/>
+    <rect class="sea2" x="8" y="196" width="384" height="80"/>
+    <path class="rockf" d="M330 198 q14-26 34-26 q14 4 20 26z"/>
+    <text class="lbl" x="318" y="166">the Outer Rock</text>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <rect class="wallf" x="30" y="112" width="160" height="134"/>
+     <path class="stone2f" d="M20 116 L110 80 L200 116z"/>
+     <rect class="lampf" x="86" y="160" width="50" height="86"/>
+     <rect class="lampf" x="44" y="140" width="26" height="24"/>
+     <path d="M160 130v12" stroke="#1f2633" stroke-width="1.2"/>
+     <rect x="154" y="142" width="12" height="16" rx="2" fill="#ffe7a8" stroke="#1f2633" stroke-width="1"/>
+    </g>
+    <circle cx="160" cy="150" r="14" fill="url(#glow)"/>
+   </svg>
+   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="stone2f" d="M8 280 V250 Q200 240 392 252 V280z"/>
+     <use href="#woman" class="fig yemi" transform="translate(110 254) scale(1.3)"/>
+     <use href="#baby" transform="translate(124 214)"/>
+     <use href="#key" transform="translate(124 224) scale(.7)"/>
+     <use href="#woman" class="fig amara" transform="translate(236 256) scale(1.25)"/>
+     <use href="#man" class="fig keeper" transform="translate(276 256) scale(1.3)"/>
+     <path class="line" d="M264 196 L306 246" stroke-width="2.4"/>
+    </g>
+    <use href="#lens" transform="translate(252 226) scale(.55)"/>
+    <text class="lbl" x="84" y="274">Mama Yemi</text>
+   </svg>
+   <svg class="layer flat" style="--d:.5s" viewBox="0 0 400 280" aria-hidden="true">
+    <g data-moves class="rainfall"><use href="#rain"/><use href="#rain" transform="translate(0 -230)"/></g>
+   </svg>
+  </div><div class="caption">Mama Yemi's door</div></div>
+ </div>
+</section>
+
+<!-- 5 The Outer Rock (interactive) -->
+<section class="page" data-name="The Outer Rock" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Five · The beacon</div>
+   <h2>The Outer Rock</h2>
+   <p>They rowed through waves that stood up like walls, and somehow they reached the Outer Rock. In a hollow at its top lay the old beacon bowl. Kayode broke up the boat's own seats for fuel and soaked them in lamp oil, and Amara raised the heart of the lens behind the flame.</p>
+   <p>Far out in the dark, forty boats were running straight for the reef.</p>
+   <div class="pull">
+    <label for="beam">Pull the tab to light the beacon</label>
+    <input type="range" id="beam" min="0" max="100" value="8">
+    <output id="beam-out" for="beam">Only a spark. The boats are heading for the reef.</output>
+   </div>
+   <div class="folio">v</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel storm" x="8" y="4" width="384" height="272" rx="6"/>
+    <rect class="sea2" x="8" y="172" width="384" height="104"/>
+    <g fill="#ffe7a8"><circle cx="24" cy="168" r="2"/><circle cx="34" cy="166" r="2"/><circle cx="46" cy="169" r="2"/></g>
+    <rect class="stone3f" x="8" y="170" width="50" height="6"/>
+    <text class="lbl" x="16" y="158">the harbour</text>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
+    <g id="beam5" data-moves opacity="0"><polygon points="318,146 20,150 20,212 318,156" fill="url(#beamL)"/></g>
+    <g id="glow5" data-moves opacity=".2"><circle cx="318" cy="150" r="34" fill="url(#glow)"/></g>
+    <g class="cut">
+     <path class="rockf" d="M262 250 Q276 196 304 164 Q320 154 336 164 Q362 194 376 250z"/>
+     <use href="#bowl" transform="translate(318 164)"/>
+     <use href="#woman" class="fig amara" transform="translate(340 196) scale(.95)"/>
+     <use href="#man" class="fig keeper" transform="translate(292 198) scale(.95)"/>
+    </g>
+    <g id="fire5" data-moves transform="translate(318 158) scale(.3)"><use href="#fire"/></g>
+    <use href="#lens" transform="translate(330 150) scale(.5)"/>
+   </svg>
+   <svg class="layer" style="--d:.36s;--oy:90%" viewBox="0 0 400 280" aria-hidden="true">
+    <g id="fleet5" data-moves>
+     <g class="boat5 cut"><use href="#boat" transform="scale(-.7 .7)"/></g>
+     <g class="boat5 cut"><use href="#boat" transform="scale(-.6 .6)"/></g>
+     <g class="boat5 cut"><use href="#boat" transform="scale(-.5 .5)"/></g>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.5s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#waves" transform="translate(0 240)"/>
+    <g class="cut"><path class="rockf" d="M96 256 l10-26 8 14 9-24 10 22 8-14 9 28z M170 258 l8-18 7 10 8-20 9 18 7-8 6 18z"/></g>
+    <text class="lbl" x="118" y="276">the reef</text>
+   </svg>
+  </div><div class="caption">The beacon on the Outer Rock</div></div>
+ </div>
+</section>
+
+<!-- 6 The Wave -->
+<section class="page" data-name="The Wave" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Six · Dawn</div>
+   <h2>The Wave</h2>
+   <p>All night they kept the fire alive, and boat after boat slipped through the channel into the harbour. When the grey light came, only one boat was still outside the reef: old Bayo's, slow and heavy with water.</p>
+   <p>Then the surge arrived, a wall of sea that filled the whole horizon. The fishermen on the quay watched the beacon rise with it, still burning, still pointing the way, until Bayo's boat crossed the harbour mouth. Then the wave passed over the Outer Rock, and the rock was bare.</p>
+   <div class="folio">vi</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel dawn" x="8" y="4" width="384" height="272" rx="6"/>
+    <rect class="sea3" x="8" y="190" width="384" height="86"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <rect class="stone3f" x="8" y="194" width="104" height="44"/>
+     <use href="#man" transform="translate(30 196) scale(.55)" class="fig"/>
+     <use href="#woman" transform="translate(48 196) scale(.55)" class="fig yemi"/>
+     <use href="#man" transform="translate(66 196) scale(.55)" class="fig keeper"/>
+     <use href="#man" transform="translate(84 196) scale(.55)" class="fig"/>
+     <use href="#boat" transform="translate(140 214) scale(-.8 .8)"/>
+    </g>
+    <text class="lbl" x="122" y="186">Bayo's boat</text>
+   </svg>
+   <svg class="layer" style="--d:.36s;--oy:90%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="sea2" d="M392 256 V58 Q340 34 290 70 Q256 98 262 136 Q282 116 302 124 Q276 152 266 194 Q252 230 214 256z"/>
+     <path class="sea" d="M392 256 V96 Q356 82 330 108 Q306 134 312 170 Q300 210 270 256z"/>
+     <path class="foamf" d="M290 70 Q256 98 262 136 Q282 116 302 124 Q300 104 312 92 Q302 88 290 70z"/>
+    </g>
+    <circle cx="352" cy="64" r="26" fill="url(#glow)"/>
+    <use href="#fire" transform="translate(352 70) scale(.7)"/>
+   </svg>
+   <svg class="layer" style="--d:.5s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#waves" transform="translate(0 244)"/>
+   </svg>
+  </div><div class="caption">The beacon rides the wave</div></div>
+ </div>
+</section>
+
+<!-- 7 The Keeper's Girl -->
+<section class="page" data-name="The Keeper's Girl" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Seven · Ten years on</div>
+   <h2>The Keeper's Girl</h2>
+   <p>Mama Yemi raised Ife in the harbourmaster's house. The tower stood dark, because no one in town could grind a lens like Amara's, and no one wanted the keeper's job after what had happened.</p>
+   <p>And people told the story wrong. Some had seen the keepers rowing away from the Point in the storm, and they whispered that Kayode and Amara had abandoned the light and fled. Ife heard the whispers. Every evening she climbed the dark tower with the brass key around her neck and sat in the empty lantern room, looking out at the Outer Rock.</p>
+   <div class="folio">vii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel dusk" x="8" y="4" width="384" height="272" rx="6"/>
+    <rect class="sea3" x="8" y="188" width="384" height="88"/>
+    <path class="rockf" d="M340 190 q10-18 24-18 q10 3 14 18z"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="rockf" d="M60 246 Q80 216 130 212 Q186 210 210 226 Q222 236 226 246z"/>
+     <use href="#tower" transform="translate(142 226) scale(1.15)" style="--glass:#3a3f4c"/>
+     <use href="#woman" class="fig ife" transform="translate(142 70) scale(.42)"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <path class="stone2f" d="M200 280 Q240 252 300 252 Q360 252 392 260 V280z"/>
+     <use href="#man" class="fig" transform="translate(290 262) scale(1.15)"/>
+     <use href="#woman" class="fig yemi" transform="translate(326 262) scale(-1.15 1.15)" style="--drape:#7b5ea7"/>
+    </g>
+    <path d="M300 196 q8-10 18-4 M304 186 q6-8 14-4" fill="none" stroke="#56586a" stroke-width="1.4" stroke-dasharray="2 3"/>
+    <text class="lbl" x="262" y="276">the whispers</text>
+    <use href="#waves" transform="translate(-200 256)"/>
+   </svg>
+  </div><div class="caption">The dark tower, ten years on</div></div>
+ </div>
+</section>
+
+<!-- 8 The Heart of the Lens -->
+<section class="page" data-name="The Heart of the Lens" data-scene-after="3" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Chapter Eight · The second storm</div>
+   <h2>The Heart of the Lens</h2>
+   <p>When Ife was sixteen, a storm like the old one came down on the town with the fleet still at sea. Mama Yemi took a box from under her bed. Inside, wrapped in a faded red shawl, lay a disc of glass. "It washed up at the foot of the Outer Rock the morning after," she said. "Bayo found it. It was still warm."</p>
+   <p>Then she told Ife everything: the shattered lantern, the fire on the rock, forty boats brought home. Her parents had not run from their post. They had carried it out to sea.</p>
+   <p>Ife ran to the Point, unlocked the tower with her father's key, and set the heart of the lens behind a new flame. For the first time in sixteen years, the light came on. One by one, the boats turned for home.</p>
+   <div class="folio">viii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel storm" x="8" y="4" width="384" height="272" rx="6"/>
+    <rect class="sea2" x="8" y="186" width="384" height="90"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true">
+    <g data-moves><polygon points="200,58 8,24 8,100 200,66" fill="url(#beamL)"/><polygon points="200,58 392,24 392,100 200,66" fill="url(#beamR)"/></g>
+    <circle cx="200" cy="62" r="30" fill="url(#glow)"/>
+    <g class="cut">
+     <path class="rockf" d="M110 246 Q136 216 190 212 Q250 210 276 226 Q290 236 296 246z"/>
+     <use href="#tower" transform="translate(200 230) scale(1.25)"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.36s;--oy:90%" viewBox="0 0 400 280" aria-hidden="true">
+    <g class="cut">
+     <use href="#boat" transform="translate(60 196) scale(.55)"/>
+     <use href="#boat" transform="translate(320 200) scale(-.6 .6)"/>
+     <use href="#boat" transform="translate(360 190) scale(-.45 .45)"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.5s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#waves" transform="translate(0 244)"/>
+    <g class="cut">
+     <path class="stone3f" d="M8 280 V258 H150 V280z"/>
+     <use href="#man" class="fig" transform="translate(30 262) scale(.85)"/>
+     <use href="#woman" class="fig yemi" transform="translate(56 262) scale(.85)"/>
+     <use href="#man" class="fig keeper" transform="translate(84 262) scale(.85)"/>
+     <use href="#woman" class="fig" transform="translate(110 262) scale(.85)" style="--drape:#7b5ea7"/>
+    </g>
+    <text class="lbl" x="160" y="274">the whole town, watching</text>
+   </svg>
+   <svg class="layer flat" style="--d:.6s" viewBox="0 0 400 280" aria-hidden="true">
+    <g data-moves class="rainfall"><use href="#rain"/><use href="#rain" transform="translate(0 -230)"/></g>
+   </svg>
+  </div><div class="caption">The light comes on again</div></div>
+ </div>
+</section>
+
+<!-- 9 Afterword -->
+<section class="page" data-name="Afterword" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Afterword · The night of lanterns</div>
+   <h2>What the Light Keeps</h2>
+   <p>Ife became the keeper of the Point. On the anniversary of the great storm, the whole town carries paper lanterns down to the quay and sets them on the water, one for every boat that came home, and two more that drift out toward the Outer Rock.</p>
+   <ul class="lessons">
+    <li><b>✦</b><span><strong>Love is often unseen.</strong> The greatest thing Kayode and Amara ever did, almost nobody saw.</span></li>
+    <li><b>✦</b><span><strong>What we give keeps going.</strong> The light on the rock was the same light their daughter carried up the tower.</span></li>
+    <li><b>✦</b><span><strong>A story half told is a story told wrong.</strong> The town judged the keepers by the one part it could see.</span></li>
+    <li><b>✦</b><span><strong>Every keeper was first someone kept.</strong> A whole harbour raised Ife before she watched over it.</span></li>
+   </ul>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s" viewBox="0 0 400 280" aria-hidden="true">
+    <rect class="panel night" x="8" y="4" width="384" height="272" rx="6"/>
+    <g fill="#f4ead6"><circle cx="40" cy="30" r="1.4"/><circle cx="90" cy="54" r="1"/><circle cx="140" cy="22" r="1.4"/><circle cx="210" cy="40" r="1"/><circle cx="260" cy="18" r="1.4"/><circle cx="310" cy="48" r="1"/><circle cx="360" cy="26" r="1.4"/></g>
+    <rect class="sea2" x="8" y="178" width="384" height="98"/>
+    <path class="rockf" d="M330 182 q12-20 28-20 q12 3 16 20z"/>
+   </svg>
+   <svg class="layer" style="--d:.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true">
+    <g data-moves><polygon points="70,92 392,60 392,126 70,100" fill="url(#beamR)" opacity=".8"/></g>
+    <circle cx="70" cy="96" r="20" fill="url(#glow)"/>
+    <g class="cut">
+     <path class="rockf" d="M8 244 Q30 214 70 210 Q110 208 130 226 Q140 236 142 244z"/>
+     <use href="#tower" transform="translate(70 231)"/>
+    </g>
+   </svg>
+   <svg class="layer" style="--d:.36s" viewBox="0 0 400 280" aria-hidden="true">
+    <use href="#waves" transform="translate(0 222)"/>
+    <g>
+     <g class="bob"><circle cx="160" cy="236" r="10" fill="url(#glow)"/><rect x="155" y="230" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
+     <g class="bob"><circle cx="196" cy="246" r="10" fill="url(#glow)"/><rect x="191" y="240" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
+     <g class="bob"><circle cx="230" cy="232" r="10" fill="url(#glow)"/><rect x="225" y="226" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
+     <g class="bob"><circle cx="262" cy="250" r="10" fill="url(#glow)"/><rect x="257" y="244" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
+     <g class="bob"><circle cx="128" cy="252" r="10" fill="url(#glow)"/><rect x="123" y="246" width="10" height="9" rx="2" fill="#ffe7a8" stroke="#b8693f"/></g>
+     <g class="bob"><circle cx="318" cy="204" r="9" fill="url(#glow)"/><rect x="314" y="199" width="8" height="8" rx="2" fill="#ffe7a8" stroke="#a8382c"/></g>
+     <g class="bob"><circle cx="336" cy="198" r="9" fill="url(#glow)"/><rect x="332" y="193" width="8" height="8" rx="2" fill="#ffe7a8" stroke="#a8382c"/></g>
+    </g>
+    <text class="lbl" x="276" y="226">two for the keepers</text>
+   </svg>
+  </div><div class="caption">The end</div></div>
+ </div>
+</section>
+
+</main>
+
+<nav class="controls" aria-label="Turn pages">
+ <button class="btn" id="prev" type="button">‹ Back</button>
+ <div class="dots" id="dots"></div>
+ <button class="btn" id="next" type="button">Turn the page ›</button>
+</nav>
+<div class="hint" id="where">Cover</div>
+</div>
+
+<script>
+(function(){
+  const pages=[...document.querySelectorAll('.page')];
+  const dots=document.getElementById('dots');
+  const prev=document.getElementById('prev'), next=document.getElementById('next'), where=document.getElementById('where');
+  let cur=0;
+  pages.forEach((p,i)=>{
+    const b=document.createElement('button');
+    b.type='button'; b.id='dot-'+i; b.setAttribute('aria-label','Go to '+p.dataset.name);
+    b.addEventListener('click',()=>go(i)); dots.appendChild(b);
+  });
+  function show(i){
+    cur=Math.max(0,Math.min(pages.length-1,i));
+    pages.forEach((p,j)=>{p.hidden=j!==cur;p.inert=j!==cur;});
+    pages[cur].getAnimations({subtree:true}).forEach(a=>{if(window.CSSAnimation&&a instanceof CSSAnimation){a.cancel();a.play();}});
+    [...dots.children].forEach((d,j)=>d.setAttribute('aria-current',j===cur?'true':'false'));
+    prev.disabled=cur===0; next.disabled=cur===pages.length-1;
+    next.textContent=cur===0?'Open the book ›':'Turn the page ›';
+    where.textContent=pages[cur].dataset.name+' · page '+(cur+1)+' of '+pages.length;
+    document.dispatchEvent(new CustomEvent('pagechange',{detail:{cur,total:pages.length}}));
+  }
+  prev.addEventListener('click',()=>go(cur-1));
+  next.addEventListener('click',()=>go(cur+1));
+  document.addEventListener('keydown',e=>{
+    if(e.target.id==='beam')return;
+    if(e.key==='ArrowRight')go(cur+1);
+    if(e.key==='ArrowLeft')go(cur-1);
+  });
+  let sx=null;
+  const book=document.querySelector('.book');
+  /* page-turn: the old page lifts at the gutter and turns over */
+  const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
+  const narrow=matchMedia('(max-width:760px)');
+  let turning=null;
+  function rel(el){const b=book.getBoundingClientRect(),r=el.getBoundingClientRect();return{l:r.left-b.left,t:r.top-b.top,w:r.width,h:r.height};}
+  function put(el,r){el.style.left=r.l+'px';el.style.top=r.t+'px';el.style.width=r.w+'px';el.style.height=r.h+'px';}
+  function face(node,page,mode){
+    const c=node.cloneNode(true);
+    c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));
+    c.removeAttribute('id');
+    const f=document.createElement('div');
+    f.className='face '+mode+(page.classList.contains('cover')?' cover':'');
+    f.appendChild(c);
+    const s=document.createElement('div');s.className='shade';f.appendChild(s);
+    return f;
+  }
+  function go(i){
+    i=Math.max(0,Math.min(pages.length-1,i));
+    if(i===cur)return;
+    if(turning)turning.finish();
+    if(reduceMotion.matches||!book.animate){show(i);return;}
+    const fwd=i>cur, oldP=pages[cur], newP=pages[i];
+    const L=p=>p.querySelector('.leaf.text'), R=p=>p.querySelector('.stage-leaf');
+    const flip=document.createElement('div');
+    flip.className='flip '+(fwd?'flip-fwd':'flip-bwd');
+    const extras=[];
+    let front,back;
+    if(narrow.matches){
+      const r=rel(oldP.querySelector('.spread'));
+      put(flip,r);
+      flip.style.transformOrigin=fwd?'left center':'right center';
+      front=face(oldP.querySelector('.spread'),oldP,'face-front folding');
+      back=document.createElement('div');back.className='face face-back';
+      back.style.left='0';back.style.width='100%';
+      const s=document.createElement('div');s.className='shade';back.appendChild(s);
+    }else{
+      const rl=rel(L(oldP)), rr=rel(R(oldP));
+      const patch=face(fwd?L(oldP):R(oldP),oldP,'patch '+(fwd?'static':'folding'));
+      put(patch,fwd?rl:rr); extras.push(patch);
+      if(fwd){
+        put(flip,rr); flip.style.transformOrigin='left center';
+        front=face(R(oldP),oldP,'face-front folding');
+        back=face(L(newP),newP,'face-back static');
+        back.style.left='0'; back.style.width=rl.w+'px';
+      }else{
+        put(flip,rl); flip.style.transformOrigin='right center';
+        front=face(L(oldP),oldP,'face-front static');
+        back=face(R(newP),newP,'face-back folded');
+        back.style.right='0'; back.style.width=rr.w+'px';
+        newP.style.setProperty('--wait','.8s');
+      }
+    }
+    flip.append(front,back);
+    extras.forEach(e=>book.appendChild(e));
+    book.appendChild(flip);
+    if(fwd||narrow.matches)newP.style.removeProperty('--wait');
+    show(i);
+    const dur=950, ease='cubic-bezier(.45,.05,.3,1)';
+    const anim=flip.animate([{transform:'rotateY(0deg)'},{transform:'rotateY('+(fwd?-180:180)+'deg)'}],{duration:dur,easing:ease,fill:'forwards'});
+    const fs=front.querySelector('.shade'), bs=back.querySelector('.shade');
+    fs&&fs.animate([{opacity:0},{opacity:.9}],{duration:dur/2,easing:'ease-in',fill:'forwards'});
+    bs&&bs.animate([{opacity:.9},{opacity:0}],{duration:dur/2,delay:dur/2,easing:'ease-out',fill:'forwards'});
+    const done=()=>{flip.remove();extras.forEach(e=>e.remove());if(turning===anim)turning=null;};
+    anim.onfinish=done; anim.oncancel=done;
+    turning=anim;
+  }
+
+  book.addEventListener('touchstart',e=>{sx=e.target.id==='beam'?null:e.touches[0].clientX},{passive:true});
+  book.addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>60)go(cur+(dx<0?1:-1));sx=null},{passive:true});
+  const beam=document.getElementById('beam'), out=document.getElementById('beam-out');
+  const B=document.getElementById('beam5'), G=document.getElementById('glow5'), fire=document.getElementById('fire5');
+  const boats=[...document.querySelectorAll('#fleet5 .boat5')];
+  /* each boat runs from heading at the reef to its place in the channel */
+  const route=[[[196,226],[86,182]],[[244,230],[140,186]],[[150,220],[196,190]]];
+  const clamp=x=>Math.max(0,Math.min(1,x));
+  function light(){
+    const t=+beam.value/100;
+    fire.setAttribute('transform','translate(318 158) scale('+(0.3+0.7*clamp(t*2)).toFixed(2)+')');
+    G.setAttribute('opacity',(0.2+0.8*clamp(t*1.6)).toFixed(2));
+    B.setAttribute('opacity',clamp((t-0.25)/0.45).toFixed(2));
+    B.setAttribute('transform','rotate('+(-18+18*clamp((t-0.25)/0.5)).toFixed(1)+' 318 150)');
+    boats.forEach((g,i)=>{
+      const p=clamp((t-0.45-i*0.12)/0.32), [a,b]=route[i];
+      g.setAttribute('transform','translate('+(a[0]+(b[0]-a[0])*p).toFixed(1)+' '+(a[1]+(b[1]-a[1])*p).toFixed(1)+')');
+    });
+    out.textContent = t<0.2 ? 'Only a spark. The boats are heading for the reef.'
+      : t<0.5 ? 'The fire catches behind the lens.'
+      : t<0.85 ? 'The beam swings across the water. The first boats turn.'
+      : 'The whole fleet turns for the channel and home.';
+  }
+  beam.addEventListener('input',light); light();
+  window.popupBook={show:show,go:go};
+  show(0);
+})();
+</script>
+<script src="../assets/book.js"></script>
+</body>
+</html>

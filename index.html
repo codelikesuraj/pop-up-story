@@ -105,25 +105,36 @@ h2{margin:0;font-family:var(--display);font-weight:360;font-size:clamp(30px,4vw,
 .step p{margin:0;color:var(--muted)}
 footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:60px 48px;color:var(--faint);font-size:16px;font-style:italic}
 
-@media (max-width:1000px){.spine.more,.bookend{display:none}}
+@media (max-width:1180px){.spine.more,.bookend{display:none}}
+@media (max-width:1000px){
+  .spines,.bookend{display:none}
+  .row,.tags{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;padding:0 12px;max-width:780px}
+  .row{min-height:0}
+  .cover{width:100%;height:auto;aspect-ratio:236/318}
+  .cover .name{font-size:clamp(14px,3.4vw,30px)}
+  .tagwrap{width:auto}
+  .tag{width:100%}
+}
 @media (max-width:720px){
   body{font-size:18px}
   .hero{padding-block:44px 20px}
   .lede{font-size:19px}
   .ctas{flex-direction:column;align-items:stretch;width:100%}
   .shelf{padding-top:56px}
-  .row,.tags{gap:14px;padding:0 6px}
+  .row,.tags{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:0 4px}
+  .tagwrap{width:auto!important}
+  .tag{width:100%!important}
   .row{min-height:0}
-  .cover{width:140px;height:190px;padding:18px 10px 14px 16px}
+  .cover{width:100%;height:auto;aspect-ratio:236/318;padding:14px 8px 12px 14px}
   .cover::before{inset:9px 8px 9px 14px}
   .cover .kind{display:none}
-  .cover svg{width:66px}
-  .cover .name{font-size:20px}
+  .cover svg{width:56%}
+  .cover .name{font-size:clamp(14px,4.4vw,19px)}
   .tagwrap{width:140px}
   .tag{width:128px;padding:10px 8px 13px}
-  .tag b{font-size:16px}
+  .tag b{font-size:15px}
   .tag span{font-size:13px}
-  .spines{margin-left:0}
+  .spines{display:none}
   .spine.next{width:16px;height:186px}
   .spine.next span,.spine.more,.bookend{display:none}
   .book .peek{display:none}
@@ -153,7 +164,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;paddin
    <p class="lede">Old tales and new ones, cut from paper. Pick a book from the shelf, open the cover, and watch each scene rise as you turn the pages.</p>
   </div>
   <div class="ctas">
-   <a class="btn primary" href="blue-across-the-water/">Open the newest book</a>
+   <a class="btn primary" href="the-keepers-light/">Open the newest book</a>
    <a class="btn ghost" href="#shelf">Browse the shelf</a>
   </div>
  </section>
@@ -178,8 +189,16 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;paddin
      <span class="name">Blue Across the Water</span>
     </div>
    </a>
+   <a class="book" href="the-keepers-light/" aria-label="Open The Keeper's Light, an original story, 10 pages" style="position:relative;--cloth:#6b2b2b;--foil:#e9c46a;--foil-2:#e8a87c">
+    <span class="peek">Open the book ›</span>
+    <div class="cover">
+     <span class="kind">An original story</span>
+     <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M50 108 L54 44 H66 L70 108z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M52 80 H68 M53 62 H67" stroke="currentColor" stroke-width="1.4"/><rect x="53" y="30" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"/><path d="M50 30 L60 20 L70 30z" fill="currentColor"/><circle cx="60" cy="37" r="3" fill="currentColor"/><path d="M50 34 L8 22 M50 40 L8 50 M70 34 L112 22 M70 40 L112 50" stroke="var(--foil-2)" stroke-width="1.4" stroke-linecap="round"/><path d="M20 112 q10-5 20 0 t20 0 20 0 20 0" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+     <span class="name">The Keeper's Light</span>
+    </div>
+   </a>
    <div class="spines" aria-hidden="true">
-    <div class="spine next"><span>Next story</span></div>
+    <div class="spine next" style="background-color:#3b4a6b"><span>Next story</span></div>
     <div class="spine more" style="width:38px;height:272px;background-color:#4d5d3a"></div>
     <div class="spine more" style="width:52px;height:286px;background-color:#b8862f"></div>
     <div class="spine more" style="width:34px;height:258px;background-color:#3b4a6b;transform:rotate(8deg);transform-origin:bottom left;margin-left:6px"></div>
@@ -190,6 +209,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;paddin
   <div class="tags">
    <div class="tagwrap"><div class="tag"><b>Icarus</b><span>Greek myth · 11 pages</span></div></div>
    <div class="tagwrap"><div class="tag"><b>Blue Across the Water</b><span>Love story · 10 pages</span></div></div>
+   <div class="tagwrap"><div class="tag"><b>The Keeper's Light</b><span>Original story · 10 pages</span></div></div>
   </div>
  </section>
 
