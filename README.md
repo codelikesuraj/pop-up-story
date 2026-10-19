@@ -11,6 +11,7 @@ Interactive pop-up storybooks, built as plain HTML and hosted on GitHub Pages.
 | Icarus | https://codelikesuraj.github.io/pop-up-story/icarus/ |
 | Blue Across the Water | https://codelikesuraj.github.io/pop-up-story/blue-across-the-water/ |
 | The Keeper's Light | https://codelikesuraj.github.io/pop-up-story/the-keepers-light/ |
+| The Quiet Parlour | https://codelikesuraj.github.io/pop-up-story/the-quiet-parlour/ |
 
 ## Layout
 
@@ -27,7 +28,10 @@ Interactive pop-up storybooks, built as plain HTML and hosted on GitHub Pages.
 ├── blue-across-the-water/
 │   ├── index.html
 │   └── og-image.png
-└── the-keepers-light/
+├── the-keepers-light/
+│   ├── index.html
+│   └── og-image.png
+└── the-quiet-parlour/
     ├── index.html
     └── og-image.png
 ```

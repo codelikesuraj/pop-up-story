@@ -1,0 +1,1132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Quiet Parlour · A Pop-up Storybook</title>
+<meta name="description" content="An original pop-up story: a twelve-year-old boy who helped care for his sick father, the quiet night he lost him, and the years of carrying it after.">
+<meta name="author" content="Abdulbaki Suraj">
+<meta name="theme-color" content="#4a3020">
+<meta name="color-scheme" content="light">
+<link rel="canonical" href="https://codelikesuraj.github.io/pop-up-story/the-quiet-parlour/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='12' y='14' width='40' height='28' rx='8' fill='%238a3b2a'/%3E%3Crect x='9' y='36' width='46' height='12' rx='4' fill='%236e2c1f'/%3E%3Cpath d='M12 48v8M52 48v8' stroke='%235a3a24' stroke-width='4'/%3E%3C/svg%3E">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pop-up Stories">
+<meta property="og:title" content="The Quiet Parlour · A Pop-up Storybook">
+<meta property="og:description" content="A boy, his father, and the years after. An original interactive pop-up story about caring, loss, and the grief that waits.">
+<meta property="og:url" content="https://codelikesuraj.github.io/pop-up-story/the-quiet-parlour/">
+<meta property="og:image" content="https://codelikesuraj.github.io/pop-up-story/the-quiet-parlour/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The open Quiet Parlour pop-up book: the title on the left page, an empty armchair and an old radio in an evening parlour on the right">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Quiet Parlour · A Pop-up Storybook">
+<meta name="twitter:description" content="An original interactive pop-up story about a boy, his father, and the years after.">
+<meta name="twitter:image" content="https://codelikesuraj.github.io/pop-up-story/the-quiet-parlour/og-image.png">
+<meta name="twitter:image:alt" content="The open Quiet Parlour pop-up book: the title on the left page, an empty armchair and an old radio in an evening parlour on the right">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400&family=Crimson+Pro:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+/* Layout: the series' open pop-up book. Left leaf = story, right leaf = cut-paper scene of the house, the parlour and the years after. */
+:root{
+  --paper:#fbf8f1; --paper-edge:#e6dccb; --shade:rgba(35,30,40,.18);
+  --ink:#1f2633; --ink-soft:#56586a;
+  --wall:#ecdcbf; --floor:#a8774f;
+  --display:"Fraunces","Iowan Old Style",Georgia,serif;
+  --body:"Crimson Pro",Georgia,"Times New Roman",serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;padding-inline:16px;padding-block:28px 40px}
+[hidden]{display:none!important}
+.wrap{max-width:1060px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.back{align-self:flex-start;font-style:italic;color:var(--ink);text-decoration:none;font-size:15px;border-bottom:1px solid var(--ink-soft)}
+
+.book{position:relative;border-radius:6px 6px 8px 8px;background:var(--paper-edge);padding:7px;box-shadow:0 30px 50px -24px var(--shade),0 2px 0 var(--paper-edge)}
+.spread{display:grid;grid-template-columns:1fr 1.2fr;background:var(--paper);border-radius:4px;min-height:540px;position:relative;overflow:hidden}
+.spread::after{content:"";position:absolute;top:0;bottom:0;left:calc(100%/2.2);width:46px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,var(--shade) 48%,var(--shade) 52%,transparent);pointer-events:none}
+.leaf{min-width:0;padding:44px 44px 36px;display:flex;flex-direction:column;gap:14px}
+.text{animation:turn .6s ease both}
+.chapter{font-style:italic;color:var(--ink-soft);letter-spacing:.04em;font-size:15px}
+h1,h2{font-family:var(--display);font-weight:400;line-height:1.08;text-wrap:balance;margin:0}
+h2{font-size:clamp(28px,3.6vw,38px)}
+h1{font-size:clamp(46px,7.5vw,78px)}
+.text p{margin:0;max-width:34em}
+.text p:first-of-type::first-letter{font-family:var(--display);float:left;font-size:3.1em;line-height:.85;padding:6px 8px 0 0}
+.cover .text p::first-letter{all:unset}
+.folio{margin-top:auto;font-style:italic;color:var(--ink-soft);font-size:14px}
+
+.stage-leaf{padding:26px 22px 22px;display:flex;flex-direction:column;justify-content:center}
+.stage{position:relative;aspect-ratio:400/280;width:100%;max-width:100%;perspective:1100px;perspective-origin:50% 0%}
+.layer{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform-origin:50% var(--oy,100%);animation:pop 1s cubic-bezier(.2,1.35,.45,1) calc(var(--d,0s) + var(--wait,0s)) both;filter:drop-shadow(0 5px 3px var(--shade))}
+.layer.flat{filter:none}
+@keyframes pop{from{transform:rotateX(88deg)}to{transform:rotateX(0)}}
+@keyframes turn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+.caption{font-style:italic;text-align:center;color:var(--ink-soft);font-size:14px;margin-top:14px}
+
+/* svg paint */
+.panel{stroke:var(--paper-edge);stroke-width:1.5}
+.woodf{fill:#7a4f30} .doorf{fill:#8a5a36} .chairf{fill:#8a3b2a} .chair2{fill:#6e2c1f}
+.sheetf{fill:#f4efe4;stroke:#c7b894;stroke-width:.6} .blanketf{fill:#c9a24a;stroke:#9a7a32;stroke-width:.6}
+.skinp{fill:#6b3f26} .hair{fill:#1d1a1c} .pants{fill:#2d2a33}
+.drape{fill:var(--drape,#3f5f7a)} .veil{fill:var(--veil,var(--drape,#3f5f7a))}
+.skin-l{fill:none;stroke:#6b3f26;stroke-width:2.6;stroke-linecap:round}
+.drape,.veil,.skinp,.pants{stroke:#1d1a1c;stroke-width:.6;stroke-linejoin:round}
+.lbl{fill:var(--ink-soft);font-family:var(--body);font-style:italic;font-size:12px}
+
+/* the family and the people around them */
+.p-daddy{--drape:#3f5f7a} .p-shadow{--drape:#3f5f7a}
+.p-mama{--drape:#2f6b55;--veil:#24584a}
+.p-yusuf{--drape:#d39a3a} .p-ahmad{--drape:#b8492f}
+.p-aisha{--drape:#6b4a8a;--veil:#5a3c78} .p-zainab{--drape:#c46d7a;--veil:#a8566a}
+.p-khadijah{--drape:#8a5a2b;--veil:#6e4520} .p-ibrahim{--drape:#6b6f78}
+.p-bashir{--drape:#2c4a6b} .p-rukayya{--drape:#a8382c;--veil:#8a2c22}
+.p-rel{--drape:#8c8774;--veil:#76715f} .p-friend{--drape:#4f7a5f} .p-kid2{--drape:#5c7fa0}
+.p-uni{--drape:#ece6d6} .p-yusuf-uni{--drape:#f6e3b5}
+
+/* pull tab */
+.pull{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.pull label{font-style:italic;color:var(--ink-soft);font-size:14px}
+.pull output{font-weight:500;color:var(--ink)}
+#shave{width:100%;height:28px}
+#razor7{transition:transform .15s ease,opacity .3s ease}
+
+/* motion */
+.rise{animation:rise 3.6s ease-in-out var(--r,0s) infinite;transform-box:fill-box;transform-origin:center}
+.shuttle{animation:shuttle 7s ease-in-out infinite alternate}
+.bob{animation:bob 2.6s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+.sway{animation:sway 4s ease-in-out infinite alternate}
+.steam{animation:steam 2.8s ease-in-out infinite}
+.drip{animation:drip 1.6s ease-in infinite}
+.flicker{animation:flicker .9s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
+.pass{animation:pass 3.2s linear infinite}
+.wave{animation:wave 5s ease-in-out infinite alternate}
+.leave{animation:leave 6s ease-in infinite}
+@keyframes rise{0%{transform:translateY(6px);opacity:0}25%{opacity:1}100%{transform:translateY(-26px);opacity:0}}
+@keyframes shuttle{from{transform:translateX(0)}to{transform:translateX(120px)}}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-6px)}}
+@keyframes sway{from{transform:translateX(-4px)}to{transform:translateX(5px)}}
+@keyframes steam{0%{transform:translateY(4px);opacity:0}40%{opacity:1}100%{transform:translateY(-14px);opacity:0}}
+@keyframes drip{0%{transform:translateY(0);opacity:1}80%{opacity:1}100%{transform:translateY(22px);opacity:0}}
+@keyframes flicker{from{transform:scaleY(.85)}to{transform:scaleY(1.1)}}
+@keyframes pass{from{transform:translateX(0)}to{transform:translateX(46px)}}
+@keyframes wave{from{transform:scaleY(.86)}to{transform:scaleY(1.04)}}
+@keyframes leave{0%{transform:translateX(0);opacity:1}80%{opacity:1}100%{transform:translateX(60px);opacity:0}}
+
+.controls{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--display);font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--paper-edge);border-radius:999px;padding:8px 18px;cursor:pointer;box-shadow:0 3px 0 var(--paper-edge)}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:default;transform:none}
+.dots{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+.dots button{width:12px;height:12px;border-radius:2px;border:1px solid var(--ink-soft);background:transparent;padding:0;cursor:pointer}
+.hint{text-align:center;font-style:italic;color:var(--ink-soft);font-size:14px}
+@media (max-width:760px){
+  .spread{grid-template-columns:1fr;min-height:0}
+  .spread::after{display:none}
+  .stage-leaf{order:-1;padding:18px 12px 6px;border-bottom:1px dashed var(--paper-edge)}
+  .leaf{padding:24px 20px 26px}
+  body{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .layer,.text,.rise,.shuttle,.bob,.sway,.steam,.drip,.flicker,.pass,.wave,.leave{animation:none}
+  #razor7{transition:none}
+}
+
+/* every page shares one grid cell, so the book is always as tall as its tallest page */
+.book{display:grid}
+.book > .page{grid-area:1/1;min-width:0;display:flex;flex-direction:column}
+.book > .page[hidden]{display:flex!important;visibility:hidden}
+.book > .page > .spread{flex:1}
+/* page-turn */
+.book{perspective:3200px}
+.flip{position:absolute;z-index:6;transform-style:preserve-3d;pointer-events:none;will-change:transform}
+.face{position:absolute;top:0;height:100%;background:var(--paper);overflow:hidden;display:flex;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.face > .leaf,.face > .spread{flex:1;min-width:0;height:100%}
+.face > .spread::after{display:none}
+.flip .face-front{left:0;width:100%}
+.flip .face-back{transform:rotateY(180deg)}
+.patch{position:absolute;z-index:5;pointer-events:none}
+.face .shade{position:absolute;inset:0;pointer-events:none;opacity:0}
+.flip-fwd .face-front .shade{background:linear-gradient(90deg,var(--shade),transparent 70%)}
+.flip-fwd .face-back .shade{background:linear-gradient(270deg,var(--shade),transparent 70%)}
+.flip-bwd .face-front .shade{background:linear-gradient(270deg,var(--shade),transparent 70%)}
+.flip-bwd .face-back .shade{background:linear-gradient(90deg,var(--shade),transparent 70%)}
+.static .layer,.static .text,.folded .layer,.folding .text{animation:none}
+.folded .layer{transform:rotateX(88deg)}
+.folding .layer{animation:fold .5s ease-in forwards}
+@keyframes fold{from{transform:rotateX(0)}to{transform:rotateX(88deg)}}
+
+</style>
+<link rel="stylesheet" href="../assets/book.css">
+<style>:root{--binding:#3d4a3a;--foil:#e7c46f;--foil-2:#d9a86c}</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <defs>
+  <linearGradient id="day" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fc3d6"/><stop offset="1" stop-color="#f3e6cc"/></linearGradient>
+  <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6d6283"/><stop offset="1" stop-color="#e8b991"/></linearGradient>
+  <linearGradient id="night" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#151b2c"/><stop offset="1" stop-color="#2f3852"/></linearGradient>
+  <linearGradient id="dawn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7f8aa3"/><stop offset="1" stop-color="#efd2b0"/></linearGradient>
+  <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bfe0ea"/><stop offset="1" stop-color="#6f9fb3"/></linearGradient>
+  <radialGradient id="lamp"><stop offset=".1" stop-color="#ffe2a3" stop-opacity=".85"/><stop offset="1" stop-color="#ffe2a3" stop-opacity="0"/></radialGradient>
+  <linearGradient id="spill" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffd98a" stop-opacity=".85"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></linearGradient>
+  <linearGradient id="slit" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffd98a" stop-opacity="0"/><stop offset=".2" stop-color="#ffe7a8"/><stop offset=".8" stop-color="#ffe7a8"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></linearGradient>
+
+  <!-- people. Feet at 0,0 unless noted. Colours come from --drape / --veil on the <use>. -->
+  <g id="man">
+   <path class="pants" d="M-6 0h4.6l.6-12h-5z M1.6 0h4.6l-.4-12h-5z"/>
+   <path class="drape" d="M-11-10 L-9-38 Q0-43 9-38 L11-10 Q0-7-11-10z"/>
+   <path class="drape" d="M-9-37 L-14-18 L-10-17 L-6-31z M9-37 L14-18 L10-17 L6-31z"/>
+   <circle class="skinp" cx="-12" cy="-16" r="2.4"/><circle class="skinp" cx="12" cy="-16" r="2.4"/>
+   <rect class="skinp" x="-2" y="-44" width="4" height="6"/>
+   <circle class="skinp" cx="0" cy="-49" r="6.2"/>
+   <path class="hair" d="M-6.2-50 q0-7.5 6.2-7.5 q6.2 0 6.2 7.5 q-2-4-6.2-4 q-4.2 0-6.2 4z"/>
+  </g>
+  <g id="manL">
+   <path class="pants" d="M-6 0h4.6l.6-12h-5z M1.6 0h4.6l-.4-12h-5z"/>
+   <path class="drape" d="M-11-10 L-9-38 Q0-43 9-38 L11-10 Q0-7-11-10z"/>
+   <path class="drape" d="M-9-37 L-14-18 L-10-17 L-6-31z"/>
+   <circle class="skinp" cx="-12" cy="-16" r="2.4"/>
+   <rect class="skinp" x="-2" y="-44" width="4" height="6"/>
+   <circle class="skinp" cx="0" cy="-49" r="6.2"/>
+   <path class="hair" d="M-6.2-50 q0-7.5 6.2-7.5 q6.2 0 6.2 7.5 q-2-4-6.2-4 q-4.2 0-6.2 4z"/>
+  </g>
+  <path id="beard" class="hair" d="M-6.2-50 q-.4 10 6.2 11 q6.6-1 6.2-11 q-1 5.5-6.2 6 q-5.2-.5-6.2-6z"/>
+  <path id="kufi" d="M-6.4-52 q0-6.6 6.4-6.6 q6.4 0 6.4 6.6z" fill="#f1ece0" stroke="#1d1a1c" stroke-width=".7"/>
+  <g id="woman">
+   <path class="drape" d="M-11 0 L-8-36 Q0-40 8-36 L11 0z"/>
+   <path class="veil" d="M-8-36 L-13-17 L-9-16 L-5-30z M8-36 L13-17 L9-16 L5-30z"/>
+   <circle class="skinp" cx="-11" cy="-15" r="2.3"/><circle class="skinp" cx="11" cy="-15" r="2.3"/>
+   <path class="veil" d="M-10-30 Q-11-55 0-56 Q11-55 10-30 Q0-25-10-30z"/>
+   <ellipse class="skinp" cx="0" cy="-46" rx="4.4" ry="5.4"/>
+  </g>
+  <g id="womanL">
+   <path class="drape" d="M-11 0 L-8-36 Q0-40 8-36 L11 0z"/>
+   <path class="veil" d="M-8-36 L-13-17 L-9-16 L-5-30z"/>
+   <circle class="skinp" cx="-11" cy="-15" r="2.3"/>
+   <path class="veil" d="M-10-30 Q-11-55 0-56 Q11-55 10-30 Q0-25-10-30z"/>
+   <ellipse class="skinp" cx="0" cy="-46" rx="4.4" ry="5.4"/>
+  </g>
+  <g id="boy">
+   <path class="skinp" d="M-4.5 0h3.4l.4-10h-4z M1.1 0h3.4l-.4-10h-4z"/>
+   <path class="pants" d="M-6.5-9 h13 l.5-8 h-14z"/>
+   <path class="drape" d="M-7-16 L-6-30 Q0-33 6-30 L7-16z"/>
+   <path class="skin-l" d="M-6-28 L-9-17 M6-28 L9-17"/>
+   <rect class="skinp" x="-1.6" y="-34" width="3.2" height="4"/>
+   <circle class="skinp" cx="0" cy="-37" r="5.4"/>
+   <path class="hair" d="M-5.4-38 q0-6 5.4-6 q5.4 0 5.4 6 q-2-3-5.4-3 q-3.4 0-5.4 3z"/>
+  </g>
+  <g id="boyR">
+   <path class="skinp" d="M-4.5 0h3.4l.4-10h-4z M1.1 0h3.4l-.4-10h-4z"/>
+   <path class="pants" d="M-6.5-9 h13 l.5-8 h-14z"/>
+   <path class="drape" d="M-7-16 L-6-30 Q0-33 6-30 L7-16z"/>
+   <path class="skin-l" d="M6-28 L9-17"/>
+   <rect class="skinp" x="-1.6" y="-34" width="3.2" height="4"/>
+   <circle class="skinp" cx="0" cy="-37" r="5.4"/>
+   <path class="hair" d="M-5.4-38 q0-6 5.4-6 q5.4 0 5.4 6 q-2-3-5.4-3 q-3.4 0-5.4 3z"/>
+  </g>
+  <!-- seated, origin at the hip on the seat, feet reach +22 -->
+  <g id="sitMan">
+   <path class="pants" d="M10 0 H16 V20 H10z"/><path class="hair" d="M10 19 h10 v3 h-10z"/>
+   <path class="drape" d="M-8-6 H16 V2 H-8z"/>
+   <path class="drape" d="M-10 0 L-8-28 Q-1-32 6-28 L8 0z"/>
+   <path class="drape" d="M4-26 L14-12 L10-10 L1-21z"/><circle class="skinp" cx="13" cy="-10" r="2.4"/>
+   <rect class="skinp" x="-3.5" y="-34" width="4" height="6"/>
+   <circle class="skinp" cx="-1.5" cy="-39" r="6.2"/>
+   <path class="hair" d="M-7.7-40 q0-7.5 6.2-7.5 q6.2 0 6.2 7.5 q-2-4-6.2-4 q-4.2 0-6.2 4z"/>
+  </g>
+  <g id="sitWoman">
+   <path class="drape" d="M10 0 H16 V22 H10z"/>
+   <path class="drape" d="M-8-6 H16 V2 H-8z"/>
+   <path class="drape" d="M-10 0 L-8-28 Q-1-32 6-28 L8 0z"/>
+   <path class="veil" d="M4-26 L14-12 L10-10 L1-21z"/><circle class="skinp" cx="13" cy="-10" r="2.3"/>
+   <path class="veil" d="M-11-22 Q-12-47-1.5-48 Q9-47 8-22 Q-1.5-18-11-22z"/>
+   <ellipse class="skinp" cx="-1.5" cy="-38" rx="4.3" ry="5.3"/>
+  </g>
+  <g id="floorKid">
+   <path class="pants" d="M-11 0 Q0-7 11 0 Q0 3-11 0z"/>
+   <path class="drape" d="M-6-2 L-5-18 Q0-21 5-18 L6-2z"/>
+   <rect class="skinp" x="-1.5" y="-22" width="3" height="4"/>
+   <circle class="skinp" cx="0" cy="-25" r="5"/>
+   <path class="hair" d="M-5-26 q0-5.6 5-5.6 q5 0 5 5.6 q-2-3-5-3 q-3 0-5 3z"/>
+  </g>
+  <!-- bed, origin on the floor at its centre; #bedMan sits up against the pillow -->
+  <g id="bed">
+   <rect class="woodf" x="-56" y="-60" width="8" height="60"/>
+   <rect class="woodf" x="-50" y="-24" width="102" height="18"/>
+   <rect class="woodf" x="46" y="-34" width="6" height="34"/>
+   <rect class="sheetf" x="-48" y="-32" width="96" height="10" rx="3"/>
+   <ellipse class="sheetf" cx="-38" cy="-40" rx="9" ry="7"/>
+  </g>
+  <g id="bedMan">
+   <path class="drape" d="M-40-30 L-38-56 Q-30-60-22-56 L-18-30z"/>
+   <rect class="skinp" x="-32" y="-63" width="4" height="6"/>
+   <circle class="skinp" cx="-30" cy="-67" r="6.5"/>
+   <path class="hair" d="M-36.5-68 q0-7.8 6.5-7.8 q6.5 0 6.5 7.8 q-2-4.2-6.5-4.2 q-4.4 0-6.5 4.2z"/>
+   <path class="drape" d="M-22-52 L-10-38 L-13-36 L-25-46z"/><circle class="skinp" cx="-10" cy="-36" r="2.5"/>
+  </g>
+  <path id="blanket" class="blanketf" d="M-26-32 Q12-40 50-32 V-22 H-26z"/>
+  <g id="dashman" fill="none" stroke="#f3e6cc" stroke-width="1.3" stroke-dasharray="3 3">
+   <circle cx="0" cy="-49" r="6.4"/>
+   <path d="M-6 0 L-7-10 L-11-10 L-9-38 Q0-43 9-38 L11-10 L7-10 L6 0z"/>
+  </g>
+
+  <!-- things -->
+  <g id="armchair">
+   <rect class="chairf" x="-28" y="-60" width="56" height="42" rx="10"/>
+   <rect class="chairf" x="-30" y="-26" width="60" height="18" rx="5"/>
+   <rect class="chair2" x="-35" y="-38" width="11" height="32" rx="4"/>
+   <rect class="chair2" x="24" y="-38" width="11" height="32" rx="4"/>
+   <path class="woodf" d="M-31-8h4v8h-4z M27-8h4v8h-4z"/>
+  </g>
+  <g id="radio">
+   <path d="M11-20 L22-42" stroke="#2b2420" stroke-width="1.4" stroke-linecap="round"/><circle cx="22" cy="-42" r="1.4" fill="#2b2420"/>
+   <rect x="-17" y="-20" width="34" height="20" rx="3" fill="#6b4a32" stroke="#2b2420" stroke-width=".8"/>
+   <circle cx="-7" cy="-10" r="6.4" fill="#3a2a1e"/>
+   <path d="M-11-13h8M-12-10h10M-11-7h8" stroke="#6b4a32" stroke-width=".9"/>
+   <rect x="2" y="-16" width="12" height="5" rx="1" fill="#f2d79a"/>
+   <circle cx="5" cy="-5" r="2" fill="#d9b25a"/><circle cx="11" cy="-5" r="2" fill="#d9b25a"/>
+  </g>
+  <g id="table"><rect class="woodf" x="-16" y="-26" width="32" height="5" rx="1"/><path d="M-12-21v21 M12-21v21" stroke="#5a3a24" stroke-width="3"/></g>
+  <g id="tv"><path d="M-14 0 L-10-10 H10 L14 0z" class="woodf"/><rect x="-24" y="-42" width="48" height="32" rx="3" fill="#2a2a30"/><rect x="-20" y="-38" width="40" height="24" fill="url(#screen)"/></g>
+  <g id="win"><rect x="-26" y="-32" width="52" height="64" style="fill:var(--sky,url(#dusk))" stroke="#6b4a32" stroke-width="3"/><path d="M0-32v64M-26 0h52" stroke="#6b4a32" stroke-width="2"/></g>
+  <g id="door"><rect x="-19" y="-68" width="38" height="68" fill="#5a3a24"/><rect x="-16" y="-65" width="32" height="65" class="doorf"/><circle cx="10" cy="-33" r="2" fill="#d9a441"/></g>
+  <g id="clock"><circle r="10" fill="#f4efe4" stroke="#2b2420" stroke-width="1.2"/><path d="M0 1V-7 M1 1 V-5" stroke="#2b2420" stroke-width="1.4" stroke-linecap="round"/><circle r="1.2" fill="#2b2420"/></g>
+  <g id="house">
+   <rect x="-60" y="-56" width="120" height="56" fill="#e9c46a"/>
+   <path d="M-68-54 L0-86 L68-54z" fill="#9a4a2c"/>
+   <rect x="-12" y="-34" width="18" height="34" fill="#5a3a24"/>
+   <rect x="-46" y="-40" width="20" height="16" fill="#3a4a5a"/><rect x="26" y="-40" width="20" height="16" fill="#3a4a5a"/>
+  </g>
+  <g id="hospital">
+   <rect x="-52" y="-74" width="104" height="74" fill="#eef1ee"/>
+   <rect x="-56" y="-80" width="112" height="8" fill="#c9d1cc"/>
+   <g fill="#8fb3c2"><rect x="-42" y="-64" width="14" height="10"/><rect x="-20" y="-64" width="14" height="10"/><rect x="6" y="-64" width="14" height="10"/><rect x="28" y="-64" width="14" height="10"/><rect x="-42" y="-44" width="14" height="10"/><rect x="28" y="-44" width="14" height="10"/></g>
+   <rect x="-9" y="-30" width="18" height="30" fill="#8fb3c2"/>
+   <path d="M-4-98h8v6h6v8h-6v6h-8v-6h-6v-8h6z" fill="#2f7a55"/>
+  </g>
+  <g id="car"><path d="M-22-6 Q-22-14-12-14 L-6-22 H10 L16-14 Q22-14 22-6z" fill="#f4efe4" stroke="#2b2420" stroke-width=".8"/><rect x="-4" y="-20" width="7" height="6" fill="#8fb3c2"/><rect x="5" y="-20" width="7" height="6" fill="#8fb3c2"/><circle cx="-12" cy="-5" r="4.5" fill="#2b2420"/><circle cx="12" cy="-5" r="4.5" fill="#2b2420"/></g>
+  <g id="gate"><rect x="-8" y="-70" width="16" height="70" fill="#d9ccb0" stroke="#a99c83"/><rect x="-10" y="-74" width="20" height="6" fill="#a99c83"/></g>
+  <g id="ball"><circle r="6" fill="#f4efe4" stroke="#2b2420" stroke-width=".8"/><path d="M-2-2 l2-2 2 2-1 3h-2z" fill="#2b2420"/></g>
+  <g id="pills"><rect x="-6" y="-9" width="7" height="9" rx="1.5" fill="#f4efe4" stroke="#7a6a58" stroke-width=".7"/><rect x="-6" y="-11" width="7" height="3" fill="#2f7a55"/><circle cx="5" cy="-1.5" r="1.5" fill="#e9c46a"/><circle cx="9" cy="-1.5" r="1.5" fill="#d98a8a"/></g>
+  <g id="cup"><path d="M-4-9 h8 l-1 9 h-6z" fill="#8fb3c2" stroke="#2b2420" stroke-width=".6"/></g>
+  <g id="razor"><path d="M0 0 L0 12" stroke="#3a4a5a" stroke-width="2" stroke-linecap="round"/><rect x="-4.5" y="-2.4" width="9" height="2.8" rx=".8" fill="#c9d1cc" stroke="#2b2420" stroke-width=".5"/></g>
+  <g id="stove"><rect x="-30" y="-26" width="60" height="26" class="woodf"/><rect x="-28" y="-30" width="56" height="5" fill="#4a4a50"/><rect x="-22" y="-35" width="12" height="5" fill="#2b2420"/><rect x="8" y="-35" width="12" height="5" fill="#2b2420"/></g>
+  <g id="pot"><path d="M-14-20 h28 l-2 20 h-24z" fill="#7d8790" stroke="#2b2420" stroke-width=".8"/><rect x="-16" y="-22" width="32" height="3" rx="1" fill="#5d666e"/></g>
+  <g id="cake"><rect x="-14" y="-14" width="28" height="14" rx="2" fill="#f4efe4" stroke="#c46d7a"/><path d="M-14-8 q3.5 3 7 0 t7 0 7 0 7 0" fill="none" stroke="#c46d7a" stroke-width="1.4"/><rect x="-1" y="-22" width="2" height="8" fill="#9fc3d6"/></g>
+  <g id="phone"><rect x="-3" y="-6" width="6" height="11" rx="1.4" fill="#2b2420"/><rect x="-2" y="-4.6" width="4" height="7" fill="#9fc3d6"/></g>
+  <g id="basin"><path d="M-14-4 h28 l-4 6 h-20z" fill="#b8693f" stroke="#2b2420" stroke-width=".6"/><circle cx="-6" cy="-6" r="4" fill="#e9c46a"/><circle cx="2" cy="-7" r="4.4" fill="#d9822b"/><circle cx="9" cy="-5" r="3.4" fill="#5f7a4f"/></g>
+  <g id="bag"><path d="M-8-12 h16 l2 12 h-20z" fill="#5f7a4f" stroke="#2b2420" stroke-width=".6"/><path d="M-4-12 q4-7 8 0" fill="none" stroke="#2b2420" stroke-width="1.2"/></g>
+  <g id="minaret"><rect x="-4" y="-60" width="8" height="60"/><path d="M-6-60 h12 v-4 h-12z M-4-64 q4-12 8 0z"/><path d="M0-76 v-4"/></g>
+  <g id="note" fill="#ffe7a8"><ellipse cx="0" cy="0" rx="3.2" ry="2.4" transform="rotate(-20)"/><path d="M2.6-1 V-14 q5 2 6 7" fill="none" stroke="#ffe7a8" stroke-width="1.4" stroke-linecap="round"/></g>
+  <g id="bubble"><ellipse cx="0" cy="0" rx="30" ry="16" fill="#fbf8f1" stroke="#c7b894"/><path d="M-10 13 l-6 10 14-9z" fill="#fbf8f1" stroke="#c7b894"/></g>
+  <g id="thinkbubble"><ellipse cx="0" cy="0" rx="46" ry="30" fill="#fbf8f1" stroke="#c7b894"/><circle cx="-34" cy="34" r="5" fill="#fbf8f1" stroke="#c7b894"/><circle cx="-42" cy="46" r="3" fill="#fbf8f1" stroke="#c7b894"/></g>
+  <g id="tap"><rect x="-40" y="-6" width="80" height="6" fill="#c9d1cc"/><path d="M-30 0 h60 l-6 22 h-48z" fill="#e6e9e6" stroke="#9aa3a6"/><path d="M-2-6 V-24 H14 V-18" fill="none" stroke="#7d8790" stroke-width="4" stroke-linecap="round"/><circle cx="-2" cy="-26" r="3" fill="#7d8790"/></g>
+  <g id="spanner"><path d="M0 0 L12-12" stroke="#7d8790" stroke-width="2.4" stroke-linecap="round"/><path d="M10-16 a4 4 0 1 1 6 4 l-3-1 -1-3z" fill="#7d8790"/></g>
+  <g id="hostel"><rect x="-60" y="-110" width="120" height="110" fill="#d8cdb6"/><g fill="#6f8796"><rect x="-48" y="-96" width="16" height="14"/><rect x="-22" y="-96" width="16" height="14"/><rect x="6" y="-96" width="16" height="14"/><rect x="32" y="-96" width="16" height="14"/><rect x="-48" y="-66" width="16" height="14"/><rect x="-22" y="-66" width="16" height="14"/><rect x="6" y="-66" width="16" height="14"/><rect x="32" y="-66" width="16" height="14"/></g><rect x="-10" y="-34" width="20" height="34" fill="#5a3a24"/></g>
+  <g id="school"><rect x="-120" y="-70" width="240" height="70" fill="#e3d2b0"/><rect x="-124" y="-76" width="248" height="8" fill="#9a4a2c"/><g fill="#6f8796"><rect x="-104" y="-56" width="22" height="18"/><rect x="-66" y="-56" width="22" height="18"/><rect x="44" y="-56" width="22" height="18"/><rect x="82" y="-56" width="22" height="18"/></g><rect x="-14" y="-44" width="28" height="44" fill="#5a3a24"/></g>
+ </defs>
+</svg>
+
+<div class="wrap">
+<a class="back" href="../">‹ All pop-up stories</a>
+<section class="closed" aria-label="Book cover">
+ <div class="closed-book">
+  <div class="block" aria-hidden="true"></div>
+  <div class="tassel" aria-hidden="true"></div>
+  <button type="button" class="cover-board" data-open aria-label="Open the book: The Quiet Parlour">
+   <span class="eyebrow">An original pop-up story</span>
+   <svg class="emblem" viewBox="0 0 120 120" aria-hidden="true"><rect x="34" y="40" width="52" height="40" rx="10" fill="none" stroke="currentColor" stroke-width="2"/><rect x="30" y="72" width="60" height="16" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M30 88v10M90 88v10" stroke="currentColor" stroke-width="2"/><rect x="92" y="78" width="20" height="12" rx="2" fill="currentColor"/><path d="M106 78 l6-12" stroke="currentColor" stroke-width="1.4"/><g fill="var(--foil-2)"><ellipse cx="98" cy="58" rx="3" ry="2.2"/><path d="M100.5 57 V46 q4 2 5 6" fill="none" stroke="var(--foil-2)" stroke-width="1.3"/><ellipse cx="108" cy="42" rx="2.6" ry="2"/><path d="M110.5 41 V32" fill="none" stroke="var(--foil-2)" stroke-width="1.2"/></g><path d="M14 104 H106" stroke="currentColor" stroke-width="1.4"/></svg>
+   <span><span class="title">The Quiet Parlour</span><span class="sub">A boy, his father, and the years after</span></span>
+  </button>
+ </div>
+ <button type="button" class="open-tag" data-open>Open the cover ›</button>
+ <p class="meta">32 pages · Original story</p>
+</section>
+<main class="book" aria-live="polite">
+
+<!-- 0 cover -->
+<section class="page cover" data-name="Cover">
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">An original pop-up story</div>
+   <h1>The Quiet Parlour</h1>
+   <p>A boy, his father, and the years after. A story about caring for a sick parent at a young age, being told to “man up”, and the grief that waits.</p>
+   <p style="color:var(--ink-soft);font-size:15px">Turn the pages to watch each scene fold up. On the seventh page, pull the tab to help Yusuf with his first shave.</p>
+   <div class="folio">Written for the Pop-up Stories shelf</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:var(--wall)"/><rect x="8" y="214" width="384" height="62" style="fill:var(--floor)"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><ellipse cx="200" cy="244" rx="150" ry="20" fill="#8a3b2a" opacity=".55"/><g style="--sky:url(#dusk)"><use href="#win" transform="translate(320 104)"/></g><use href="#tv" transform="translate(70 214) scale(1.3)"/></svg>
+   <svg class="layer" style="--d:0.2s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><use href="#armchair" transform="translate(180 214) scale(1.55)"/><use href="#table" transform="translate(252 214) scale(1.1)"/><use href="#radio" transform="translate(252 186) scale(1.2)"/><g data-moves class="rise" style="--r:0.0s"><use href="#note" transform="translate(256 150) scale(1.00)"/></g><g data-moves class="rise" style="--r:1.1s"><use href="#note" transform="translate(265 146) scale(0.90)"/></g><g data-moves class="rise" style="--r:2.2s"><use href="#note" transform="translate(274 142) scale(0.80)"/></g></svg>
+   <svg class="layer" style="--d:0.4s;--oy:96%" viewBox="0 0 400 280" aria-hidden="true"><rect x="8" y="262" width="384" height="14" fill="#7a4f30" opacity=".35"/></svg>
+  </div><div class="caption">The parlour, in the evening</div></div>
+ </div>
+</section>
+
+<!-- 1 Daddy -->
+<section class="page" data-name="Daddy" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part One · Daddy</div>
+   <h2>Daddy</h2>
+   <p>Yusuf’s father was the calmest man on their street.</p>
+   <p>He never shouted. He never hurried. When the neighbours argued about football after Jumu’ah, Daddy would lean back in his chair, smile, and say, <em>“Ehn, we’ll see on Sunday.”</em></p>
+   <p>In the evenings, his old FM radio player sat beside him, playing his music: Brenda Fassie, Bob Marley, the same albums again and again. And whenever it was someone’s birthday in the house, Daddy played the same birthday song on that radio. Every year. Never a different one.</p>
+   <p>Yusuf was still small then, and he thought his father was the coolest person in the world.</p>
+   <div class="folio">i</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:var(--wall)"/><rect x="8" y="214" width="384" height="62" style="fill:var(--floor)"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><ellipse cx="200" cy="244" rx="150" ry="20" fill="#8a3b2a" opacity=".55"/><g style="--sky:url(#dusk)"><use href="#win" transform="translate(320 104)"/></g><use href="#tv" transform="translate(64 214) scale(1.3)"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><g transform="translate(168 214) scale(1.55)"><use href="#armchair" transform="translate(0 0)"/><use href="#sitMan" class="p-daddy" transform="translate(-2 -22)"/></g><use href="#table" transform="translate(248 214) scale(1.1)"/><use href="#radio" transform="translate(248 186) scale(1.2)"/><g data-moves class="rise" style="--r:0.0s"><use href="#note" transform="translate(252 150) scale(1.00)"/></g><g data-moves class="rise" style="--r:1.1s"><use href="#note" transform="translate(261 146) scale(0.90)"/></g><g data-moves class="rise" style="--r:2.2s"><use href="#note" transform="translate(270 142) scale(0.80)"/></g></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><use href="#floorKid" class="p-yusuf" transform="translate(216 250) scale(1.45)"/><use href="#floorKid" class="p-ahmad" transform="translate(250 252) scale(1.15)"/></svg>
+  </div><div class="caption">The parlour</div></div>
+ </div>
+</section>
+
+<!-- 2 In and Out -->
+<section class="page" data-name="In and Out" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part One · Daddy</div>
+   <h2>In and Out</h2>
+   <p>Then Daddy got sick.</p>
+   <p>Not all at once. It came and went, like rain in the wet season. Some months he was in the hospital. Some months he was home, laughing at the TV like nothing had happened.</p>
+   <p>For as long as Yusuf could remember, at least two years, maybe more, the family lived like that: in and out, better and worse, hoping.</p>
+   <div class="folio">ii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:url(#day)"/><rect x="8" y="214" width="384" height="62" style="fill:#c9a46b"/><path d="M120 236 Q200 214 280 236 L290 252 Q200 230 110 252z" fill="#a8835a"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:82%" viewBox="0 0 400 280" aria-hidden="true"><use href="#house" transform="translate(88 222)"/><use href="#hospital" transform="translate(316 222)"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><g data-moves class="shuttle"><use href="#car" transform="translate(140 248) scale(1.15)"/></g></svg>
+  </div><div class="caption">Home, and the hospital, and home again</div></div>
+ </div>
+</section>
+
+<!-- 3 Understanding -->
+<section class="page" data-name="Understanding" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part One · Daddy</div>
+   <h2>Understanding</h2>
+   <p>Nobody sat Yusuf down to explain. But he understood.</p>
+   <p>He understood when Mama’s voice went quiet on the phone. When his big sister Aisha called from university and asked, “How is he today?” When his other sister, Zainab, came back from the hospital with red eyes and said, “He’s fine, he’s fine.”</p>
+   <p>He noticed who came to help, too. Mama’s friend, Aunty Khadijah, was always there with food, with rides to the hospital, with a hand on Mama’s back.</p>
+   <p>Daddy’s own brothers and sisters hardly ever came at all.</p>
+   <div class="folio">iii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:url(#day)"/><rect x="8" y="214" width="384" height="62" style="fill:#c9a46b"/><path d="M150 276 L196 150 H204 L250 276z" fill="#b89366"/><path d="M200 270 V156" stroke="#f3e6cc" stroke-width="1.4" stroke-dasharray="6 8"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><rect x="8" y="160" width="120" height="70" fill="#d9ccb0"/><rect x="272" y="160" width="120" height="70" fill="#d9ccb0"/><use href="#gate" transform="translate(132 232)"/><use href="#gate" transform="translate(268 232)"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><use href="#woman" class="p-khadijah" transform="translate(196 262) scale(1.65)"/><g transform="translate(196 236)"><rect x="-14" y="-6" width="28" height="5" rx="2" fill="#f4efe4" stroke="#7a6a58" stroke-width=".6"/><path d="M-12-6 q12-12 24 0z" fill="#d9822b" stroke="#7a6a58" stroke-width=".6"/></g></svg>
+  </div><div class="caption">The road, mostly empty</div></div>
+ </div>
+</section>
+
+<!-- 4 Looking After Ahmad -->
+<section class="page" data-name="Looking After Ahmad" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part One · Daddy</div>
+   <h2>Looking After Ahmad</h2>
+   <p>So Yusuf did what he could. He looked after Ahmad.</p>
+   <p>They played football in the compound. They watched cartoons. When Ahmad asked if Daddy would come home soon, Yusuf said, “Yes. Soon.”</p>
+   <div class="folio">iv</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:url(#day)"/><rect x="8" y="214" width="384" height="62" style="fill:#c4a272"/><rect x="60" y="80" width="280" height="134" fill="#e9c46a"/><path d="M50 84 L200 40 L350 84z" fill="#9a4a2c"/><rect x="168" y="104" width="64" height="48" fill="#f3e6cc" stroke="#6b4a32" stroke-width="3"/><circle cx="190" cy="134" r="7" fill="#6b3f26"/><path d="M182 132 q-1-12 8-13 q9 1 8 13z" fill="#24584a"/><circle cx="207" cy="134" r="7" fill="#6b3f26"/><path d="M200 133 q1-9 7-9 q7 0 7 9z" fill="#1d1a1c"/></svg>
+   <svg class="layer" style="--d:0.2s;--oy:88%" viewBox="0 0 400 280" aria-hidden="true"><use href="#boy" class="p-yusuf" transform="translate(140 248) scale(1.6)"/><use href="#boy" class="p-ahmad" transform="translate(262 248) scale(1.2)"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><g data-moves class="bob"><use href="#ball" transform="translate(200 242) scale(1.2)"/></g></svg>
+  </div><div class="caption">The compound</div></div>
+ </div>
+</section>
+
+<!-- 5 Just the Two of Them -->
+<section class="page" data-name="Just the Two of Them" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part One · Daddy</div>
+   <h2>Just the Two of Them</h2>
+   <p>Sometimes Mama had to go out, and Zainab was away, and it was only Yusuf at home with Daddy.</p>
+   <p>Yusuf learned things a boy his age doesn’t usually learn. How to fold the pillows so Daddy could sit up. Which tablets came at which time. How to hold the cup steady when Daddy’s hands shook.</p>
+   <p>And when Daddy couldn’t make it to the bathroom on his own anymore, Yusuf helped him there, and cleaned him up afterwards, gently, without a word, and without ever once making a face.</p>
+   <p>“Thank you, my son,” Daddy would say quietly. And Yusuf would say, “It’s nothing, Daddy.”</p>
+   <div class="folio">v</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:var(--wall)"/><rect x="8" y="214" width="384" height="62" style="fill:var(--floor)"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><g style="--sky:url(#day)"><use href="#win" transform="translate(300 100)"/></g></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><g transform="translate(176 226) scale(1.6)"><use href="#bed" transform="translate(0 0)"/><use href="#bedMan" class="p-daddy" transform="translate(0 0)"/><use href="#blanket" transform="translate(0 0)"/></g><use href="#table" transform="translate(286 226) scale(1.2)"/><use href="#pills" transform="translate(280 194) scale(1.3)"/><use href="#cup" transform="translate(298 194) scale(1.3)"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><use href="#boy" class="p-yusuf" transform="translate(334 252) scale(1.6)"/><path d="M339 213 h10 v18 h-10z" fill="#f4efe4" stroke="#c7b894" stroke-width=".8"/></svg>
+  </div><div class="caption">Daddy’s room</div></div>
+ </div>
+</section>
+
+<!-- 6 The First Shave -->
+<section class="page" data-name="The First Shave" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part One · Daddy</div>
+   <h2>The First Shave</h2>
+   <p>One afternoon, Daddy rubbed his chin and frowned. “Look at this bush,” he said. “Your mother will think I’ve become a goat.”</p>
+   <p>But his hands were shaking too much to hold the razor. So he handed it to Yusuf.</p>
+   <p>Yusuf had never shaved anything in his life. Not even his own face; there was nothing on it yet.</p>
+   <div class="folio">vi</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:var(--wall)"/><rect x="8" y="214" width="384" height="62" style="fill:var(--floor)"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><g style="--sky:url(#day)"><use href="#win" transform="translate(300 100)"/></g></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><g transform="translate(176 226) scale(1.6)"><use href="#bed" transform="translate(0 0)"/><use href="#bedMan" class="p-daddy" transform="translate(0 0)"/><use href="#beard" transform="translate(-30 -18)"/><path d="M-36-57 q6 4 12 0 l1 3 q-7 4-14 0z" fill="#f4efe4"/><use href="#blanket" transform="translate(0 0)"/><use href="#razor" transform="translate(-6 -40) scale(0.9)" style="transform-box:fill-box"/></g></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><use href="#boy" class="p-yusuf" transform="translate(300 252) scale(1.6)"/></svg>
+  </div><div class="caption">The razor</div></div>
+ </div>
+</section>
+
+<!-- 7 Daddy Teaches Him -->
+<section class="page" data-name="Daddy Teaches Him" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part One · Daddy</div>
+   <h2>Daddy Teaches Him</h2>
+   <p>“Small strokes,” Daddy said. “Downwards first. Don’t press. Let the blade do the work.”</p>
+   <p>Yusuf’s hand trembled. Daddy covered it with his own. “Ehn, slowly. You want to leave me with no face?” Yusuf laughed, and his hand steadied.</p>
+   <p>Stroke by stroke, Daddy’s face came back: the face Yusuf knew. When it was done, Daddy touched his smooth chin and grinned. “See? A better barber than the one at the junction.”</p>
+   <p>So the first beard Yusuf ever shaved was his father’s.</p>
+   <div class="pull">
+    <label for="shave">Pull the tab to shave Daddy’s beard</label>
+    <input type="range" id="shave" min="0" max="100" value="0">
+    <output id="shave-out" for="shave">“Small strokes. Downwards first.”</output>
+   </div>
+   <div class="folio">vii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:var(--wall)"/><rect x="8" y="214" width="384" height="62" style="fill:var(--floor)"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><g style="--sky:url(#day)"><use href="#win" transform="translate(300 100)"/></g></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><use href="#boyR" class="p-yusuf" transform="translate(198 228) scale(2.6)"/><circle cx="182.4" cy="155.2" r="6" fill="#d39a3a" stroke="#1d1a1c" stroke-width=".6"/><g transform="translate(214 268) scale(2.2)"><use href="#bed" transform="translate(0 0)"/><use href="#bedMan" class="p-daddy" transform="translate(0 0)"/><g id="beard7" data-moves><path id="bd0" class="hair" d="M-36.6-68 Q-37-59-32.6-56 L-31.6-58.6 Q-34.6-61-34.8-67.4z"/><path id="bd1" class="hair" d="M-32.6-56 Q-30-54.4-27.4-56 L-28.4-58.6 Q-30-57.8-31.6-58.6z"/><path id="bd2" class="hair" d="M-27.4-56 Q-23-59-23.4-68 L-25.2-67.4 Q-25.4-61-28.4-58.6z"/></g><path id="smile7" data-moves d="M-32.4-62.4 Q-30-60.2-27.6-62.4" fill="none" stroke="#1d1a1c" stroke-width=".9" stroke-linecap="round" opacity="0"/><path d="M-37-57 q7 4 14 0 l1 3 q-8 4-16 0z" fill="#f4efe4"/><use href="#blanket" transform="translate(0 0)"/></g><g fill="none" stroke-linecap="round"><path id="armO7" data-moves d="M182 155 L160 170 L137 133" stroke="#1d1a1c" stroke-width="7.6" stroke-linejoin="round"/><path id="arm7" data-moves d="M182 155 L160 170 L137 133" stroke="#6b3f26" stroke-width="6.4" stroke-linejoin="round"/></g><g transform="translate(214 268) scale(2.2)"><g id="razor7" data-moves transform="translate(-35 -66)"><use href="#razor" transform="scale(.6)"/></g></g><circle id="hand7" data-moves cx="137" cy="133" r="4.6" class="skinp"/><use href="#table" transform="translate(340 268) scale(1.2)"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><g transform="translate(340 236)"><ellipse cx="0" cy="-10" rx="11" ry="13" fill="#c9d1cc" stroke="#6b4a32" stroke-width="2"/><path d="M0 3 v14" stroke="#6b4a32" stroke-width="3"/></g></svg>
+  </div><div class="caption">Small strokes</div></div>
+ </div>
+</section>
+
+<!-- 8 Daddy Was Still Daddy -->
+<section class="page" data-name="Daddy Was Still Daddy" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part One · Daddy</div>
+   <h2>Daddy Was Still Daddy</h2>
+   <p>Even on the bad days, Daddy was still Daddy.</p>
+   <p>“You’re a better nurse than the ones at the hospital,” he’d say, and wink. Yusuf would roll his eyes. But he stayed a little longer every time.</p>
+   <p>Sometimes they didn’t talk at all. They just sat together, the two of them, as the evening adhan drifted in through the window.</p>
+   <div class="folio">viii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:#d9c3a2"/><rect x="8" y="214" width="384" height="62" style="fill:var(--floor)"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><g style="--sky:url(#dusk)"><use href="#win" transform="translate(300 100)"/></g><g fill="#3d3550" transform="translate(300 104)"><circle cx="12" cy="-18" r="5" fill="#f3e6cc"/><circle cx="14.5" cy="-19.5" r="4.4" fill="#8f7d9c"/><g transform="translate(-14 30) scale(.5)"><use href="#minaret"/></g><rect x="-26" y="18" width="52" height="14"/></g><rect x="8" y="4" width="384" height="272" rx="6" fill="#3b2f4a" opacity=".18"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><g transform="translate(170 226) scale(1.6)"><use href="#bed" transform="translate(0 0)"/><use href="#bedMan" class="p-daddy" transform="translate(0 0)"/><use href="#blanket" transform="translate(0 0)"/></g></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><rect x="262" y="226" width="30" height="5" class="woodf"/><path d="M266 231v20M288 231v20" stroke="#5a3a24" stroke-width="3"/><g transform="translate(280 228) scale(-1.1 1.1)"><use href="#sitMan" class="p-yusuf" transform="translate(0 0)"/></g></svg>
+  </div><div class="caption">Evening</div></div>
+ </div>
+</section>
+
+<!-- 9 One Ordinary Night -->
+<section class="page" data-name="One Ordinary Night" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Two · That Night</div>
+   <h2>One Ordinary Night</h2>
+   <p>The last night was an ordinary night.</p>
+   <p>Ahmad fell asleep during the cartoons. Zainab read in her room. Mama said goodnight.</p>
+   <p>Yusuf passed Daddy’s door on his way to bed. It was half open. Daddy was resting.</p>
+   <p>Yusuf almost went in. He didn’t.</p>
+   <div class="folio">ix</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:#2e2a3e"/><rect x="8" y="214" width="384" height="62" style="fill:#3e332f"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><path d="M266 214 L230 276 H392 V214z" fill="url(#spill)" opacity=".7"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><g transform="translate(270 214) scale(1.6)"><rect x="-19" y="-68" width="38" height="68" fill="#ffe7a8"/><rect x="-19" y="-68" width="4" height="68" fill="#5a3a24"/><rect x="15" y="-68" width="4" height="68" fill="#5a3a24"/><rect x="-19" y="-71" width="38" height="4" fill="#5a3a24"/><path d="M-15-65 L4-60 V-5 L-15 0z" class="doorf"/></g></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><use href="#boy" class="p-yusuf" transform="translate(170 252) scale(1.6)"/></svg>
+  </div><div class="caption">The half-open door</div></div>
+ </div>
+</section>
+
+<!-- 10 Midnight -->
+<section class="page" data-name="Midnight" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Two · That Night</div>
+   <h2>Midnight</h2>
+   <p>Something woke Yusuf in the middle of the night.</p>
+   <p>He didn’t know what. The house was quiet. Too quiet.</p>
+   <p>He lay still and listened. No snoring from Daddy’s room. Nothing at all.</p>
+   <p>He got out of bed.</p>
+   <div class="folio">x</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:#232838"/><rect x="8" y="214" width="384" height="62" style="fill:#2f2a2c"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><g style="--sky:url(#night)"><use href="#win" transform="translate(300 100)"/></g><g fill="#f3e6cc"><circle cx="290" cy="86" r="1.2"/><circle cx="306" cy="94" r="1"/><circle cx="314" cy="80" r="1.3"/><circle cx="296" cy="118" r="1"/></g><use href="#clock" transform="translate(120 70) scale(1.4)"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true"><g transform="translate(186 236) scale(1.45)"><use href="#bed" transform="translate(0 0)"/><g transform="translate(-6 4) scale(.82)"><use href="#bedMan" class="p-yusuf" transform="translate(0 0)"/></g><path class="blanketf" style="fill:#3f5f7a" d="M-26-32 Q12-40 50-32 V-22 H-26z"/></g></svg>
+  </div><div class="caption">Midnight</div></div>
+ </div>
+</section>
+
+<!-- 11 The Parlour -->
+<section class="page" data-name="The Parlour" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Two · That Night</div>
+   <h2>The Parlour</h2>
+   <p>The light was on in the parlour.</p>
+   <p>Mama was there, in Daddy’s armchair. Aunty Khadijah sat close beside her, holding her hand. Mr. Ibrahim from next door stood by the window, his cap in his hands, saying nothing.</p>
+   <p>Nobody was crying. Nobody was talking.</p>
+   <p>The whole house was holding its breath.</p>
+   <div class="folio">xi</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:#cdb48e"/><rect x="8" y="214" width="384" height="62" style="fill:var(--floor)"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><ellipse cx="200" cy="244" rx="150" ry="20" fill="#8a3b2a" opacity=".55"/><g style="--sky:url(#night)"><use href="#win" transform="translate(320 104)"/></g><circle cx="120" cy="120" r="120" fill="url(#lamp)"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><use href="#man" class="p-ibrahim" transform="translate(96 252) scale(1.55)"/><g transform="translate(96 252) scale(1.55)"><path d="M-14-20 q0-5 5-5 q5 0 5 5z" fill="#f1ece0" stroke="#1d1a1c" stroke-width=".6"/></g><g transform="translate(196 214) scale(1.55)"><use href="#armchair" transform="translate(0 0)"/><use href="#sitWoman" class="p-mama" transform="translate(-2 -22) scale(0.8)"/></g></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><g transform="translate(262 214) scale(-1.4 1.4)"><rect x="-12" y="-22" width="24" height="5" class="woodf"/><path d="M-9-17v17M9-17v17" stroke="#5a3a24" stroke-width="2.4"/><use href="#sitWoman" class="p-khadijah" transform="translate(0 -22)"/></g></svg>
+  </div><div class="caption">The quiet parlour</div></div>
+ </div>
+</section>
+
+<!-- 12 "Don't." -->
+<section class="page" data-name="“Don’t.”" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Two · That Night</div>
+   <h2>“Don’t.”</h2>
+   <p>Yusuf turned towards Daddy’s room.</p>
+   <p>“Yusuf.” Mama’s voice cracked across the parlour, sharp in a way he had never heard. “Don’t go in there.”</p>
+   <p>He stopped with his hand on the door. He didn’t ask why. He didn’t need to.</p>
+   <p>In that moment, everything he’d been afraid of for so long became true.</p>
+   <p>He was twelve years old.</p>
+   <div class="folio">xii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:#2e2a3e"/><rect x="8" y="214" width="384" height="62" style="fill:#3e332f"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><g transform="translate(92 214) scale(1.5)"><rect x="-22" y="-74" width="44" height="74" fill="#d9a85e"/><circle cx="0" cy="-40" r="40" fill="url(#lamp)"/><use href="#woman" class="p-mama" transform="translate(2 0) scale(0.78)"/></g></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><use href="#door" transform="translate(318 214) scale(1.4)"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><g class="p-yusuf" transform="translate(312 226) scale(-1.6 1.6)"><use href="#boyR"/></g><circle cx="321.6" cy="181" r="4" fill="#d39a3a" stroke="#1d1a1c" stroke-width=".6"/><path d="M321.6 181.2 L336.0 182.0" stroke="#1d1a1c" stroke-width="5.4" stroke-linecap="round" fill="none"/><path d="M336.0 182.0 L331.0 168.5" stroke="#1d1a1c" stroke-width="4.6" stroke-linecap="round" fill="none"/><path d="M321.6 181.2 L336.0 182.0" stroke="#6b3f26" stroke-width="4.2" stroke-linecap="round" fill="none"/><path d="M336.0 182.0 L331.0 168.5" stroke="#6b3f26" stroke-width="3.4" stroke-linecap="round" fill="none"/><circle cx="331.0" cy="168.5" r="2.3" fill="#6b3f26" stroke="#1d1a1c" stroke-width=".6"/></svg>
+  </div><div class="caption">The door stays shut</div></div>
+ </div>
+</section>
+
+<!-- 13 Sunrise -->
+<section class="page" data-name="Sunrise" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Two · That Night</div>
+   <h2>Sunrise</h2>
+   <p>Before dawn, the men came.</p>
+   <p>Aunty Khadijah took Yusuf and Ahmad to the boys’ room and closed the door. “Stay here,” she said gently. “Look after your brother.”</p>
+   <p>So Yusuf sat on the bed with Ahmad asleep against his shoulder, and listened. Low voices in the corridor. Water running. Footsteps going slowly out of the house, many of them together. Then the call for Fajr. Then quiet.</p>
+   <p>When the door finally opened, the sun was up, and Daddy was gone. Yusuf never saw him again.</p>
+   <p>He did not cry.</p>
+   <div class="folio">xiii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:#2a3044"/><rect x="8" y="214" width="384" height="62" style="fill:#352e2e"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><g style="--sky:url(#dawn)"><use href="#win" transform="translate(82 100)"/></g></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><use href="#door" transform="translate(306 214) scale(1.7)"/><rect x="279" y="210" width="54" height="4" fill="url(#slit)"/><g data-moves class="pass"><rect x="279" y="210" width="7" height="4" fill="#1d1a1c"/><rect x="291" y="210" width="6" height="4" fill="#1d1a1c"/></g></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><g transform="translate(158 236) scale(1.45)"><use href="#bed" transform="translate(0 0)"/><ellipse cx="2" cy="-34" rx="16" ry="5" fill="#b8492f"/><use href="#sitMan" class="p-yusuf" transform="translate(14 -32) scale(0.82)"/><circle cx="3" cy="-41" r="4.6" class="skinp"/><path d="M-1.6-42 q0-4.6 4.6-4.6 q4.6 0 4.6 4.6z" class="hair"/></g></svg>
+  </div><div class="caption">The line of light under the door</div></div>
+ </div>
+</section>
+
+<!-- 14 The Relatives -->
+<section class="page" data-name="The Relatives" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Two · That Night</div>
+   <h2>The Relatives</h2>
+   <p>By the time the men came back, the house was full of people. Aisha had rushed back from university. Neighbours brought mats and food. Voices murmured <em>Inna lillahi wa inna ilayhi raji’un</em> at the gate.</p>
+   <p>And Daddy’s brothers and sisters came, the ones who had hardly visited in all the time he was sick.</p>
+   <p>Mama greeted them politely. But that day, Aunty Khadijah never left the boys’ side. Whenever an aunt reached out for Ahmad, or an uncle started towards Yusuf, she was already there: smiling, polite, firm. “They’re resting,” she would say. Or, “They’ve just eaten.” Or, “Come, Yusuf, help me with these plates.”</p>
+   <p>Still, from across the compound, Yusuf heard one of the uncles say it loud enough for everyone: “That boy is the man of the house now. He should man up. His mother needs him to be strong.”</p>
+   <p>Yusuf kept his eyes on the plates. He didn’t say what he was thinking: <em>Where were you? I’ve been strong all this time.</em></p>
+   <div class="folio">xiv</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:url(#day)"/><rect x="8" y="214" width="384" height="62" style="fill:#c4a272"/><rect x="8" y="150" width="384" height="66" fill="#e9c46a" opacity=".55"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:82%" viewBox="0 0 400 280" aria-hidden="true"><use href="#man" class="p-rel" transform="translate(40 218) scale(1.35)"/><use href="#woman" class="p-rel" transform="translate(70 220) scale(1.35)"/><use href="#man" class="p-rel" transform="translate(100 216) scale(1.35)"/><use href="#woman" class="p-rel" transform="translate(128 220) scale(1.3)"/><use href="#woman" class="p-mama" transform="translate(298 222) scale(1.4)"/><use href="#woman" class="p-aisha" transform="translate(330 222) scale(1.32)"/><use href="#woman" class="p-zainab" transform="translate(360 222) scale(1.26)"/></svg>
+   <svg class="layer" style="--d:0.32s;--oy:88%" viewBox="0 0 400 280" aria-hidden="true"><use href="#boy" class="p-yusuf" transform="translate(222 250) scale(1.45)"/><use href="#boy" class="p-ahmad" transform="translate(246 252) scale(1.1)"/></svg>
+   <svg class="layer" style="--d:0.46s;--oy:94%" viewBox="0 0 400 280" aria-hidden="true"><g data-moves class="sway" style="transform-origin:190px 262px"><path d="M162 262 L172 196 Q190 186 208 196 L218 262z" fill="#6e4520"/><use href="#woman" class="p-khadijah" transform="translate(190 262) scale(1.75)"/></g></svg>
+  </div><div class="caption">Aunty Khadijah, standing guard</div></div>
+ </div>
+</section>
+
+<!-- 15 Something Changed -->
+<section class="page" data-name="Something Changed" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Three · The Man of the House</div>
+   <h2>Something Changed</h2>
+   <p>Yusuf never really cried. Not that day, not the next, not in the weeks after.</p>
+   <p>But the uncle’s words stayed with him, the way a stone stays in a shoe: <em>You’re the man of the house now. Take care of your mother.</em></p>
+   <p>Somewhere in those weeks, something in Yusuf went quiet. The boy who used to laugh at cartoons and roll his eyes at Daddy’s jokes stepped back, and someone older stepped forward in his place.</p>
+   <p>He was still twelve. But he didn’t feel twelve anymore.</p>
+   <div class="folio">xv</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:var(--wall)"/><rect x="8" y="214" width="384" height="62" style="fill:var(--floor)"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><g transform="translate(200 214) scale(1.7)"><rect x="-26" y="-80" width="52" height="80" fill="#5a3a24"/><rect x="-22" y="-76" width="44" height="76" fill="#cdb48e"/></g><use href="#armchair" transform="translate(80 214) scale(1.2)"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><g opacity=".3"><use href="#boy" class="p-yusuf" transform="translate(222 214) scale(1.25)"/></g></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><use href="#boy" class="p-yusuf" transform="translate(196 254) scale(1.75)"/></svg>
+  </div><div class="caption">The boy who stepped back</div></div>
+ </div>
+</section>
+
+<!-- 16 At the Gate -->
+<section class="page" data-name="At the Gate" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Three · The Man of the House</div>
+   <h2>At the Gate</h2>
+   <p>Now Mama had to be everything. Every morning before the sun was fully up, she tied her wrapper, gathered her goods, and went out to trade.</p>
+   <p>One morning, Yusuf woke early and stood at the gate to watch her go. At the corner, she turned and waved. She was smiling, but it was the tired smile he had started to notice.</p>
+   <p><em>If she has to carry all of it,</em> he thought, <em>then I will carry what I can.</em></p>
+   <p>That evening, he was waiting at the same gate when she came home. Before she could say a word, he took the bag from her hands. Mama raised an eyebrow. “Since when?” “Since today,” said Yusuf.</p>
+   <div class="folio">xvi</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:url(#dusk)"/><rect x="8" y="214" width="384" height="62" style="fill:#a88a62"/><use href="#house" transform="translate(270 200) scale(0.9)"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><use href="#gate" transform="translate(64 236) scale(1.1)"/><use href="#gate" transform="translate(336 236) scale(1.1)"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><use href="#woman" class="p-mama" transform="translate(162 258) scale(1.65)"/><use href="#basin" transform="translate(162 166) scale(1.2)"/><use href="#bag" transform="translate(182 258) scale(1.3)"/><use href="#boyR" class="p-yusuf" transform="translate(202 258) scale(1.5)"/><circle cx="193" cy="216" r="3.8" fill="#d39a3a" stroke="#1d1a1c" stroke-width=".6"/><path d="M193.0 216.0 L198.7 228.2" stroke="#1d1a1c" stroke-width="5.2" stroke-linecap="round" fill="none"/><path d="M198.7 228.2 L187.0 235.0" stroke="#1d1a1c" stroke-width="4.4" stroke-linecap="round" fill="none"/><path d="M193.0 216.0 L198.7 228.2" stroke="#6b3f26" stroke-width="4.0" stroke-linecap="round" fill="none"/><path d="M198.7 228.2 L187.0 235.0" stroke="#6b3f26" stroke-width="3.2" stroke-linecap="round" fill="none"/><circle cx="187.0" cy="235.0" r="2.2" fill="#6b3f26" stroke="#1d1a1c" stroke-width=".6"/></svg>
+  </div><div class="caption">The gate at dusk</div></div>
+ </div>
+</section>
+
+<!-- 17 The Leaking Tap -->
+<section class="page" data-name="The Leaking Tap" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Three · The Man of the House</div>
+   <h2>The Leaking Tap</h2>
+   <p>Things in the house kept breaking. The kitchen tap dripped all night. When the plumber named his price, Mama went quiet in a way Yusuf didn’t like.</p>
+   <p>Yusuf had always been the boy who took things apart to see how they worked. That night, he took the tap apart. He laid every piece out in order on a cloth so he wouldn’t forget where it went, and he found the worn-out part. The next day he bought a new one with his own small savings.</p>
+   <p>When Mama came home, the kitchen was silent. No drip. “Who fixed this?” Ahmad pointed at his brother.</p>
+   <p>After that, it was the gate latch. A loose socket. The generator when it coughed and refused to start. Every repair was money Mama didn’t have to spend.</p>
+   <div class="folio">xvii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:#e6e0cf"/><rect x="8" y="214" width="384" height="62" style="fill:var(--floor)"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><g opacity=".35" stroke="#c9c0a8"><path d="M8 60h384M8 100h384M8 140h384M8 180h384M60 4v210M120 4v210M180 4v210M240 4v210M300 4v210M360 4v210"/></g></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><use href="#tap" transform="translate(110 178) scale(1.3)"/><g data-moves class="drip"><path d="M128 150 q2 4 0 6 q-2-2 0-6z" fill="#8fb3c2"/></g></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><rect x="196" y="236" width="80" height="22" rx="2" fill="#f4efe4" stroke="#c7b894"/><g fill="#7d8790"><rect x="204" y="242" width="10" height="4"/><circle cx="224" cy="246" r="3"/><rect x="234" y="240" width="4" height="10"/><circle cx="250" cy="244" r="2.4"/><rect x="258" y="246" width="12" height="3"/></g><use href="#boy" class="p-yusuf" transform="translate(322 258) scale(1.6)"/><g transform="translate(307.6 231) scale(-1 -1)"><use href="#spanner"/></g></svg>
+  </div><div class="caption">Every piece in order</div></div>
+ </div>
+</section>
+
+<!-- 18 The First Birthday -->
+<section class="page" data-name="The First Birthday" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Three · The Man of the House</div>
+   <h2>The First Birthday</h2>
+   <p>Then came the first birthday in the house without Daddy. It was Ahmad’s. That morning, nobody knew quite what to do.</p>
+   <p>Then Zainab went into Daddy’s room and came back holding his old radio. She switched it on and played the song, the same birthday song Daddy had always played. For a moment, everyone smiled. It sounded exactly like before.</p>
+   <p>Then Mama’s smile wobbled. Zainab was laughing and crying at the same time. Ahmad didn’t know whether to dance. Yusuf stood by the door singing along under his breath, his throat tight. It was the happiest and the saddest few minutes the house had known.</p>
+   <p>At the next birthday, nobody brought the radio out. Nobody said why. The song just stopped, quietly, the way some things do.</p>
+   <div class="folio">xviii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:var(--wall)"/><rect x="8" y="214" width="384" height="62" style="fill:var(--floor)"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><ellipse cx="200" cy="244" rx="150" ry="20" fill="#8a3b2a" opacity=".55"/><g style="--sky:url(#day)"><use href="#win" transform="translate(320 104)"/></g></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><use href="#woman" class="p-mama" transform="translate(112 230) scale(1.6)"/><use href="#woman" class="p-zainab" transform="translate(150 232) scale(1.45)"/><use href="#boy" class="p-ahmad" transform="translate(290 234) scale(1.3)"/><use href="#boy" class="p-yusuf" transform="translate(342 236) scale(1.55)"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><rect x="160" y="210" width="110" height="7" class="woodf"/><path d="M168 217v40M262 217v40" stroke="#5a3a24" stroke-width="4"/><use href="#cake" transform="translate(190 210) scale(1.3)"/><use href="#radio" transform="translate(240 210) scale(1.1)"/><g data-moves class="flicker"><path d="M190 181 q-3-4 0-8 q3 4 0 8z" fill="#f2b33d"/></g><g data-moves class="rise" style="--r:0.0s"><use href="#note" transform="translate(244 176) scale(1.00)"/></g><g data-moves class="rise" style="--r:1.1s"><use href="#note" transform="translate(253 172) scale(0.90)"/></g><g data-moves class="rise" style="--r:2.2s"><use href="#note" transform="translate(262 168) scale(0.80)"/></g></svg>
+  </div><div class="caption">The song, one last time</div></div>
+ </div>
+</section>
+
+<!-- 19 Learning to Cook -->
+<section class="page" data-name="Learning to Cook" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Three · The Man of the House</div>
+   <h2>Learning to Cook</h2>
+   <p>Then Zainab went away to school, like Aisha before her, and there was no one left to cook when Mama came home late from trade days. The first evening, Mama came home exhausted and went straight to the kitchen. Yusuf watched her stand there, too tired to lift the pot.</p>
+   <p>The next trade day, Yusuf stood in that kitchen and decided. He burnt the first soup. The swallow came out lumpy and his arms ached from turning it. But he tried again. And again.</p>
+   <p>One evening, Mama came home late and smelled food. She stood in the kitchen doorway for a long time, looking at her son by the stove. Then she sat down and ate every bit of it.</p>
+   <p>“Who taught you this?” “Nobody,” said Yusuf. “Me.” Mama laughed, properly, for the first time in a long time. And she touched his head as she went to wash her hands.</p>
+   <div class="folio">xix</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:#cfc3a6"/><rect x="8" y="214" width="384" height="62" style="fill:var(--floor)"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><g style="--sky:url(#night)"><use href="#win" transform="translate(96 96)"/></g></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><use href="#stove" transform="translate(214 236)"/><use href="#pot" transform="translate(222 201)"/><g data-moves class="steam"><path d="M216 176 q-6-8 0-16 q6-8 0-16" fill="none" stroke="#f4efe4" stroke-width="2" stroke-linecap="round" opacity=".8"/><path d="M230 178 q-6-8 0-16 q6-8 0-16" fill="none" stroke="#f4efe4" stroke-width="2" stroke-linecap="round" opacity=".6"/></g></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><path d="M203 194 L219 180" stroke="#7a4f30" stroke-width="2.4" stroke-linecap="round"/><g class="p-yusuf" transform="translate(168 242) scale(-1.6 1.6)"><use href="#boyR"/></g><circle cx="177.6" cy="197" r="4" fill="#d39a3a" stroke="#1d1a1c" stroke-width=".6"/><path d="M177.6 197.2 L191.1 202.1" stroke="#1d1a1c" stroke-width="5.4" stroke-linecap="round" fill="none"/><path d="M191.1 202.1 L203.0 194.0" stroke="#1d1a1c" stroke-width="4.6" stroke-linecap="round" fill="none"/><path d="M177.6 197.2 L191.1 202.1" stroke="#6b3f26" stroke-width="4.2" stroke-linecap="round" fill="none"/><path d="M191.1 202.1 L203.0 194.0" stroke="#6b3f26" stroke-width="3.4" stroke-linecap="round" fill="none"/><circle cx="203.0" cy="194.0" r="2.3" fill="#6b3f26" stroke="#1d1a1c" stroke-width=".6"/><g transform="translate(336 214) scale(1.6)"><rect x="-22" y="-74" width="44" height="74" fill="#5a3a24"/><rect x="-19" y="-71" width="38" height="71" fill="#e8d9b6"/></g><use href="#woman" class="p-mama" transform="translate(336 214) scale(1.55)"/><use href="#bag" transform="translate(352 196) scale(0.9)"/></svg>
+  </div><div class="caption">Supper, waiting</div></div>
+ </div>
+</section>
+
+<!-- 20 The Line -->
+<section class="page" data-name="The Line" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Three · The Man of the House</div>
+   <h2>The Line</h2>
+   <p>At school, Yusuf was the boy teachers never had to worry about.</p>
+   <p>One afternoon, in the line for assembly, a bigger boy shoved him hard and said something about his father. Everyone turned to watch. Yusuf’s fists curled.</p>
+   <p>Then he thought: <em>If I fight, they’ll call Mama. She’ll have to leave the market. She’ll lose a day’s sales. She’ll come here worried.</em> He uncurled his fists and walked away. “Coward,” someone muttered. Yusuf let them say it.</p>
+   <p>That was how it was now. Before he did anything, he asked himself one question: <em>What would this do to Mama?</em> “Such a well-behaved boy,” the teachers said. Nobody asked if he was alright.</p>
+   <div class="folio">xx</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:url(#day)"/><rect x="8" y="214" width="384" height="62" style="fill:#c4a272"/><use href="#school" transform="translate(200 190)"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><use href="#boy" class="p-uni" transform="translate(70 244) scale(1.45)"/><use href="#boy" class="p-uni" transform="translate(100 244) scale(1.45)"/><use href="#boy" class="p-uni" transform="translate(132 244) scale(1.75)"/><use href="#boy" class="p-uni" transform="translate(166 244) scale(1.45)"/><use href="#boy" class="p-uni" transform="translate(196 244) scale(1.45)"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><use href="#boy" class="p-yusuf-uni" transform="translate(290 258) scale(1.6)"/><use href="#thinkbubble" transform="translate(334 74)"/><g transform="translate(334 92)"><rect x="-26" y="-6" width="52" height="8" class="woodf"/><path d="M-30-6 L0-26 L30-6z" fill="#c46d7a"/><use href="#basin" transform="translate(-12 -6) scale(0.6)"/><use href="#woman" class="p-mama" transform="translate(14 2) scale(0.7)"/></g></svg>
+  </div><div class="caption">Walking away</div></div>
+ </div>
+</section>
+
+<!-- 21 Uncle Bashir -->
+<section class="page" data-name="Uncle Bashir" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Four · The Years After</div>
+   <h2>Uncle Bashir</h2>
+   <p>In all those years, only one man really showed up.</p>
+   <p>Uncle Bashir, Mama’s younger brother, wasn’t loud about it. He just came. He called to ask about school. He sent what he could when money was tight. He sat with Mama on the veranda and talked through the grown-up things, so she didn’t have to carry them alone. His wife, Aunty Rukayya, always hugged Yusuf a little longer than she needed to, as if she knew.</p>
+   <p>And when Yusuf slipped, coming home too late, getting careless, speaking too sharply to Mama, it was Uncle Bashir who took him aside. He never shouted. He just said, “Your mother has enough to carry. Don’t add to it.”</p>
+   <p>Yusuf hated hearing it. He needed to hear it.</p>
+   <div class="folio">xxi</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:url(#dusk)"/><rect x="8" y="232" width="384" height="44" style="fill:#a88a62"/><rect x="8" y="60" width="384" height="140" fill="#e9c46a"/><rect x="8" y="196" width="384" height="12" fill="#cdb48e"/><g fill="#cdb48e"><rect x="40" y="70" width="10" height="126"/><rect x="200" y="70" width="10" height="126"/><rect x="350" y="70" width="10" height="126"/></g><rect x="8" y="56" width="384" height="14" fill="#9a4a2c"/></svg>
+   <svg class="layer" style="--d:0.2s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true"><use href="#man" class="p-yusuf" transform="translate(216 214) scale(1.5)"/><use href="#manL" class="p-bashir" transform="translate(170 214) scale(1.7)"/><path d="M183.6 152.8 L190.0 170.7" stroke="#1d1a1c" stroke-width="7.4" stroke-linecap="round" fill="none"/><path d="M190.0 170.7 L205.0 159.0" stroke="#1d1a1c" stroke-width="6.2" stroke-linecap="round" fill="none"/><path d="M183.6 152.8 L190.0 170.7" stroke="#2c4a6b" stroke-width="6.2" stroke-linecap="round" fill="none"/><path d="M190.0 170.7 L205.0 159.0" stroke="#6b3f26" stroke-width="5.0" stroke-linecap="round" fill="none"/><circle cx="205.0" cy="159.0" r="3.4" fill="#6b3f26" stroke="#1d1a1c" stroke-width=".6"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:96%" viewBox="0 0 400 280" aria-hidden="true"><path d="M8 250 Q200 238 392 252 V276 H8z" fill="#8c6c46"/></svg>
+  </div><div class="caption">The veranda</div></div>
+ </div>
+</section>
+
+<!-- 22 Going to University -->
+<section class="page" data-name="Going to University" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Four · The Years After</div>
+   <h2>Going to University</h2>
+   <p>The night before Yusuf left for university, Mama packed his bag herself, folding every shirt twice. In the morning, at the gate, she held his face in both hands and prayed over him quietly.</p>
+   <p>Then Uncle Bashir drove him there. He carried the bags up the stairs, checked the room and the lock on the door, and showed Yusuf where to buy food. Before he left, he pressed some money into Yusuf’s hand. “Call me if you need anything. Anything at all.”</p>
+   <p>The car hadn’t even left the hostel gate when Yusuf’s phone rang. It was Mama. “Have you eaten?”</p>
+   <div class="folio">xxii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:url(#day)"/><rect x="8" y="214" width="384" height="62" style="fill:#c4a272"/><rect x="198" y="4" width="4" height="272" fill="#fbf8f1"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><use href="#gate" transform="translate(40 230)"/><use href="#hostel" transform="translate(300 222)"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><use href="#man" class="p-yusuf" transform="translate(136 256) scale(1.45)"/><use href="#womanL" class="p-mama" transform="translate(100 256) scale(1.6)"/><path d="M110.5 202.5 L128.8 205.5" stroke="#1d1a1c" stroke-width="6.8" stroke-linecap="round" fill="none"/><path d="M128.8 205.5 L129.0 187.0" stroke="#1d1a1c" stroke-width="5.7" stroke-linecap="round" fill="none"/><path d="M110.5 202.5 L128.8 205.5" stroke="#24584a" stroke-width="5.6" stroke-linecap="round" fill="none"/><path d="M128.8 205.5 L129.0 187.0" stroke="#6b3f26" stroke-width="4.5" stroke-linecap="round" fill="none"/><circle cx="129.0" cy="187.0" r="3.1" fill="#6b3f26" stroke="#1d1a1c" stroke-width=".6"/><g data-moves class="leave"><use href="#car" transform="translate(252 256)"/></g><g class="p-yusuf" transform="translate(346 258) scale(-1.4 1.4)"><use href="#manL"/></g><use href="#phone" transform="translate(337 191)"/><path d="M334.8 207.6 L321.6 198.5" stroke="#1d1a1c" stroke-width="6.4" stroke-linecap="round" fill="none"/><path d="M321.6 198.5 L337.0 194.0" stroke="#1d1a1c" stroke-width="5.4" stroke-linecap="round" fill="none"/><path d="M334.8 207.6 L321.6 198.5" stroke="#d39a3a" stroke-width="5.2" stroke-linecap="round" fill="none"/><path d="M321.6 198.5 L337.0 194.0" stroke="#6b3f26" stroke-width="4.2" stroke-linecap="round" fill="none"/><circle cx="337.0" cy="194.0" r="2.9" fill="#6b3f26" stroke="#1d1a1c" stroke-width=".6"/></svg>
+  </div><div class="caption">Two goodbyes</div></div>
+ </div>
+</section>
+
+<!-- 23 Holidays -->
+<section class="page" data-name="Holidays" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Four · The Years After</div>
+   <h2>Holidays</h2>
+   <p>During holidays, Yusuf often stayed with Uncle Bashir and Aunty Rukayya. Their house was warm and loud. Uncle teased his children at dinner, fixed things around the house, and argued about football. Yusuf loved it there.</p>
+   <p>But some evenings, watching Uncle Bashir lean back in his chair, or his cousins run to the gate shouting <em>“Daddy’s home!”</em>, something would catch in his chest.</p>
+   <p>He would smile, and eat his food, and think of a quiet parlour far away. Later, he’d step outside and call Mama, just to hear her voice.</p>
+   <div class="folio">xxiii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:#ead2a8"/><rect x="8" y="214" width="384" height="62" style="fill:var(--floor)"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><circle cx="200" cy="60" r="60" fill="url(#lamp)"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><use href="#man" class="p-bashir" transform="translate(92 226) scale(1.55)"/><use href="#woman" class="p-rukayya" transform="translate(140 226) scale(1.45)"/><use href="#boy" class="p-kid2" transform="translate(188 226) scale(1.45)"/><use href="#boy" class="p-ahmad" transform="translate(226 226) scale(1.3)"/><use href="#man" class="p-yusuf" transform="translate(300 226) scale(1.45)"/></svg>
+   <svg class="layer" style="--d:0.32s;--oy:90%" viewBox="0 0 400 280" aria-hidden="true"><rect x="60" y="196" width="280" height="10" fill="#f4efe4"/><rect x="60" y="206" width="280" height="40" class="woodf"/><g fill="#f4efe4" stroke="#c7b894"><ellipse cx="100" cy="196" rx="12" ry="3"/><ellipse cx="160" cy="196" rx="12" ry="3"/><ellipse cx="220" cy="196" rx="12" ry="3"/><ellipse cx="290" cy="196" rx="12" ry="3"/></g></svg>
+   <svg class="layer" style="--d:0.48s;--oy:40%" viewBox="0 0 400 280" aria-hidden="true"><use href="#thinkbubble" transform="translate(330 70) scale(0.95)"/><g opacity=".7"><use href="#armchair" transform="translate(330 92) scale(0.7)"/></g></svg>
+  </div><div class="caption">A warm, loud table</div></div>
+ </div>
+</section>
+
+<!-- 24 Out of Nowhere -->
+<section class="page" data-name="Out of Nowhere" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Four · The Years After</div>
+   <h2>Out of Nowhere</h2>
+   <p>Grief, Yusuf learned, did not come when you expected it.</p>
+   <p>It didn’t come at the funeral or in the weeks after. It came years later, out of nowhere. On an ordinary afternoon at school. Walking back from a lecture. Sitting alone in a quiet room.</p>
+   <p>Suddenly, it was all there again, as if it had been waiting.</p>
+   <div class="folio">xxiv</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:url(#day)"/><rect x="8" y="200" width="384" height="76" style="fill:#b7c79a"/><rect x="40" y="110" width="110" height="90" fill="#d8cdb6"/><rect x="250" y="96" width="120" height="104" fill="#d8cdb6"/><path d="M140 276 L180 200 H220 L260 276z" fill="#d9ccb0"/></svg>
+   <svg class="layer" style="--d:0.16s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><g data-moves class="wave" style="transform-origin:200px 250px"><path d="M60 250 Q90 120 200 110 Q300 104 340 170 Q300 150 270 170 Q300 200 330 250z" fill="#3f7186" opacity=".85"/><path d="M200 118 Q290 112 330 166" fill="none" stroke="#eef5f7" stroke-width="3" stroke-linecap="round"/></g></svg>
+   <svg class="layer" style="--d:0.32s;--oy:94%" viewBox="0 0 400 280" aria-hidden="true"><use href="#man" class="p-yusuf" transform="translate(200 254) scale(1.7)"/><g data-moves class="bob"><use href="#man" class="p-friend" transform="translate(96 262) scale(1.4)"/></g><g data-moves class="bob" style="animation-delay:-1s"><use href="#woman" class="p-zainab" transform="translate(316 262) scale(1.4)"/></g></svg>
+  </div><div class="caption">As if it had been waiting</div></div>
+ </div>
+</section>
+
+<!-- 25 The Ones Who Saw -->
+<section class="page" data-name="The Ones Who Saw" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Four · The Years After</div>
+   <h2>The Ones Who Saw</h2>
+   <p>Twice, he called his big sister Aisha, and when she picked up, he couldn’t speak at first. He just cried. Aisha didn’t ask him to explain. She didn’t tell him to be strong. She just stayed on the line and said, “I know. I know. I miss him too.”</p>
+   <p>And once, it happened in front of a friend. They were just talking, about nothing really, and then Yusuf wasn’t okay. His friend didn’t laugh. He didn’t look away. He just sat down beside him and waited until it passed.</p>
+   <p>Yusuf never forgot either of them.</p>
+   <div class="folio">xxv</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:#2f3852"/><rect x="200" y="4" width="192" height="272" fill="url(#dusk)"/><rect x="198" y="4" width="4" height="272" fill="#fbf8f1"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><rect x="24" y="40" width="70" height="70" fill="#e8d9b6"/><rect x="110" y="150" width="70" height="70" fill="#e8d9b6"/><use href="#man" class="p-yusuf" transform="translate(58 108) scale(0.9)"/><use href="#woman" class="p-aisha" transform="translate(146 218) scale(0.9)"/><path d="M70 70 C110 60 90 120 120 110 C150 100 120 160 150 170" fill="none" stroke="#e9c46a" stroke-width="1.6" stroke-dasharray="1 4" stroke-linecap="round"/><use href="#phone" transform="translate(68 66) scale(0.9)"/><use href="#phone" transform="translate(156 176) scale(0.9)"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:92%" viewBox="0 0 400 280" aria-hidden="true"><rect x="206" y="224" width="180" height="40" fill="#a99c83"/><g transform="translate(262 224) scale(1.4)"><use href="#sitMan" class="p-yusuf" transform="translate(0 0)"/></g><g transform="translate(318 224) scale(-1.4 1.4)"><use href="#sitMan" class="p-friend" transform="translate(0 0)"/></g></svg>
+  </div><div class="caption">Aisha, and a friend</div></div>
+ </div>
+</section>
+
+<!-- 26 When They Talk About Their Fathers -->
+<section class="page" data-name="When They Talk About Their Fathers" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Four · The Years After</div>
+   <h2>When They Talk About Their Fathers</h2>
+   <p>Sometimes, people talked about their fathers. <em>My dad called this morning. My dad is coming for graduation. My dad said I should study this.</em></p>
+   <p>Yusuf would smile and nod and say nothing.</p>
+   <p>But inside, he’d be somewhere else: in a dim bedroom, a razor in his hand, his father’s hand resting over his.</p>
+   <div class="folio">xxvi</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:url(#day)"/><rect x="8" y="210" width="384" height="66" style="fill:#b7c79a"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><use href="#man" class="p-friend" transform="translate(70 250) scale(1.4)"/><use href="#woman" class="p-aisha" transform="translate(130 248) scale(1.4)"/><use href="#man" class="p-bashir" transform="translate(270 248) scale(1.4)"/><use href="#man" class="p-kid2" transform="translate(330 250) scale(1.4)"/><use href="#man" class="p-yusuf" transform="translate(200 256) scale(1.5)"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:60%" viewBox="0 0 400 280" aria-hidden="true"><use href="#bubble" transform="translate(74 92)"/><text class="lbl" x="74" y="96" text-anchor="middle">my dad…</text><use href="#bubble" transform="translate(134 60)"/><text class="lbl" x="134" y="64" text-anchor="middle">my dad…</text><use href="#bubble" transform="translate(268 60)"/><text class="lbl" x="268" y="64" text-anchor="middle">my dad…</text><use href="#bubble" transform="translate(328 92)"/><text class="lbl" x="328" y="96" text-anchor="middle">my dad…</text><use href="#bubble" transform="translate(200 112)"/></svg>
+  </div><div class="caption">One empty bubble</div></div>
+ </div>
+</section>
+
+<!-- 27 Some Nights -->
+<section class="page" data-name="Some Nights" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Four · The Years After</div>
+   <h2>Some Nights</h2>
+   <p>And some nights, when the room was dark and no one was around, the tears came without asking.</p>
+   <p>No sobbing. No sound.</p>
+   <p>Just Yusuf, lying still, letting them fall in silence, the way he never let them fall when he was twelve.</p>
+   <div class="folio">xxvii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:#1b2030"/><rect x="8" y="214" width="384" height="62" style="fill:#221e22"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><g style="--sky:url(#night)"><use href="#win" transform="translate(300 96)"/></g><circle cx="310" cy="80" r="7" fill="#f3e6cc"/><path d="M276 128 L200 238 H290 L326 128z" fill="#c9d6e2" opacity=".12"/></svg>
+   <svg class="layer" style="--d:0.2s;--oy:88%" viewBox="0 0 400 280" aria-hidden="true"><g transform="translate(160 236) scale(1.5)"><use href="#bed" transform="translate(0 0)"/><path d="M-26-32 Q12-40 50-32 V-22 H-26z" fill="#3f5f7a"/><circle cx="-36" cy="-37" r="5.6" class="skinp"/><path d="M-41.6-38 q0-5.6 5.6-5.6 q5.6 0 5.6 5.6z" class="hair"/></g></svg>
+  </div><div class="caption">Some nights</div></div>
+ </div>
+</section>
+
+<!-- 28 Years Later -->
+<section class="page" data-name="Years Later" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Five · Carrying Him</div>
+   <h2>Years Later</h2>
+   <p>Years later, Yusuf stood in front of the bathroom mirror with a razor in his hand. There was finally something on his own chin to shave. He didn’t need anyone to show him how.</p>
+   <p><em>Small strokes. Downwards first. Don’t press. Let the blade do the work.</em></p>
+   <p>And as he worked, he heard Daddy’s voice, the way it sounded that afternoon in the bedroom: <em>“Ehn, slowly.”</em></p>
+   <p>Yusuf stopped. He looked at his reflection. He thought of the boy who first held that razor, who had grown up so fast, who had never had the chance to go slowly at all. For a moment, he thought he saw Daddy’s grin looking back at him.</p>
+   <div class="folio">xxviii</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:#e6e9e6"/><rect x="8" y="214" width="384" height="62" style="fill:#c9d1cc"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><g opacity=".4" stroke="#b9c2c4"><path d="M8 60h384M8 100h384M8 140h384M8 180h384M60 4v210M120 4v210M180 4v210M240 4v210M300 4v210M360 4v210"/></g></svg>
+   <svg class="layer" style="--d:0.18s;--oy:80%" viewBox="0 0 400 280" aria-hidden="true"><rect x="130" y="36" width="140" height="150" rx="8" fill="#6b4a32"/><rect x="138" y="44" width="124" height="134" rx="5" fill="#cfdde2"/><clipPath id="mir28"><rect x="138" y="44" width="124" height="134" rx="5"/></clipPath><g clip-path="url(#mir28)"><g opacity=".34"><use href="#man" class="p-daddy" transform="translate(166 236) scale(2.2)"/><use href="#beard" transform="translate(166 236) scale(2.2)"/></g><g opacity=".38"><use href="#boy" class="p-yusuf" transform="translate(240 196) scale(1.4)"/><use href="#razor" transform="translate(250 160)"/></g><use href="#man" class="p-yusuf" transform="translate(202 246) scale(1.7)"/></g><rect x="138" y="44" width="124" height="134" rx="5" fill="#ffffff" opacity=".1"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:96%" viewBox="0 0 400 280" aria-hidden="true"><rect x="110" y="200" width="180" height="14" fill="#f4efe4" stroke="#c7b894"/><use href="#man" class="p-yusuf" transform="translate(200 312) scale(2.3)"/></svg>
+  </div><div class="caption">The mirror</div></div>
+ </div>
+</section>
+
+<!-- 29 The Questions -->
+<section class="page" data-name="The Questions" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Five · Carrying Him</div>
+   <h2>The Questions</h2>
+   <p>These days, Yusuf carries things he doesn’t always know how to put down. Questions about work, and money, and what it means to provide. About choosing a wife, and how to be a good husband. About someday being a father himself, when his own was taken from him so early.</p>
+   <p>Things a man can only really ask another man, the one who went before him. Uncle Bashir helps where he can. Friends listen. But some questions were meant for Daddy. <em>What would you do? Am I doing this right? Would you be proud of me?</em></p>
+   <p>And some questions have no answers at all. <em>Did you know that night? Were you afraid? What would you have said, if I had gone in?</em></p>
+   <p>Yusuf asks them anyway, quietly, in his head. And the silence that answers is its own kind of grief.</p>
+   <div class="folio">xxix</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:url(#dusk)"/><rect x="8" y="190" width="384" height="86" fill="#a88a62"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:86%" viewBox="0 0 400 280" aria-hidden="true"><g fill="#d9ccb0"><path d="M190 276 L196 196 H204 L210 276z"/><path d="M196 236 L40 196 L40 206 L196 246z"/><path d="M204 236 L360 196 L360 206 L204 246z"/><path d="M198 214 L120 190 H128 L202 214z"/><path d="M202 214 L280 190 H272 L198 214z"/></g></svg>
+   <svg class="layer" style="--d:0.36s;--oy:94%" viewBox="0 0 400 280" aria-hidden="true"><use href="#man" class="p-yusuf" transform="translate(188 256) scale(1.7)"/><use href="#dashman" transform="translate(246 256) scale(1.7)"/></svg>
+  </div><div class="caption">The space beside him</div></div>
+ </div>
+</section>
+
+<!-- 30 Still Here -->
+<section class="page" data-name="Still Here" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Five · Carrying Him</div>
+   <h2>Still Here</h2>
+   <p>More than twelve years have passed now. Not everything was lost.</p>
+   <p>Mama is still here. She is still the first person he calls, and still the first to ask, “Have you eaten?” Aisha, Zainab and Ahmad are grown and busy, living their own lives, but they are still close. They still tease each other. They still show up. And Uncle Bashir is still here too, still pulling Yusuf aside when he needs it, even now.</p>
+   <p>Birthdays still come around, and the family still gathers. Nobody plays the song. But every year, for just a second, Yusuf still waits for it.</p>
+   <div class="folio">xxx</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:#e9d7b8"/><rect x="8" y="214" width="384" height="62" style="fill:var(--floor)"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><g transform="rotate(-8 120 120)"><rect x="60" y="56" width="130" height="100" fill="#fbf8f1" stroke="#c7b894"/><rect x="68" y="64" width="114" height="80" fill="#cdb48e"/><use href="#man" class="p-daddy" transform="translate(125 142) scale(1.1)"/><use href="#beard" transform="translate(125 142) scale(1.1)"/><use href="#woman" class="p-mama" transform="translate(105 142)"/><use href="#boy" class="p-yusuf" transform="translate(150 142) scale(0.8)"/><use href="#boy" class="p-ahmad" transform="translate(165 142) scale(0.65)"/></g></svg>
+   <svg class="layer" style="--d:0.18s;--oy:88%" viewBox="0 0 400 280" aria-hidden="true"><rect x="70" y="90" width="260" height="150" fill="#fbf8f1" stroke="#c7b894" stroke-width="1.5"/><rect x="80" y="100" width="240" height="122" fill="url(#day)"/><use href="#man" class="p-bashir" transform="translate(104 220) scale(1.2)"/><use href="#woman" class="p-aisha" transform="translate(132 220) scale(1.15)"/><use href="#man" class="p-yusuf" transform="translate(166 220) scale(1.2)"/><use href="#woman" class="p-mama" transform="translate(200 220) scale(1.25)"/><use href="#man" class="p-ahmad" transform="translate(234 220) scale(1.2)"/><use href="#woman" class="p-zainab" transform="translate(266 220) scale(1.12)"/><use href="#woman" class="p-rukayya" transform="translate(296 220) scale(1.12)"/></svg>
+   <svg class="layer" style="--d:0.36s;--oy:96%" viewBox="0 0 400 280" aria-hidden="true"><path d="M190 240 L176 270 H224 L210 240z" fill="#c7b894"/></svg>
+  </div><div class="caption">Then, and now</div></div>
+ </div>
+</section>
+
+<!-- 31 Carrying Him -->
+<section class="page" data-name="Carrying Him" data-scene-after="2" hidden>
+ <div class="spread">
+  <div class="leaf text">
+   <div class="chapter">Part Five · Carrying Him</div>
+   <h2>Carrying Him</h2>
+   <p>Daddy’s old FM radio player is still with Yusuf. It moved with him from home to university to wherever life has taken him. He has never thought of letting it go. Some evenings, he switches it on and lets Brenda or Bob Marley fill the room.</p>
+   <p>The grief still visits sometimes. He has stopped waiting for it to go away.</p>
+   <p>You never really get over the ones who were there before. You just learn to carry them.</p>
+   <p>And some days, when he is calm while others are rushing, or patient with something broken, or smiling at an argument about football, Yusuf realises he has been carrying Daddy all along.</p>
+   <div class="folio">xxxi</div>
+  </div>
+  <div class="leaf stage-leaf"><div class="stage">
+   <svg class="layer" style="--d:0s;--oy:100%" viewBox="0 0 400 280" aria-hidden="true"><rect class="panel" x="8" y="4" width="384" height="272" rx="6" style="fill:var(--wall)"/><rect x="8" y="214" width="384" height="62" style="fill:var(--floor)"/><rect x="8" y="210" width="384" height="4" style="fill:rgba(0,0,0,.18)"/><ellipse cx="200" cy="244" rx="150" ry="20" fill="#8a3b2a" opacity=".55"/><g style="--sky:url(#dusk)"><use href="#win" transform="translate(320 104)"/></g><use href="#tv" transform="translate(64 214) scale(1.3)"/></svg>
+   <svg class="layer" style="--d:0.18s;--oy:84%" viewBox="0 0 400 280" aria-hidden="true"><g transform="translate(168 214) scale(1.55)" opacity=".26"><use href="#sitMan" class="p-shadow" transform="translate(-8 -26) scale(1.08)"/></g><g transform="translate(168 214) scale(1.55)"><use href="#armchair" transform="translate(0 0)"/><use href="#sitMan" class="p-yusuf" transform="translate(-2 -22)"/></g><use href="#table" transform="translate(248 214) scale(1.1)"/><use href="#radio" transform="translate(248 186) scale(1.2)"/><g data-moves class="rise" style="--r:0.0s"><use href="#note" transform="translate(252 150) scale(1.00)"/></g><g data-moves class="rise" style="--r:1.1s"><use href="#note" transform="translate(261 146) scale(0.90)"/></g><g data-moves class="rise" style="--r:2.2s"><use href="#note" transform="translate(270 142) scale(0.80)"/></g><g data-moves class="rise" style="--r:3.3s"><use href="#note" transform="translate(279 138) scale(0.70)"/></g></svg>
+   <svg class="layer" style="--d:0.36s;--oy:96%" viewBox="0 0 400 280" aria-hidden="true"><rect x="8" y="262" width="384" height="14" fill="#7a4f30" opacity=".35"/></svg>
+  </div><div class="caption">The end</div></div>
+ </div>
+</section>
+
+</main>
+
+<nav class="controls" aria-label="Turn pages">
+ <button class="btn" id="prev" type="button">‹ Back</button>
+ <div class="dots" id="dots"></div>
+ <button class="btn" id="next" type="button">Turn the page ›</button>
+</nav>
+<div class="hint" id="where">Cover</div>
+</div>
+
+<script>
+(function(){
+  const pages=[...document.querySelectorAll('.page')];
+  const dots=document.getElementById('dots');
+  const prev=document.getElementById('prev'), next=document.getElementById('next'), where=document.getElementById('where');
+  let cur=0;
+  pages.forEach((p,i)=>{
+    const b=document.createElement('button');
+    b.type='button'; b.id='dot-'+i; b.setAttribute('aria-label','Go to '+p.dataset.name);
+    b.addEventListener('click',()=>go(i)); dots.appendChild(b);
+  });
+  function show(i){
+    cur=Math.max(0,Math.min(pages.length-1,i));
+    pages.forEach((p,j)=>{p.hidden=j!==cur;p.inert=j!==cur;});
+    pages[cur].getAnimations({subtree:true}).forEach(a=>{if(window.CSSAnimation&&a instanceof CSSAnimation){a.cancel();a.play();}});
+    [...dots.children].forEach((d,j)=>d.setAttribute('aria-current',j===cur?'true':'false'));
+    prev.disabled=cur===0; next.disabled=cur===pages.length-1;
+    next.textContent=cur===0?'Open the book ›':'Turn the page ›';
+    where.textContent=pages[cur].dataset.name+' · page '+(cur+1)+' of '+pages.length;
+    document.dispatchEvent(new CustomEvent('pagechange',{detail:{cur,total:pages.length}}));
+  }
+  prev.addEventListener('click',()=>go(cur-1));
+  next.addEventListener('click',()=>go(cur+1));
+  document.addEventListener('keydown',e=>{
+    if(e.target.type==='range')return;
+    if(e.key==='ArrowRight')go(cur+1);
+    if(e.key==='ArrowLeft')go(cur-1);
+  });
+  let sx=null;
+  const book=document.querySelector('.book');
+  /* page-turn: the old page lifts at the gutter and turns over */
+  const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
+  const narrow=matchMedia('(max-width:760px)');
+  let turning=null;
+  function rel(el){const b=book.getBoundingClientRect(),r=el.getBoundingClientRect();return{l:r.left-b.left,t:r.top-b.top,w:r.width,h:r.height};}
+  function put(el,r){el.style.left=r.l+'px';el.style.top=r.t+'px';el.style.width=r.w+'px';el.style.height=r.h+'px';}
+  function face(node,page,mode){
+    const c=node.cloneNode(true);
+    c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));
+    c.removeAttribute('id');
+    const f=document.createElement('div');
+    f.className='face '+mode+(page.classList.contains('cover')?' cover':'');
+    f.appendChild(c);
+    const s=document.createElement('div');s.className='shade';f.appendChild(s);
+    return f;
+  }
+  function go(i){
+    i=Math.max(0,Math.min(pages.length-1,i));
+    if(i===cur)return;
+    if(turning)turning.finish();
+    if(reduceMotion.matches||!book.animate){show(i);return;}
+    const fwd=i>cur, oldP=pages[cur], newP=pages[i];
+    const L=p=>p.querySelector('.leaf.text'), R=p=>p.querySelector('.stage-leaf');
+    const flip=document.createElement('div');
+    flip.className='flip '+(fwd?'flip-fwd':'flip-bwd');
+    const extras=[];
+    let front,back;
+    if(narrow.matches){
+      const r=rel(oldP.querySelector('.spread'));
+      put(flip,r);
+      flip.style.transformOrigin=fwd?'left center':'right center';
+      front=face(oldP.querySelector('.spread'),oldP,'face-front folding');
+      back=document.createElement('div');back.className='face face-back';
+      back.style.left='0';back.style.width='100%';
+      const s=document.createElement('div');s.className='shade';back.appendChild(s);
+    }else{
+      const rl=rel(L(oldP)), rr=rel(R(oldP));
+      const patch=face(fwd?L(oldP):R(oldP),oldP,'patch '+(fwd?'static':'folding'));
+      put(patch,fwd?rl:rr); extras.push(patch);
+      if(fwd){
+        put(flip,rr); flip.style.transformOrigin='left center';
+        front=face(R(oldP),oldP,'face-front folding');
+        back=face(L(newP),newP,'face-back static');
+        back.style.left='0'; back.style.width=rl.w+'px';
+      }else{
+        put(flip,rl); flip.style.transformOrigin='right center';
+        front=face(L(oldP),oldP,'face-front static');
+        back=face(R(newP),newP,'face-back folded');
+        back.style.right='0'; back.style.width=rr.w+'px';
+        newP.style.setProperty('--wait','.8s');
+      }
+    }
+    flip.append(front,back);
+    extras.forEach(e=>book.appendChild(e));
+    book.appendChild(flip);
+    if(fwd||narrow.matches)newP.style.removeProperty('--wait');
+    show(i);
+    const dur=950, ease='cubic-bezier(.45,.05,.3,1)';
+    const anim=flip.animate([{transform:'rotateY(0deg)'},{transform:'rotateY('+(fwd?-180:180)+'deg)'}],{duration:dur,easing:ease,fill:'forwards'});
+    const fs=front.querySelector('.shade'), bs=back.querySelector('.shade');
+    fs&&fs.animate([{opacity:0},{opacity:.9}],{duration:dur/2,easing:'ease-in',fill:'forwards'});
+    bs&&bs.animate([{opacity:.9},{opacity:0}],{duration:dur/2,delay:dur/2,easing:'ease-out',fill:'forwards'});
+    const done=()=>{flip.remove();extras.forEach(e=>e.remove());if(turning===anim)turning=null;};
+    anim.onfinish=done; anim.oncancel=done;
+    turning=anim;
+  }
+
+  book.addEventListener('touchstart',e=>{sx=e.target.type==='range'?null:e.touches[0].clientX},{passive:true});
+  book.addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>60)go(cur+(dx<0?1:-1));sx=null},{passive:true});
+
+  /* the first shave: three strokes, left cheek, chin, right cheek, each from top to bottom */
+  const shave=document.getElementById('shave'), out=document.getElementById('shave-out');
+  const parts=[0,1,2].map(i=>document.getElementById('bd'+i));
+  const razor=document.getElementById('razor7'), smile=document.getElementById('smile7');
+  const arm=document.getElementById('arm7'), armO=document.getElementById('armO7'), hand=document.getElementById('hand7');
+  const cols=[[-35,-66,-58],[-30,-58,-55],[-25,-66,-58]];
+  const clamp=x=>Math.max(0,Math.min(1,x));
+  function stroke(){
+    const t=+shave.value/100, s=Math.min(2.999,t*3), c=Math.floor(s), f=s-c;
+    const [x,y0,y1]=cols[c];
+    const done=t>=.99, rx=done?-14:x, ry=done?-50:y0+(y1-y0)*f;
+    razor.setAttribute('transform','translate('+rx+' '+ry.toFixed(2)+')');
+    /* Yusuf's arm: shoulder, a bent elbow, and his hand on the razor handle */
+    const hx=214+2.2*rx, hy=268+2.2*(ry+5.5), sx=182.4, sy=155.2, Lr=25;
+    const dx=hx-sx, dy=hy-sy, d=Math.hypot(dx,dy)||1, L=Math.max(Lr,d/2/.97);
+    const k=Math.sqrt(Math.max(0,L*L-d*d/4)), px=-dy/d, py=dx/d;
+    let ex=sx+dx/2+k*px, ey=sy+dy/2+k*py;
+    if(sy+dy/2-k*py>ey){ex=sx+dx/2-k*px;ey=sy+dy/2-k*py;}  /* the elbow drops below the line */
+    const dpath='M'+sx+' '+sy+' L'+ex.toFixed(1)+' '+ey.toFixed(1)+' L'+hx.toFixed(1)+' '+hy.toFixed(1);
+    arm.setAttribute('d',dpath); armO.setAttribute('d',dpath);
+    hand.setAttribute('cx',hx.toFixed(1)); hand.setAttribute('cy',hy.toFixed(1));
+    parts.forEach((p,i)=>p.setAttribute('opacity',(1-clamp(t*3-i)).toFixed(2)));
+    smile.setAttribute('opacity',clamp((t-.9)*10).toFixed(2));
+    out.textContent = t<.25 ? '“Small strokes. Downwards first.”'
+      : t<.55 ? '“Don’t press. Let the blade do the work.”'
+      : t<.92 ? '“Ehn, slowly. You want to leave me with no face?”'
+      : '“See? A better barber than the one at the junction.”';
+  }
+  shave.addEventListener('input',stroke); stroke();
+  window.popupBook={show:show,go:go};
+  show(0);
+})();
+</script>
+<script src="../assets/book.js"></script>
+</body>
+</html>
