@@ -56,10 +56,7 @@
     });
   });
 
-  /* 3. ribbon and curled page corners */
-  const ribbon = document.createElement('div');
-  ribbon.className = 'ribbon'; ribbon.setAttribute('aria-hidden', 'true');
-  book.appendChild(ribbon);
+  /* 3. curled page corners */
   const curl = left =>
     `<svg viewBox="0 0 34 34" aria-hidden="true"><path d="${left ? 'M0 0 V26 Q0 34 8 34 H34 Q12 26 0 0z' : 'M34 0 V26 Q34 34 26 34 H0 Q22 26 34 0z'}" fill="#e4d9c0" stroke="#b9a983"/><path d="${left ? 'M0 0 Q12 26 34 34' : 'M34 0 Q22 26 0 34'}" fill="none" stroke="rgba(42,29,16,.25)" stroke-width="2"/></svg>`;
   const cNext = document.createElement('button');

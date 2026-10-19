@@ -48,10 +48,6 @@ h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.005em}
 .chapter::after{content:"";flex:1;height:1px;background:var(--paper-edge)}
 .cover .chapter::after{display:none}
 
-/* ribbon bookmark through the gutter */
-.ribbon{position:absolute;z-index:4;top:12px;width:15px;height:calc(100% + 12px);left:calc(16px + (100% - 32px)/2.2 - 7px);
-  background:linear-gradient(90deg,#8f2a20,var(--ribbon) 40%,#8f2a20);clip-path:polygon(0 0,100% 0,100% 100%,50% 95%,0 100%);
-  box-shadow:0 4px 8px rgba(0,0,0,.3);pointer-events:none}
 
 /* curled page corners to turn */
 .corner{position:absolute;z-index:7;bottom:14px;width:46px;height:46px;border:0;padding:0;background:transparent;cursor:pointer}
@@ -165,7 +161,6 @@ body.is-opening .cover-board{transition:transform .8s cubic-bezier(.45,.05,.3,1)
   .spread > .leaf.text > *{margin-inline:20px}
   .spread > .stage-leaf{order:var(--scene-order,15);border-bottom:0;padding:6px 8px}
   .book{padding:8px 8px 10px}
-  .ribbon{display:none}
   .corner{width:40px;height:40px;bottom:10px}
   .corner.next{right:10px}.corner.prev{left:10px}
   .closed-book .tassel{bottom:-48px;height:60px}

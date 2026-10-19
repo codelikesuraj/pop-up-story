@@ -20,7 +20,7 @@ Interactive pop-up storybooks, built as plain HTML and hosted on GitHub Pages.
 ├── index.html          # the shelf listing every story
 ├── og-image.png        # share preview for the shelf
 ├── assets/
-│   ├── book.css        # shared book frame: cover, cloth boards, ribbon, paper grain, pull tabs
+│   ├── book.css        # shared book frame: cover, cloth boards, paper grain, pull tabs
 │   └── book.js         # shared behaviour: opening the cover, page stacks, depth shadows
 ├── icarus/
 │   ├── index.html      # the storybook
