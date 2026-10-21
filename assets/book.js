@@ -134,14 +134,20 @@
   function labels() {
     const s = small.matches;
     next.textContent = s ? 'Next' : (cur === 0 ? 'Open the book ›' : 'Turn the page ›');
+    home.textContent = s ? 'Home' : 'Back to all stories ›';
     prev.textContent = s ? 'Back' : (closed && cur === 0 ? '‹ Close the book' : '‹ Back');
     if (openTag) openTag.textContent = s ? 'Open' : 'Open the cover ›';
     prev.setAttribute('aria-label', closed && cur === 0 ? 'Close the book' : 'Previous page');
     next.setAttribute('aria-label', 'Next page');
   }
+  /* on the last page, a link home takes the place of Next and starts the book over next time */
+  const home = document.createElement('a');
+  home.className = 'btn home'; home.id = 'home'; home.href = '../'; home.hidden = true;
+  next.after(home);
   function update(c, total) {
     cur = c;
     stacks(cur, total);
+    home.hidden = cur !== total - 1; next.hidden = !home.hidden;
     document.querySelectorAll('.dots button').forEach((d, j) => d.classList.toggle('read', j < cur));
     cPrev.disabled = cur === 0 && !closed; cNext.disabled = cur === total - 1;
     if (closed && cur === 0) prev.disabled = false;
@@ -152,6 +158,7 @@
   const KEY = 'popup-progress:' + location.pathname;
   const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { return null; } };
   const save = o => { try { localStorage.setItem(KEY, JSON.stringify(Object.assign(load() || {}, o))); } catch (e) {} };
+  home.addEventListener('click', () => { try { localStorage.removeItem(KEY); } catch (e) {} });
 
   document.addEventListener('pagechange', e => { update(e.detail.cur, e.detail.total); save({ page: e.detail.cur }); });
   small.addEventListener('change', labels);

@@ -96,6 +96,8 @@ h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.005em}
 /* controls on the desk */
 .btn{font-family:var(--display);background:var(--paper);color:var(--ink);border:0;border-radius:3px;box-shadow:0 3px 0 #b9a983,0 8px 16px rgba(0,0,0,.3)}
 .btn:focus-visible,.dots button:focus-visible{outline:2px solid var(--foil);outline-offset:3px}
+.btn.home{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-bottom:0}
+.btn.home[hidden]{display:none}
 .dots{gap:8px}
 .dots button{width:22px;height:6px;border-radius:3px;border:0;transform:none;background:#7a6448;transition:width .25s ease,background .25s ease}
 .dots button[aria-current="true"]{width:42px;background:var(--foil)}
@@ -140,7 +142,7 @@ body.is-opening .cover-board{transition:transform .8s cubic-bezier(.45,.05,.3,1)
   .pull-slot{grid-area:pull}
   body.has-pull{padding-bottom:calc(220px + env(safe-area-inset-bottom,0px))}
   .controls #prev{grid-area:prev}
-  .controls #next{grid-area:next}
+  .controls #next,.controls #home{grid-area:next}
   .controls .btn{width:100%;min-height:48px;font-size:17px}
   .controls .btn:disabled{visibility:hidden}
   .dots{grid-area:dots;justify-content:center;gap:6px}
